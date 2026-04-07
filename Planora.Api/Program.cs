@@ -1,3 +1,6 @@
+using Planora.DataAccess;
+using Microsoft.EntityFrameworkCore;
+using Planora.DataAccess.Context;
 namespace Planora.Api
 {
     public class Program
@@ -9,6 +12,7 @@ namespace Planora.Api
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddDbContext<DbContext,DatabaseContext>(options => options.UseInMemoryDatabase("PlanoraDB"));
 
             var app = builder.Build();
 

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Planora.Core
+namespace Planora.DataAccess.Mappers
 {
-    internal class UserDTO
+    internal class UserMapping
     {
     }
 }
