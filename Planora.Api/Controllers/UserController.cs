@@ -31,12 +31,14 @@ namespace Planora.Api.Controllers
 		[HttpGet("{id}")]
         public async Task<ActionResult<UserDTO>> GetUser(string id)
         {
-            UserDTO user = await _service.GetUser(id);
-            if(user == null)
+            try
             {
-                return NotFound();
-            }
-            return Ok(user);
+				return Ok(await _service.GetUser(id));
+			}
+			catch (KeyNotFoundException)
+            {
+				return NotFound();
+			}
 		}
 
 		// To authenticate Tovholder before update

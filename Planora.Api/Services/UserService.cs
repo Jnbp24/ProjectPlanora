@@ -22,7 +22,12 @@ namespace Planora.Api.Services
 
         public async Task<UserDTO> GetUser(string id)
         {
-            return await _repository.GetUserById(id);
+            UserDTO user = await _repository.GetUserById(id);
+			if(user == null)
+            {
+                throw new KeyNotFoundException();
+            }
+            return user;
         }
 
         public async Task<UserDTO> DeleteUser(string id)
