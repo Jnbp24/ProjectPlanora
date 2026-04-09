@@ -1,6 +1,10 @@
+using Microsoft.AspNetCore.Identity;
 using Planora.DataAccess;
 using Microsoft.EntityFrameworkCore;
+using Planora.Api.Services.Auth;
 using Planora.DataAccess.Context;
+using Planora.DataAccess.Models.Auth;
+
 namespace Planora.Api
 {
     public class Program
@@ -14,6 +18,12 @@ namespace Planora.Api
             builder.Services.AddControllers();
             builder.Services.AddDbContext<DbContext,DatabaseContext>(options => options.UseInMemoryDatabase("PlanoraDB"));
 
+            //Auth Services
+            builder.Services.AddIdentity<AuthUser, IdentityRole>()
+                .AddEntityFrameworkStores<DatabaseContext>();
+
+            builder.Services.AddScoped<JwtTokenService>();
+                
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
