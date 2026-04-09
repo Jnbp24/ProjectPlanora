@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Planora.DataAccess.Models;
 
 namespace Planora.DataAccess.Context
 {
@@ -27,5 +28,6 @@ namespace Planora.DataAccess.Context
 
 
         //Insert DBset for each table here 
+        public DbSet<CategoryDB> Categories { get; set; }
     }
 }

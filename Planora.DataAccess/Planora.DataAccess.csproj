@@ -16,4 +16,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Planora.Core\Planora.DTO.csproj" />
+  </ItemGroup>
+
 </Project>
