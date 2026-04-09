@@ -29,5 +29,6 @@ namespace Planora.DataAccess.Context
 
         //Insert DBset for each table here 
         public DbSet<CategoryDB> Categories { get; set; }
+        internal DbSet<TaskDB> Tasks { get; set; }
     }
 }
