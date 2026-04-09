@@ -1,6 +1,66 @@
-﻿namespace Planora.Api.Services
+﻿using System.Data;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+using Planora.Core.DTO;
+using Planora.DataAccess.Repositories;
+using Planora.DataAccess;
+using Planora.DataAccess.Mappers;
+
+namespace Planora.Api.Services
 {
     public class UserService
     {
+        private readonly UserRepository _repository;
+        
+        public UserService(UserRepository repository)
+        {
+            _repository = repository;
+        }
+
+		public async Task<IEnumerable<UserDTO>> GetAllUsers()
+		{
+            IEnumerable<UserDB> userDBs = await _repository.GetAllUsers();
+            return userDBs.Select(UserMapping.ToDTO);
+		}
+
+        public async Task<UserDTO> GetUser(string id)
+        {
+            UserDB userDB = await _repository.GetUserById(id);
+			if(userDB == null)
+            {
+                throw new KeyNotFoundException();
+            }
+            return UserMapping.ToDTO(userDB);
+        }
+
+        public async Task<UserDTO> DeleteUser(string id)
+        {
+            UserDB deletedUserDB = await _repository.GetUserById(id);
+            if (deletedUserDB == null) 
+            {
+				throw new KeyNotFoundException($"{id} was not found");
+			} 
+            else if (deletedUserDB.Deleted)
+            {
+                throw new NotSupportedException($"{id} is already deleted");
+            }
+            deletedUserDB.Deleted = true;
+            await _repository.SaveChanges();
+            return UserMapping.ToDTO(deletedUserDB);
+        }
+
+        public async Task<UserDTO> UpdateUser(string id, UserDTO userDTO)
+        {
+            UserDB userDB = await _repository.GetUserById(id);
+			if (userDB == null)
+			{
+				throw new KeyNotFoundException($"{id} was not found");
+			}
+            userDB.FirstName = userDTO.FirstName;
+            userDB.LastName = userDTO.LastName;
+            userDB.Tovholder = userDTO.Tovholder;
+            return userDTO; 
+		}
+
     }
 }

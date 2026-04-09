@@ -4,7 +4,5 @@ using System.Text;
 
 namespace Planora.Core.DTO
 {
-    internal class UserDTO
-    {
-    }
+    public record UserDTO(string Id, string FirstName, string LastName, string Email, bool Tovholder);
 }

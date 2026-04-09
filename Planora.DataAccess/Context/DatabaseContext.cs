@@ -4,11 +4,11 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Planora.DataAccess.Models;
 
-namespace Planora.DataAccess.Context
+namespace Planora.DataAccess
 {
     public class DatabaseContext : DbContext
     {
-        public DatabaseContext(DbContextOptions options) : base(options)
+        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
         }
 
@@ -26,7 +26,7 @@ namespace Planora.DataAccess.Context
             // Update to use SQLServer when going in production
         }
 
-
+        public DbSet<UserDB> Users { get; set; }
         //Insert DBset for each table here 
         public DbSet<CategoryDB> Categories { get; set; }
         internal DbSet<TaskDB> Tasks { get; set; }
