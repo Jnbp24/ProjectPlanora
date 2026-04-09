@@ -2,9 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Planora.DataAccess.Models
+namespace Planora.DataAccess
 {
     internal class UserDB
     {
+        public Guid Id { get; set; }
+		public string FirstName { get; set; }
+		public string LastName { get; set; }
+		public string Email { get; set; }
+
+        public UserDB() { }
     }
 }

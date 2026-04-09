@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 
-namespace Planora.DataAccess.Context
+namespace Planora.DataAccess
 {
     public class DatabaseContext : DbContext
     {
@@ -25,7 +25,7 @@ namespace Planora.DataAccess.Context
             // Update to use SQLServer when going in production
         }
 
-
+        internal DbSet<UserDB> Users { get; set; }
         //Insert DBset for each table here 
     }
 }
