@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Planora.Api.Services.Auth;
+using Planora.DTO.Auth;
 
 namespace Planora.Api.Controllers
 {
@@ -16,9 +17,16 @@ namespace Planora.Api.Controllers
         }
 
         [HttpPost("login")]
-        public async IActionResult<string> Login()
+        public async Task<ActionResult<string>> Login([FromBody] LoginRequestDto dto)
         {
+            var result = await _authService.LoginAsync(dto);
+
+            if (!result.Success)
+            {
+                return Unauthorized(result.Error);
+            }
             
+            return Ok(result.Token);
         }
     }
 }

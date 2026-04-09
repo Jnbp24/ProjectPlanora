@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace Planora.DataAccess.Repositories.User;
 
-namespace Planora.DataAccess.Repositories.User
+public interface IUserRepository
 {
-    internal interface IUser
-    {
-    }
+	Task<UserDB?> GetUserByIdAsync(string id);
+	Task<IEnumerable<UserDB>> GetAllUsersAsync();
+	Task<UserDB> CreateUserAsync(UserDB user);
+	System.Threading.Tasks.Task SaveChangesAsync();
 }
