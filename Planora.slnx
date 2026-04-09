@@ -1,5 +1,5 @@
 <Solution>
   <Project Path="Planora.Api/Planora.Api.csproj" />
-  <Project Path="Planora.Core/Planora.Core.csproj" />
+  <Project Path="Planora.Core/Planora.DTO.csproj" />
   <Project Path="Planora.DataAccess/Planora.DataAccess.csproj" />
 </Solution>
