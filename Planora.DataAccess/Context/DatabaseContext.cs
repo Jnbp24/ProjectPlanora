@@ -25,7 +25,7 @@ namespace Planora.DataAccess
             // Update to use SQLServer when going in production
         }
 
-        internal DbSet<UserDB> Users { get; set; }
+        public DbSet<UserDB> Users { get; set; }
         //Insert DBset for each table here 
     }
 }

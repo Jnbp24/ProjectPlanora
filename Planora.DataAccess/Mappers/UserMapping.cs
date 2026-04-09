@@ -5,9 +5,9 @@ using Planora.Core.DTO;
 
 namespace Planora.DataAccess.Mappers
 {
-    internal static class UserMapping
+	public static class UserMapping
     {
-		internal static UserDB ToEntity(UserDTO dto)
+		public static UserDB ToEntity(UserDTO dto)
 		{
 			return new UserDB
 			{
@@ -19,7 +19,7 @@ namespace Planora.DataAccess.Mappers
 			};
 		}
 
-		internal static UserDTO ToDTO(UserDB entity)
+		public static UserDTO ToDTO(UserDB entity)
 		{
 			return new UserDTO
 			{

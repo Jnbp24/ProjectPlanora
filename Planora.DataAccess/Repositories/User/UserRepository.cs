@@ -16,59 +16,25 @@ namespace Planora.DataAccess.Repositories
             _context = context;
         }
 
-		public async Task<UserDTO> CreateUser(UserDTO user)
+		public async Task<UserDB> CreateUser(UserDB user)
 		{
 			throw new NotImplementedException();
 		}
 
-		public async Task<UserDTO> DeleteUser(string id)
+		public async Task<IEnumerable<UserDB>> GetAllUsers()
 		{
-			try
-			{
-				UserDB userToBeDeleted = await _context.Users.FindAsync(id);
-				userToBeDeleted.Deleted = true;
-				await _context.SaveChangesAsync();
-				return UserMapping.ToDTO(userToBeDeleted);
-			}
-			catch (NullReferenceException e)
-			{
-				return null;
-			}
+			return await _context.Users.ToListAsync();
 		}
 
-		public async Task<IEnumerable<UserDTO>> GetAllUsers()
+		public async Task<UserDB?> GetUserById(string id)
 		{
-			IEnumerable<UserDB> userDBs = await _context.Users.ToListAsync();
-			return userDBs.Select(UserMapping.ToDTO);
+			return await _context.Users.FindAsync(id);
 		}
 
-		public async Task<UserDTO?> GetUserById(string id)
+		public async Task SaveChanges()
 		{
-			UserDB userDB = await _context.Users.FindAsync(id);
-			if(userDB == null)
-			{
-				return null;
-			}
-			return UserMapping.ToDTO(userDB);
-		}
-
-		public async Task<UserDTO> UpdateUser(string id, UserDTO updatedUser)
-		{
-			try
-			{
-				UserDB userToBeUpdated = await _context.Users.FindAsync(id);
-
-				userToBeUpdated.FirstName = updatedUser.FirstName;
-				userToBeUpdated.LastName = updatedUser.LastName;
-				userToBeUpdated.Tovholder = updatedUser.Tovholder;
-
-				await _context.SaveChangesAsync();
-				return updatedUser;
-			}
-			catch (NullReferenceException e)
-			{
-				return null;
-			}
+			await _context.SaveChangesAsync();
+	
 		}
 	}
 }

@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using Planora.Core.DTO;
 using Planora.DataAccess.Repositories;
+using Planora.DataAccess;
+using Planora.DataAccess.Mappers;
 
 namespace Planora.Api.Services
 {
@@ -17,36 +19,47 @@ namespace Planora.Api.Services
 
 		public async Task<IEnumerable<UserDTO>> GetAllUsers()
 		{
-			return await _repository.GetAllUsers();
+            IEnumerable<UserDB> userDBs = await _repository.GetAllUsers();
+            return userDBs.Select(UserMapping.ToDTO);
 		}
 
         public async Task<UserDTO> GetUser(string id)
         {
-            UserDTO user = await _repository.GetUserById(id);
-			if(user == null)
+            UserDB userDB = await _repository.GetUserById(id);
+			if(userDB == null)
             {
                 throw new KeyNotFoundException();
             }
-            return user;
+            return UserMapping.ToDTO(userDB);
         }
 
         public async Task<UserDTO> DeleteUser(string id)
         {
-            UserDTO deletedUser = await _repository.DeleteUser(id);
-            if (deletedUser == null) {
+            UserDB deletedUserDB = await _repository.GetUserById(id);
+            if (deletedUserDB == null) 
+            {
 				throw new KeyNotFoundException($"{id} was not found");
-			}
-			return deletedUser;
+			} 
+            else if (deletedUserDB.Deleted)
+            {
+                throw new NotSupportedException($"{id} is already deleted");
+            }
+            deletedUserDB.Deleted = true;
+            await _repository.SaveChanges();
+            return UserMapping.ToDTO(deletedUserDB);
         }
 
-        public async Task<UserDTO> UpdateUser(string id, UserDTO user)
+        public async Task<UserDTO> UpdateUser(string id, UserDTO userDTO)
         {
-            UserDTO updatedUser = await _repository.UpdateUser(id, user);
-			if (updatedUser == null)
+            UserDB userDB = await _repository.GetUserById(id);
+			if (userDB == null)
 			{
 				throw new KeyNotFoundException($"{id} was not found");
 			}
-			return updatedUser; 
+            userDB.FirstName = userDTO.FirstName;
+            userDB.LastName = userDTO.LastName;
+            userDB.Tovholder = userDTO.Tovholder;
+            return userDTO; 
 		}
 
     }

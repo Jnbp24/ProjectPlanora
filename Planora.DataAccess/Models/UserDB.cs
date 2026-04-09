@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Planora.DataAccess
 {
-    internal class UserDB
+    public class UserDB
     {
         public required Guid Id { get; set; }
 		public string FirstName { get; set; }

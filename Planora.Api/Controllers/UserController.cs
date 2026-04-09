@@ -41,8 +41,14 @@ namespace Planora.Api.Controllers
 			}
 		}
 
+		[HttpGet]
+		public async Task<ActionResult<string>> GetRole()
+		{
+			throw new NotImplementedException();
+		}
+
 		// To authenticate Tovholder before update
-        // [Authorize(Roles = "Tovholder")]
+		// [Authorize(Roles = "Tovholder")]
 		[HttpPut("{id}")]
         public async Task<IActionResult> PutUser(string id, UserDTO userDTO)
         {
