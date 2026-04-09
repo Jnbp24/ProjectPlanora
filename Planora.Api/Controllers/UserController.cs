@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,34 +22,57 @@ namespace Planora.Api.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
-        {
-            throw new NotImplementedException();
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<UserDTO>> GetUserDB(Guid id)
-        {
-			throw new NotImplementedException();
+		[HttpGet]
+		public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
+		{
+			return Ok(await _service.GetAllUsers());
 		}
 
+		[HttpGet("{id}")]
+        public async Task<ActionResult<UserDTO>> GetUser(string id)
+        {
+            UserDTO user = await _service.GetUser(id);
+            if(user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
+		}
+
+		// To authenticate Tovholder before update
+        // [Authorize(Roles = "Tovholder")]
 		[HttpPut("{id}")]
-        public async Task<IActionResult> PutUserDB(Guid id, UserDTO userDB)
+        public async Task<IActionResult> PutUser(string id, UserDTO userDTO)
         {
-			throw new NotImplementedException();
+			try
+			{
+				return Ok(await _service.UpdateUser(id, userDTO));
+			}
+			catch (KeyNotFoundException e)
+			{
+				return NotFound();
+			}
 		}
 
+		// To authenticate Tovholder before creating
+        // [Authorize(Roles = "Tovholder")]
 		[HttpPost]
-        public async Task<ActionResult<UserDTO>> PostUserDB(UserDTO userDB)
+        public async Task<ActionResult<UserDTO>> PostUser(UserDTO userDTO)
         {
 			throw new NotImplementedException();
 		}
 
 		[HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUserDB(Guid id)
+        public async Task<IActionResult> DeleteUser(string id)
         {
-			throw new NotImplementedException();
+            try
+            {
+                return Ok(await _service.DeleteUser(id));
+            }
+            catch (KeyNotFoundException e)
+            {
+                return NotFound();
+            }
 		}
     }
 }

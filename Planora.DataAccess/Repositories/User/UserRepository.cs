@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 using Planora.Core.DTO;
-using Planora.DataAccess.Repositories;
+using Planora.DataAccess.Mappers;
 using Planora.DataAccess.Repositories.User;
 
 namespace Planora.DataAccess.Repositories
@@ -15,29 +16,59 @@ namespace Planora.DataAccess.Repositories
             _context = context;
         }
 
-		public Task<UserDTO> CreateUser(UserDTO user)
+		public async Task<UserDTO> CreateUser(UserDTO user)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Task<UserDTO> DeleteUser(string id)
+		public async Task<UserDTO> DeleteUser(string id)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				UserDB userToBeDeleted = await _context.Users.FindAsync(id);
+				userToBeDeleted.Deleted = true;
+				await _context.SaveChangesAsync();
+				return UserMapping.ToDTO(userToBeDeleted);
+			}
+			catch (NullReferenceException e)
+			{
+				return null;
+			}
 		}
 
-		public Task<IEnumerable<UserDTO>> GetAllUsers()
+		public async Task<IEnumerable<UserDTO>> GetAllUsers()
 		{
-			throw new NotImplementedException();
+			IEnumerable<UserDB> userDBs = await _context.Users.ToListAsync();
+			return userDBs.Select(UserMapping.ToDTO);
 		}
 
-		public Task<UserDTO?> GetUserById(string id)
+		public async Task<UserDTO?> GetUserById(string id)
 		{
-			throw new NotImplementedException();
+			UserDB userDB = await _context.Users.FindAsync(id);
+			if(userDB == null)
+			{
+				return null;
+			}
+			return UserMapping.ToDTO(userDB);
 		}
 
-		public Task<UserDTO> UpdateUser(string id, UserDTO user)
+		public async Task<UserDTO> UpdateUser(string id, UserDTO updatedUser)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				UserDB userToBeUpdated = await _context.Users.FindAsync(id);
+
+				userToBeUpdated.FirstName = updatedUser.FirstName;
+				userToBeUpdated.LastName = updatedUser.LastName;
+				userToBeUpdated.Tovholder = updatedUser.Tovholder;
+
+				await _context.SaveChangesAsync();
+				return updatedUser;
+			}
+			catch (NullReferenceException e)
+			{
+				return null;
+			}
 		}
 	}
 }
