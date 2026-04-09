@@ -17,6 +17,23 @@ namespace Planora.Api.Controllers
             _service = service;
         }
 
+        // POST api/task
+        [HttpPost]
+        public async Task<ActionResult<TaskDTO>> Create([FromBody] TaskDTO dto)
+        {
+            var created = await _service.CreateAsync(dto);
+            // return 201 with location header pointing to the created resource
+            return CreatedAtAction(nameof(GetById), new { taskId = /*assumes created has ID, adjust when available*/ 0 }, created);
+        }
+
+        // PUT api/task/5
+        [HttpPut("{taskId:int}")]
+        public async Task<IActionResult> UpdateAsync([FromRoute] string taskId, [FromBody] TaskDTO dto)
+        {
+            await _service.UpdateAsync(taskId, dto);
+            return NoContent();
+        }
+        
         // GET api/task
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TaskDTO>>> GetAll()
@@ -26,36 +43,19 @@ namespace Planora.Api.Controllers
         }
 
         // GET api/task/5
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<TaskDTO>> GetById(int id)
+        [HttpGet("{taskId:int}")]
+        public async Task<ActionResult<TaskDTO>> GetById(string taskId)
         {
-            var item = await _service.GetByIdAsync(id);
+            var item = await _service.GetByIdAsync(taskId);
             if (item is null) return NotFound();
             return Ok(item);
         }
 
-        // POST api/task
-        [HttpPost]
-        public async Task<ActionResult<TaskDTO>> Create([FromBody] TaskDTO dto)
-        {
-            var created = await _service.CreateAsync(dto);
-            // return 201 with location header pointing to the created resource
-            return CreatedAtAction(nameof(GetById), new { id = /*assumes created has ID, adjust when available*/ 0 }, created);
-        }
-
-        // PUT api/task/5
-        [HttpPut("{id:int}")]
-        public async Task<IActionResult> Update(int id, [FromBody] TaskDTO dto)
-        {
-            await _service.UpdateAsync(id, dto);
-            return NoContent();
-        }
-
         // DELETE api/task/5
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{taskId:int}")]
+        public async Task<IActionResult> Delete(string taskId)
         {
-            await _service.DeleteAsync(id);
+            await _service.DeleteAsync(taskId);
             return NoContent();
         }
     }
