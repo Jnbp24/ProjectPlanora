@@ -1,8 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace Planora.DTO.UserDTO;
 
-namespace Planora.Core.DTO
-{
-    public record UserDTO(string Id, string FirstName, string LastName, string Email, bool Tovholder);
-}
+public record UserDTO(string Id, string FirstName, string LastName, string Email, bool Tovholder);

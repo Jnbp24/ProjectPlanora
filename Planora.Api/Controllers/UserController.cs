@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Planora.Api.Services;
-using Planora.Core.DTO;
+using Planora.DTO.UserDTO;
 
 namespace Planora.Api.Controllers
 {

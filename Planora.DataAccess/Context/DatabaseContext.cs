@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Planora.DataAccess.Models;
 
-namespace Planora.DataAccess
+namespace Planora.DataAccess.Context
 {
     public class DatabaseContext : DbContext
     {
@@ -27,7 +24,6 @@ namespace Planora.DataAccess
         }
 
         public DbSet<UserDB> Users { get; set; }
-        //Insert DBset for each table here 
         public DbSet<CategoryDB> Categories { get; set; }
         internal DbSet<TaskDB> Tasks { get; set; }
     }
