@@ -5,20 +5,20 @@ namespace Planora.Api.Services;
 
 public class TaskService
 {
-    private readonly TaskRepository _repo;
+    private readonly TaskRepository _taskRepository;
 
     public TaskService(TaskRepository repo)
     {
-        _repo = repo;
+        _taskRepository = repo;
     }
 
-    public async Task<TaskDTO> CreateAsync(TaskDTO dto) => await _repo.CreateTaskAsync(dto);
+    public async Task<TaskDTO> CreateAsync(TaskDTO dto) => await _taskRepository.CreateTaskAsync(dto);
 
-    public async Task UpdateAsync(string taskId, TaskDTO dto) => await _repo.UpdateTaskAsync(taskId, dto);
+    public async Task UpdateAsync(string taskId, TaskDTO dto) => await _taskRepository.UpdateTaskAsync(taskId, dto);
         
-    public async Task<IEnumerable<TaskDTO>> GetAllAsync() => await _repo.GetAllTasksAsync();
+    public async Task<IEnumerable<TaskDTO>> GetAllAsync() => await _taskRepository.GetAllTasksAsync();
 
-    public async Task<TaskDTO?> GetByIdAsync(string taskId) => await _repo.GetTaskByIdAsync(taskId);
+    public async Task<TaskDTO?> GetByIdAsync(string taskId) => await _taskRepository.GetTaskByIdAsync(taskId);
 
-    public async Task DeleteAsync(string taskId) => await _repo.DeleteTaskAsync(taskId);
+    public async Task DeleteAsync(string taskId) => await _taskRepository.DeleteTaskAsync(taskId);
 }
