@@ -5,14 +5,18 @@ using Planora.DTO.CategoryDTO;
 
 namespace Planora.DataAccess.Repositories.Category;
 
-public class CategoryRepository {
+public class CategoryRepository : ICategoryRepository
+{
 	private DatabaseContext _context;
 
-	public CategoryRepository(DatabaseContext context) {
+	public CategoryRepository(DatabaseContext context) 
+	{
 		_context = context;
 	}
 
-	public async Task<List<CategoryDTO>> GetCategoriesAsync() {
-		return CategoryMappings.MapCategoriesDBtoCategoriesDTO(await _context.Categories.ToListAsync());
+	public async Task<IEnumerable<CategoryDTO>> GetAllCategoriesAsync()
+	{
+		var categories = await _context.Categories.ToListAsync();
+		return categories.Select(CategoryMapping.ToDTO);
 	}
 }

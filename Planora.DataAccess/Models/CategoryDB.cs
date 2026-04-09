@@ -1,19 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿namespace Planora.DataAccess.Models;
 
-namespace Planora.DataAccess.Models;
+public class CategoryDB 
+{
+	public CategoryDB() 
+	{
+	}
 
-[PrimaryKey("Id")]
-public class CategoryDB {
-	public Guid Id { get; set; }
+	public CategoryDB(string name, string hexColor)
+	{
+		CategoryId = Guid.NewGuid();
+		Name = name;
+		HexColor = hexColor;
+	}
+	
+	public Guid CategoryId { get; set; }
 	public string Name { get; set; }
 	public string HexColor { get; set; }
 	public bool Deleted { get; set; }
 
-	public CategoryDB() {
-	}
-
-	public CategoryDB(string name, string hexColor) {
-		Name = name;
-		HexColor = hexColor;
-	}
 }

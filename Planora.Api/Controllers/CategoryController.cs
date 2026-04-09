@@ -6,14 +6,19 @@ namespace Planora.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class CategoryController : ControllerBase {
+public class CategoryController : ControllerBase 
+{
 	private CategoryService _categoryService;
-	public CategoryController(CategoryService categoryService) {
+	
+	public CategoryController(CategoryService categoryService) 
+	{
 		_categoryService = categoryService;
 	}
 
 	[HttpGet]
-	public async Task<List<CategoryDTO>> GetCategories() {
-		return await _categoryService.GetCategoriesAsync();
+	public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAllAsync()
+	{
+		var categories = await _categoryService.GetAllAsync();
+		return Ok(categories);
 	}
 }
