@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Planora.Core.DTO;
+using Planora.DTO.UserDTO;
 
 namespace Planora.DataAccess.Mappers
 {
@@ -21,14 +21,13 @@ namespace Planora.DataAccess.Mappers
 
 		public static UserDTO ToDTO(UserDB entity)
 		{
-			return new UserDTO
-			{
-				Id = entity.Id.ToString(),
-				FirstName = entity.FirstName,
-				LastName = entity.LastName,
-				Email = entity.Email,
-				Tovholder = entity.Tovholder
-			};
+			return new UserDTO(
+				Id: entity.Id.ToString(),
+				FirstName: entity.FirstName,
+				LastName: entity.LastName,
+				Email: entity.Email,
+				Tovholder: entity.Tovholder
+			);
 		}
 	}
 }

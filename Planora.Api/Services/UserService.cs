@@ -1,10 +1,11 @@
 ﻿using System.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
-using Planora.Core.DTO;
 using Planora.DataAccess.Repositories;
 using Planora.DataAccess;
 using Planora.DataAccess.Mappers;
+using Planora.DataAccess.Repositories.User;
+using Planora.DTO.UserDTO;
 
 namespace Planora.Api.Services
 {
