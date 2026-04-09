@@ -2,8 +2,8 @@
 
 public interface IUserRepository
 {
-	Task<UserDB?> GetUserById(string id);
-	Task<IEnumerable<UserDB>> GetAllUsers();
-	Task<UserDB> CreateUser(UserDB user);
-	System.Threading.Tasks.Task SaveChanges();
+	Task<UserDB?> GetUserByIdAsync(string id);
+	Task<IEnumerable<UserDB>> GetAllUsersAsync();
+	Task<UserDB> CreateUserAsync(UserDB user);
+	System.Threading.Tasks.Task SaveChangesAsync();
 }

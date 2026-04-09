@@ -11,22 +11,22 @@ public class UserRepository : IUserRepository
 		_context = context;
 	}
 
-	public async Task<UserDB> CreateUser(UserDB user)
+	public async Task<UserDB> CreateUserAsync(UserDB user)
 	{
 		throw new NotImplementedException();
 	}
 
-	public async Task<IEnumerable<UserDB>> GetAllUsers()
+	public async Task<IEnumerable<UserDB>> GetAllUsersAsync()
 	{
 		return await _context.Users.ToListAsync();
 	}
 
-	public async Task<UserDB?> GetUserById(string id)
+	public async Task<UserDB?> GetUserByIdAsync(string id)
 	{
 		return await _context.Users.FindAsync(id);
 	}
 
-	public async System.Threading.Tasks.Task SaveChanges()
+	public async System.Threading.Tasks.Task SaveChangesAsync()
 	{
 		await _context.SaveChangesAsync();
 	}
