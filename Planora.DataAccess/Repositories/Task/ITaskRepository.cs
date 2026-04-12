@@ -1,13 +1,14 @@
-﻿using Planora.DTO.TaskDTO;
+﻿using Planora.DataAccess.Models;
 
 namespace Planora.DataAccess.Repositories.Task;
 
 public interface ITaskRepository
 {
-    Task<TaskDTO?> GetTaskByIdAsync(string taskId);
-    Task<IEnumerable<TaskDTO>> GetAllTasksAsync();
-    Task<TaskDTO> CreateTaskAsync(TaskDTO taskDto);
-    Task<TaskDTO> UpdateTaskAsync(string taskId, TaskDTO taskDto);
-    Task<TaskDTO> DeleteTaskAsync(string taskId);
-    Task<TaskDTO> AssignUserToTaskAsync(string taskId, string userId);
+    Task<TaskDB?> GetTaskByIdAsync(string taskId);
+    Task<IEnumerable<TaskDB>> GetAllTasksAsync();
+    Task<TaskDB> CreateTaskAsync(TaskDB task);
+    Task<TaskDB> UpdateTaskAsync(string taskId, TaskDB task);
+    Task<TaskDB> DeleteTaskAsync(string taskId);
+    Task<TaskDB> AssignUserToTaskAsync(string taskId, string userId);
+    System.Threading.Tasks.Task SaveChangesAsync();
 }
