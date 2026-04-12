@@ -1,24 +1,64 @@
 ﻿using Planora.DTO.TaskDTO;
 using Planora.DataAccess.Repositories.Task;
+using Planora.DataAccess.Mappers;
 
 namespace Planora.Api.Services;
 
 public class TaskService
 {
-    private readonly TaskRepository _taskRepository;
+    private readonly ITaskRepository _taskRepository;
 
-    public TaskService(TaskRepository repo)
+    public TaskService(ITaskRepository taskRepository)
     {
-        _taskRepository = repo;
+        _taskRepository = taskRepository;
     }
 
-    public async Task<TaskDTO> CreateAsync(TaskDTO dto) => await _taskRepository.CreateTaskAsync(dto);
+    public async Task<TaskDTO> CreateAsync(TaskDTO dto)
+    {
+        var taskDB = TaskMapping.ToEntity(dto);
+        var createdTaskDB = await _taskRepository.CreateTaskAsync(taskDB);
+        return TaskMapping.ToDTO(createdTaskDB);
+    }
 
-    public async Task UpdateAsync(string taskId, TaskDTO dto) => await _taskRepository.UpdateTaskAsync(taskId, dto);
+    public async Task<TaskDTO> UpdateAsync(string taskId, TaskDTO dto)
+    {
+        var taskDB = await _taskRepository.GetTaskByIdAsync(taskId);
+        if (taskDB == null)
+        {
+            throw new KeyNotFoundException($"Task {taskId} not found");
+        }
+        taskDB.Title = dto.Title;
+        taskDB.Content = dto.Content;
+        await _taskRepository.SaveChangesAsync();
+        return TaskMapping.ToDTO(taskDB);
+    }
         
-    public async Task<IEnumerable<TaskDTO>> GetAllAsync() => await _taskRepository.GetAllTasksAsync();
+    public async Task<IEnumerable<TaskDTO>> GetAllAsync()
+    {
+        //TODO: should it filter out deleted tasks?
+        var taskDBs = await _taskRepository.GetAllTasksAsync();
+        return taskDBs.Select(TaskMapping.ToDTO);
+    }
 
-    public async Task<TaskDTO?> GetByIdAsync(string taskId) => await _taskRepository.GetTaskByIdAsync(taskId);
+    public async Task<TaskDTO> GetByIdAsync(string taskId)
+    {
+        var taskDB = await _taskRepository.GetTaskByIdAsync(taskId);
+        if (taskDB == null)
+        {
+            throw new KeyNotFoundException($"Task {taskId} not found");
+        }
+        return TaskMapping.ToDTO(taskDB);
+    }
 
-    public async Task DeleteAsync(string taskId) => await _taskRepository.DeleteTaskAsync(taskId);
+    public async Task<TaskDTO> DeleteAsync(string taskId)
+    {
+        var taskDB = await _taskRepository.GetTaskByIdAsync(taskId);
+        if (taskDB == null)
+        {
+            throw new KeyNotFoundException($"Task {taskId} not found");
+        }
+        taskDB.Deleted = true;
+        await _taskRepository.SaveChangesAsync();
+        return TaskMapping.ToDTO(taskDB);
+    }
 }

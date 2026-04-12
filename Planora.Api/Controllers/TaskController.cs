@@ -21,15 +21,15 @@ public class TaskController : ControllerBase
     {
         var created = await _taskService.CreateAsync(dto);
         // return 201 with location header pointing to the created resource
-        return CreatedAtAction(nameof(GetByIdAsync), new { taskId = /*assumes created has ID, adjust when available*/ 0 }, created);
+        return CreatedAtAction(nameof(GetByIdAsync), new { taskId = created.TaskId }, created);
     }
 
     // PUT api/task/5
     [HttpPut("{taskId:int}")]
     public async Task<IActionResult> UpdateAsync([FromRoute] string taskId, [FromBody] TaskDTO dto)
     {
-        await _taskService.UpdateAsync(taskId, dto);
-        return NoContent();
+        var updated = await _taskService.UpdateAsync(taskId, dto);
+        return Ok(updated);
     }
         
     // GET api/task

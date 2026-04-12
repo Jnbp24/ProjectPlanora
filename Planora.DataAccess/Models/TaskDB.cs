@@ -1,6 +1,6 @@
 ﻿namespace Planora.DataAccess.Models;
 
-internal class TaskDB
+public class TaskDB
 {
     public TaskDB()
     {
