@@ -7,6 +7,8 @@ using Planora.DataAccess.Models.Auth;
 using Planora.Api.Services.User;
 using Planora.Api.Services.Task;
 using Planora.Api.Services.Category;
+using Planora.DataAccess.Repositories.Category;
+using Planora.DataAccess.Repositories.Task;
 using Planora.DataAccess.Repositories.User;
 
 namespace Planora.Api
@@ -20,7 +22,7 @@ namespace Planora.Api
             // Add services to the container.
 
             builder.Services.AddControllers();
-            builder.Services.AddDbContext<DbContext,DatabaseContext>(options => options.UseInMemoryDatabase("PlanoraDB"));
+            builder.Services.AddDbContext<DbContext, DatabaseContext>(options => options.UseInMemoryDatabase("PlanoraDB"));
             
             //Service Layer
             builder.Services.AddScoped<IAuthService, AuthService>();
@@ -29,6 +31,8 @@ namespace Planora.Api
             builder.Services.AddScoped<ICategoryService, CategoryService>();
 
             //Repository
+            builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
 
             //Auth Services
