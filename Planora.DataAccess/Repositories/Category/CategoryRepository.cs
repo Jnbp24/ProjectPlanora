@@ -1,22 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Planora.DataAccess.Context;
-using Planora.DataAccess.Mappers;
-using Planora.DTO.CategoryDTO;
+﻿using Planora.DataAccess.Context;
+using Planora.DataAccess.Models;
 
 namespace Planora.DataAccess.Repositories.Category;
 
-public class CategoryRepository : ICategoryRepository
+public class CategoryRepository : Repository<CategoryDB>, ICategoryRepository
 {
-	private DatabaseContext _context;
-
-	public CategoryRepository(DatabaseContext context) 
+	public CategoryRepository(DatabaseContext context) : base(context)
 	{
-		_context = context;
-	}
-
-	public async Task<IEnumerable<CategoryDTO>> GetAllCategoriesAsync()
-	{
-		var categories = await _context.Categories.ToListAsync();
-		return categories.Select(CategoryMapping.ToDTO);
 	}
 }

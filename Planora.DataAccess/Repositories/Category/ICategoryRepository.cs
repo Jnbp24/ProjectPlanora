@@ -1,8 +1,8 @@
-﻿using Planora.DTO.CategoryDTO;
+﻿using Planora.DataAccess.Models;
 
 namespace Planora.DataAccess.Repositories.Category;
 
-public interface ICategoryRepository
+public interface ICategoryRepository : IRepository<CategoryDB>
 {
-    Task<IEnumerable<CategoryDTO>> GetAllCategoriesAsync();
+    
 }

@@ -1,3 +1,4 @@
+﻿using Planora.DataAccess.Context;
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +9,11 @@ using Planora.DataAccess.Models;
 
 namespace Planora.DataAccess.Repositories.Task;
 
-public class TaskRepository : ITaskRepository
+public class TaskRepository : Repository<TaskDB>, ITaskRepository
 {
-    private readonly DatabaseContext _context;
 
-    public TaskRepository(DatabaseContext context)
+    public TaskRepository(DatabaseContext context) : base(context)
     {
-        _context = context;
     }
 
     public async Task<TaskDB> CreateTaskAsync(TaskDB task)

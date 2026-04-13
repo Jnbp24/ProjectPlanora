@@ -22,6 +22,7 @@ public class TaskController : ControllerBase
         var created = await _taskService.CreateAsync(dto);
         return CreatedAtAction(nameof(GetByIdAsync), new { taskId = created.TaskId }, created);
     }
+    
 
     // PUT api/task/5
     [HttpPut("{taskId:int}")]
@@ -48,6 +49,15 @@ public class TaskController : ControllerBase
         return Ok(item);
     }
 
+
+    // PUT api/task/5
+    [HttpPut("{taskId:int}")]
+    public async Task<IActionResult> UpdateAsync([FromRoute] string taskId, [FromBody] TaskDTO dto)
+    {
+        var updated = await _taskService.UpdateAsync(taskId, dto);
+        return Ok(updated);
+    }
+    
     // DELETE api/task/5
     [HttpDelete("{taskId:int}")]
     public async Task<IActionResult> DeleteAsync([FromRoute] string taskId)

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using Planora.Api.Services;
 using Planora.DTO.UserDTO;
 
@@ -15,17 +8,17 @@ namespace Planora.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserService _service;
+        private readonly UserService _userService;
 
         public UserController(UserService service)
         {
-            _service = service;
+            _userService = service;
         }
 
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
 		{
-			return Ok(await _service.GetAllUsers());
+			return Ok(await _userService.GetAllUsers());
 		}
 
 		[HttpGet("{id}")]
@@ -33,7 +26,7 @@ namespace Planora.Api.Controllers
         {
             try
             {
-				return Ok(await _service.GetUser(id));
+				return Ok(await _userService.GetUser(id));
 			}
 			catch (KeyNotFoundException exception)
             {
@@ -54,7 +47,7 @@ namespace Planora.Api.Controllers
         {
 			try
 			{
-				return Ok(await _service.UpdateUser(id, userDTO));
+				return Ok(await _userService.UpdateUser(id, userDTO));
 			}
 			catch (KeyNotFoundException e)
 			{
@@ -82,7 +75,7 @@ namespace Planora.Api.Controllers
         {
             try
             {
-                return Ok(await _service.DeleteUser(id));
+                return Ok(await _userService.DeleteUser(id));
             }
             catch (KeyNotFoundException e)
             {
