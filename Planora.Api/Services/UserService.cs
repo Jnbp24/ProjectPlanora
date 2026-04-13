@@ -66,7 +66,7 @@ namespace Planora.Api.Services
 
         public async Task<UserDTO> CreateUser(UserDTO userDTO)
         {
-            if(await UserWithEmailExist(userDTO))
+            if(await UserWithEmailExist(userDTO.Email))
             {
                 throw new InvalidOperationException("Email already exists");
             }
@@ -76,11 +76,11 @@ namespace Planora.Api.Services
             return userDTO;
         }
 
-        public async Task<bool> UserWithEmailExist(UserDTO userDTO)
+        public async Task<bool> UserWithEmailExist(string email)
         {
             IEnumerable<UserDB> userDBs = await _repository.GetAllUsersAsync();
             return userDBs
-                .Where(userDB => userDB.Email == userDTO.Email && userDB.Deleted == false)
+                .Where(userDB => userDB.Email == email && userDB.Deleted == false)
                 .FirstOrDefault() != null;
 		}
 
