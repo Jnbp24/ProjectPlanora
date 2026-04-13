@@ -5,12 +5,12 @@ using Planora.DTO.Auth;
 
 namespace Planora.Api.Services.Auth;
 
-public class AuthService
+public class AuthService : IAuthService
 {
     private readonly UserManager<AuthUser> _userManager;
-    private readonly JwtTokenService _jwtTokenService;
+    private readonly IJwtTokenService _jwtTokenService;
 
-    public AuthService(UserManager<AuthUser> userManager, JwtTokenService jwtTokenService)
+    public AuthService(UserManager<AuthUser> userManager, IJwtTokenService jwtTokenService)
     {
         _userManager = userManager;
         _jwtTokenService = jwtTokenService;

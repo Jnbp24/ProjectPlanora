@@ -1,19 +1,15 @@
-﻿using System.Data;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
-using Planora.DataAccess.Repositories;
-using Planora.DataAccess;
+﻿using Planora.DataAccess;
 using Planora.DataAccess.Mappers;
 using Planora.DataAccess.Repositories.User;
 using Planora.DTO.UserDTO;
 
-namespace Planora.Api.Services
+namespace Planora.Api.Services.User
 {
-    public class UserService
+    public class UserService : IUserService
     {
-        private readonly UserRepository _repository;
+        private readonly IUserRepository _repository;
         
-        public UserService(UserRepository repository)
+        public UserService(IUserRepository repository)
         {
             _repository = repository;
         }
@@ -64,4 +60,4 @@ namespace Planora.Api.Services
 		}
 
     }
-}
+ }

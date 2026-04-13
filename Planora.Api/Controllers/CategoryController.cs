@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Planora.Api.Services;
+using Planora.Api.Services.Category;
 using Planora.DTO.CategoryDTO;
 
 namespace Planora.Api.Controllers;
@@ -8,9 +9,9 @@ namespace Planora.Api.Controllers;
 [Route("api/[controller]")]
 public class CategoryController : ControllerBase 
 {
-	private CategoryService _categoryService;
+	private ICategoryService _categoryService;
 	
-	public CategoryController(CategoryService categoryService) 
+	public CategoryController(ICategoryService categoryService) 
 	{
 		_categoryService = categoryService;
 	}
