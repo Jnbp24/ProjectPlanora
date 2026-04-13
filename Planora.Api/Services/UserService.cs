@@ -73,7 +73,7 @@ namespace Planora.Api.Services
 			UserDB userDB = UserMapping.ToEntity(userDTO);
 			await _repository.CreateUserAsync(userDB);
             await _repository.SaveChangesAsync();
-            return userDTO;
+            return UserMapping.ToDTO(userDB);
         }
 
         public async Task<bool> UserWithEmailExist(string email)
