@@ -19,20 +19,10 @@ public class TaskService
         var createdTaskDB = await _taskRepository.CreateAsync(taskDB);
         return TaskMapping.ToDTO(createdTaskDB);
     }
-
-    public async Task<TaskDTO> UpdateAsync(string taskId, TaskDTO dto)
-    {
-        var taskDB = await _taskRepository.GetTaskByIdAsync(taskId);
-        if (taskDB == null)
-        taskDB.Title = dto.Title;
-        taskDB.Content = dto.Content;
-        await _taskRepository.SaveChangesAsync();
-        return TaskMapping.ToDTO(taskDB);
-    }
         
     public async Task<IEnumerable<TaskDTO>> GetAllAsync()
     {
-        var taskDBs = await _taskRepository.GetAllTasksAsync();
+        var taskDBs = await _taskRepository.GetAllAsync();
 
 
         var filtered = taskDBs.Where(t => !t.Deleted);
@@ -54,7 +44,7 @@ public class TaskService
         }
         taskDB.Title = dto.Title;
         taskDB.Content = dto.Content;
-        await _taskRepository.SaveChangesAsync();
+        _taskRepository.SaveChangesAsync();
         return TaskMapping.ToDTO(taskDB);
     }
 
@@ -66,7 +56,7 @@ public class TaskService
             throw new NotSupportedException($"{taskId} is already deleted");
         }
         taskDB.Deleted = true;
-        await _taskRepository.SaveChangesAsync();
+        _taskRepository.SaveChangesAsync();
         return TaskMapping.ToDTO(taskDB);
     }
 
