@@ -29,8 +29,9 @@ namespace Planora.Api.Controllers
 			return Ok(await _userService.GetAllUsers());
 		}
 
-		[HttpGet("{id}")]
-        public async Task<ActionResult<UserDTO>> GetUser(string id)
+		[HttpGet]
+		[Route("{id}")]
+        public async Task<ActionResult<UserDTO>> GetUser([FromRoute] string id)
         {
             try
             {
