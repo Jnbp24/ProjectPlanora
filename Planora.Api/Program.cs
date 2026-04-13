@@ -1,11 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Planora.DataAccess;
 using Microsoft.EntityFrameworkCore;
-using Planora.Api.Services;
 using Planora.Api.Services.Auth;
-using Planora.Api.Services.Category;
-using Planora.Api.Services.Task;
-using Planora.Api.Services.User;
 using Planora.DataAccess.Context;
 using Planora.DataAccess.Models.Auth;
 
@@ -41,6 +37,7 @@ namespace Planora.Api
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+
 
             app.MapControllers();
             app.MapStaticAssets();

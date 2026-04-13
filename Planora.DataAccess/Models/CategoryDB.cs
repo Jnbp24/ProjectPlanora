@@ -1,4 +1,6 @@
-﻿namespace Planora.DataAccess.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Planora.DataAccess.Models;
 
 public class CategoryDB 
 {
@@ -13,6 +15,7 @@ public class CategoryDB
 		HexColor = hexColor;
 	}
 	
+	[Key]
 	public Guid CategoryId { get; set; }
 	public string Name { get; set; }
 	public string HexColor { get; set; }

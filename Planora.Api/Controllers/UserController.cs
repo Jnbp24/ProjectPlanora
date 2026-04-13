@@ -16,17 +16,17 @@ namespace Planora.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _service;
+        private readonly IUserService _userService;
 
         public UserController(IUserService service)
         {
-            _service = service;
+            _userService = service;
         }
 
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
 		{
-			return Ok(await _service.GetAllUsers());
+			return Ok(await _userService.GetAllUsers());
 		}
 
 		[HttpGet("{id}")]
@@ -34,15 +34,15 @@ namespace Planora.Api.Controllers
         {
             try
             {
-				return Ok(await _service.GetUser(id));
+				return Ok(await _userService.GetUser(id));
 			}
-			catch (KeyNotFoundException)
+			catch (KeyNotFoundException exception)
             {
-				return NotFound();
+				return NotFound(exception.Message);
 			}
 		}
 
-		[HttpGet]
+		[HttpGet("{id}/role")]
 		public async Task<ActionResult<string>> GetRole()
 		{
 			throw new NotImplementedException();
@@ -55,7 +55,7 @@ namespace Planora.Api.Controllers
         {
 			try
 			{
-				return Ok(await _service.UpdateUser(id, userDTO));
+				return Ok(await _userService.UpdateUser(id, userDTO));
 			}
 			catch (KeyNotFoundException e)
 			{
@@ -83,7 +83,7 @@ namespace Planora.Api.Controllers
         {
             try
             {
-                return Ok(await _service.DeleteUser(id));
+                return Ok(await _userService.DeleteUser(id));
             }
             catch (KeyNotFoundException e)
             {
