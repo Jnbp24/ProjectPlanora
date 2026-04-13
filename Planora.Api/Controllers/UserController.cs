@@ -35,13 +35,13 @@ namespace Planora.Api.Controllers
             {
 				return Ok(await _service.GetUser(id));
 			}
-			catch (KeyNotFoundException)
+			catch (KeyNotFoundException exception)
             {
-				return NotFound();
+				return NotFound(exception.Message);
 			}
 		}
 
-		[HttpGet]
+		[HttpGet("{id}/role")]
 		public async Task<ActionResult<string>> GetRole()
 		{
 			throw new NotImplementedException();

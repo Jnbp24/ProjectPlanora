@@ -29,7 +29,7 @@ namespace Planora.Api.Services
             UserDB userDB = await _repository.GetUserByIdAsync(id);
 			if(userDB == null)
             {
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException("User was not found.");
             }
             return UserMapping.ToDTO(userDB);
         }
@@ -60,26 +60,27 @@ namespace Planora.Api.Services
             userDB.FirstName = userDTO.FirstName;
             userDB.LastName = userDTO.LastName;
             userDB.Tovholder = userDTO.Tovholder;
-            return userDTO; 
+            await _repository.SaveChangesAsync();
+            return userDTO;
 		}
 
         public async Task<UserDTO> CreateUser(UserDTO userDTO)
         {
-            if(await UserWithEmailExist(userDTO))
+            if(await UserWithEmailExist(userDTO.Email))
             {
                 throw new InvalidOperationException("Email already exists");
             }
 			UserDB userDB = UserMapping.ToEntity(userDTO);
 			await _repository.CreateUserAsync(userDB);
             await _repository.SaveChangesAsync();
-            return userDTO;
+            return UserMapping.ToDTO(userDB);
         }
 
-        public async Task<bool> UserWithEmailExist(UserDTO userDTO)
+        public async Task<bool> UserWithEmailExist(string email)
         {
             IEnumerable<UserDB> userDBs = await _repository.GetAllUsersAsync();
             return userDBs
-                .Where(userDB => userDB.Email == userDTO.Email && userDB.Deleted == false)
+                .Where(userDB => userDB.Email == email && userDB.Deleted == false)
                 .FirstOrDefault() != null;
 		}
 
