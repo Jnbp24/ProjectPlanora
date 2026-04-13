@@ -60,7 +60,8 @@ namespace Planora.Api.Services
             userDB.FirstName = userDTO.FirstName;
             userDB.LastName = userDTO.LastName;
             userDB.Tovholder = userDTO.Tovholder;
-            return userDTO; 
+            await _repository.SaveChangesAsync();
+            return userDTO;
 		}
 
         public async Task<UserDTO> CreateUser(UserDTO userDTO)
