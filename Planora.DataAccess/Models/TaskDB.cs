@@ -1,4 +1,6 @@
-﻿namespace Planora.DataAccess.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Planora.DataAccess.Models;
 
 public class TaskDB
 {
@@ -13,6 +15,7 @@ public class TaskDB
         Content = content;
     }
 
+    [Key]
     public Guid TaskId { get; set; }
     public string Title { get; set; }
     public string Content { get; set; }
