@@ -70,7 +70,7 @@ namespace Planora.Api.Controllers
         {
 			try
 			{
-				return Ok(await _service.CreateUser(userDTO));
+				return Ok(await _userService.CreateUser(userDTO));
 			}
 			catch(InvalidOperationException exception)
 			{

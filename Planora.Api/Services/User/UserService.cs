@@ -11,11 +11,11 @@ namespace Planora.Api.Services.User
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository _repository;
+        private readonly IUserRepository _userRepository;
         
         public UserService(IUserRepository repository)
         {
-            _userRepository = userRepository;
+            _userRepository = repository;
         }
 
 		public async Task<IEnumerable<UserDTO>> GetAllUsers()
@@ -38,7 +38,7 @@ namespace Planora.Api.Services.User
             userDB.LastName = userDTO.LastName;
             userDB.Tovholder = userDTO.Tovholder;
           
-            await _userRepository.SaveChangesAsync();
+            _userRepository.SaveChangesAsync();
             return userDTO; 
         }
 
@@ -50,7 +50,7 @@ namespace Planora.Api.Services.User
                 throw new NotSupportedException($"{id} is already deleted");
             }
             deletedUserDB.Deleted = true;
-            await _userRepository.SaveChangesAsync();
+            _userRepository.SaveChangesAsync();
             return UserMapping.ToDTO(deletedUserDB);
         }
 
@@ -61,14 +61,14 @@ namespace Planora.Api.Services.User
                 throw new InvalidOperationException("Email already exists");
             }
 			UserDB userDB = UserMapping.ToEntity(userDTO);
-			await _repository.CreateUserAsync(userDB);
-            await _repository.SaveChangesAsync();
+			await _userRepository.CreateAsync(userDB);
+            _userRepository.SaveChangesAsync();
             return UserMapping.ToDTO(userDB);
         }
 
         public async Task<bool> UserWithEmailExist(string email)
         {
-            IEnumerable<UserDB> userDBs = await _repository.GetAllUsersAsync();
+            IEnumerable<UserDB> userDBs = await _userRepository.GetAllAsync();
             return userDBs
                 .Where(userDB => userDB.Email == email && userDB.Deleted == false)
                 .FirstOrDefault() != null;

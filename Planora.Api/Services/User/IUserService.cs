@@ -10,5 +10,9 @@ namespace Planora.Api.Services.User
         Task<UserDTO> GetUser(string id);
         Task<UserDTO> DeleteUser(string id);
         Task<UserDTO> UpdateUser(string id, UserDTO userDTO);
-    }
+        Task<UserDTO> CreateUser(UserDTO userDTO);
+
+		Task<bool> UserWithEmailExist(string email);
+
+	}
 }
