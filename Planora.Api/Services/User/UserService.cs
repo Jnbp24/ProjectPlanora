@@ -11,7 +11,7 @@ namespace Planora.Api.Services.User
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository _repository;
+        private readonly IUserRepository _userRepository;
         
         public UserService(IUserRepository repository)
         {

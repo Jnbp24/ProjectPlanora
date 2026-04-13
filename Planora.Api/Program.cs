@@ -4,6 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Planora.Api.Services.Auth;
 using Planora.DataAccess.Context;
 using Planora.DataAccess.Models.Auth;
+using Planora.Api.Services.User;
+using Planora.Api.Services.Task;
+using Planora.Api.Services.Category;
+using Planora.DataAccess.Repositories.User;
 
 namespace Planora.Api
 {
@@ -23,6 +27,9 @@ namespace Planora.Api
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<ITaskService, TaskService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+            //Repository
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
             //Auth Services
             builder.Services.AddIdentity<AuthUser, IdentityRole>()
