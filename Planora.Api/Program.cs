@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Planora.Api.Services.Auth;
 using Planora.DataAccess.Context;
 using Planora.DataAccess.Models.Auth;
+using Planora.Api.Controllers;
+using Planora.Api.Services;
+using Planora.DataAccess.Repositories.User;
 
 namespace Planora.Api
 {
@@ -16,7 +19,11 @@ namespace Planora.Api
             // Add services to the container.
 
             builder.Services.AddControllers();
-            builder.Services.AddDbContext<DbContext,DatabaseContext>(options => options.UseInMemoryDatabase("PlanoraDB"));
+
+			builder.Services.AddScoped<UserRepository>();
+			builder.Services.AddScoped<UserService>();
+
+			builder.Services.AddDbContext<DbContext,DatabaseContext>(options => options.UseInMemoryDatabase("PlanoraDB"));
 
             //Auth Services
             builder.Services.AddIdentity<AuthUser, IdentityRole>()

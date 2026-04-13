@@ -19,12 +19,24 @@ public class TaskService
         var createdTaskDB = await _taskRepository.CreateAsync(taskDB);
         return TaskMapping.ToDTO(createdTaskDB);
     }
-    
+
+    public async Task<TaskDTO> UpdateAsync(string taskId, TaskDTO dto)
+    {
+        var taskDB = await _taskRepository.GetTaskByIdAsync(taskId);
+        if (taskDB == null)
+        taskDB.Title = dto.Title;
+        taskDB.Content = dto.Content;
+        await _taskRepository.SaveChangesAsync();
+        return TaskMapping.ToDTO(taskDB);
+    }
+        
     public async Task<IEnumerable<TaskDTO>> GetAllAsync()
     {
-        //TODO: should it filter out deleted tasks?
-        var taskDBs = await _taskRepository.GetAllAsync();
-        return taskDBs.Select(TaskMapping.ToDTO);
+        var taskDBs = await _taskRepository.GetAllTasksAsync();
+
+
+        var filtered = taskDBs.Where(t => !t.Deleted);
+        return filtered.Select(TaskMapping.ToDTO);
     }
 
     public async Task<TaskDTO> GetByIdAsync(string taskId)
@@ -56,5 +68,17 @@ public class TaskService
         taskDB.Deleted = true;
         await _taskRepository.SaveChangesAsync();
         return TaskMapping.ToDTO(taskDB);
+    }
+
+    public async Task<TaskDTO> AssignCategoryByNameAsync(string taskId, string categoryName)
+    {
+        var task = await _taskRepository.AssignCategoryToTaskByNameAsync(taskId, categoryName);
+        return TaskMapping.ToDTO(task);
+    }
+
+    public async Task<TaskDTO> UnassignCategoryByNameAsync(string taskId, string categoryName)
+    {
+        var task = await _taskRepository.UnassignCategoryToTaskByNameAsync(taskId, categoryName);
+         return TaskMapping.ToDTO(task);
     }
 }

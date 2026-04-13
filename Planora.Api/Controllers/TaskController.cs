@@ -17,13 +17,21 @@ public class TaskController : ControllerBase
 
     // POST api/task
     [HttpPost]
-    public async Task<ActionResult<TaskDTO>> CreateAsync([FromBody] TaskDTO dto)
+    public async Task<ActionResult<TaskDTO>> CreateTaskAsync([FromBody] TaskDTO dto)
     {
         var created = await _taskService.CreateAsync(dto);
-        // return 201 with location header pointing to the created resource
         return CreatedAtAction(nameof(GetByIdAsync), new { taskId = created.TaskId }, created);
     }
     
+
+    // PUT api/task/5
+    [HttpPut("{taskId:int}")]
+    public async Task<IActionResult> UpdateTaskAsync([FromRoute] string taskId, [FromBody] TaskDTO dto)
+    {
+        var updated = await _taskService.UpdateAsync(taskId, dto);
+        return Ok(updated);
+    }
+        
     // GET api/task
     [HttpGet]
     public async Task<ActionResult<IEnumerable<TaskDTO>>> GetAllAsync()
@@ -57,4 +65,21 @@ public class TaskController : ControllerBase
         await _taskService.DeleteAsync(taskId);
         return NoContent();
     }
+
+    // PUT api/task/5/assign/123
+    [HttpPut("{taskId:int}/assign/{categoryName:string}")]
+    public async Task<IActionResult> AssignTaskAsync([FromRoute] string taskId, [FromRoute] string categoryName)
+    {
+        var updatedTask = await _taskService.AssignCategoryByNameAsync(taskId, categoryName);
+        return Ok(updatedTask);
+    }
+
+    // PUT api/task/5/unassign/123
+    [HttpPut("{taskId:int}/unassign/{categoryName:string}")]
+    public async Task<IActionResult> UnassignTaskAsync([FromRoute] string taskId, [FromRoute] string categoryName)
+    {
+        var updatedTask = await _taskService.UnassignCategoryByNameAsync(taskId, categoryName);
+        return Ok();
+    }
+
 }
