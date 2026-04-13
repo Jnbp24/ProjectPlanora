@@ -42,7 +42,7 @@ public class CategoryService : ICategoryService
 		}
 		categoryDB.Name = dto.Name;
 		categoryDB.HexColor = dto.HexColor;
-		await _categoryRepository.SaveChangesAsync();
+		_categoryRepository.SaveChangesAsync();
 		return CategoryMapping.ToDTO(categoryDB);
 	}
 
@@ -54,7 +54,7 @@ public class CategoryService : ICategoryService
 			throw new NotSupportedException($"{categoryId} is already deleted");
 		}
 		categoryDB.Deleted = true;
-		await _categoryRepository.SaveChangesAsync();
+		_categoryRepository.SaveChangesAsync();
 		return CategoryMapping.ToDTO(categoryDB);
 	}
 
