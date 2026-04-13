@@ -1,4 +1,6 @@
-﻿namespace Planora.DataAccess.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Planora.DataAccess.Models;
 
 public class CategoryDB 
 {

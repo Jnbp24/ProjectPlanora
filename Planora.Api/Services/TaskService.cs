@@ -16,46 +16,42 @@ public class TaskService
     public async Task<TaskDTO> CreateAsync(TaskDTO dto)
     {
         var taskDB = TaskMapping.ToEntity(dto);
-        var createdTaskDB = await _taskRepository.CreateTaskAsync(taskDB);
+        var createdTaskDB = await _taskRepository.CreateAsync(taskDB);
         return TaskMapping.ToDTO(createdTaskDB);
+    }
+    
+    public async Task<IEnumerable<TaskDTO>> GetAllAsync()
+    {
+        //TODO: should it filter out deleted tasks?
+        var taskDBs = await _taskRepository.GetAllAsync();
+        return taskDBs.Select(TaskMapping.ToDTO);
+    }
+
+    public async Task<TaskDTO> GetByIdAsync(string taskId)
+    {
+        var taskDB = await _taskRepository.GetByIdAsync(taskId);
+        return TaskMapping.ToDTO(taskDB);
     }
 
     public async Task<TaskDTO> UpdateAsync(string taskId, TaskDTO dto)
     {
-        var taskDB = await _taskRepository.GetTaskByIdAsync(taskId);
-        if (taskDB == null)
+        var taskDB = await _taskRepository.GetByIdAsync(taskId);
+        if (taskDB.Deleted)
         {
-            throw new KeyNotFoundException($"Task {taskId} not found");
+            throw new NotSupportedException($"{taskId} is already deleted");
         }
         taskDB.Title = dto.Title;
         taskDB.Content = dto.Content;
         await _taskRepository.SaveChangesAsync();
         return TaskMapping.ToDTO(taskDB);
     }
-        
-    public async Task<IEnumerable<TaskDTO>> GetAllAsync()
-    {
-        //TODO: should it filter out deleted tasks?
-        var taskDBs = await _taskRepository.GetAllTasksAsync();
-        return taskDBs.Select(TaskMapping.ToDTO);
-    }
-
-    public async Task<TaskDTO> GetByIdAsync(string taskId)
-    {
-        var taskDB = await _taskRepository.GetTaskByIdAsync(taskId);
-        if (taskDB == null)
-        {
-            throw new KeyNotFoundException($"Task {taskId} not found");
-        }
-        return TaskMapping.ToDTO(taskDB);
-    }
 
     public async Task<TaskDTO> DeleteAsync(string taskId)
     {
-        var taskDB = await _taskRepository.GetTaskByIdAsync(taskId);
-        if (taskDB == null)
+        var taskDB = await _taskRepository.GetByIdAsync(taskId);
+        if (taskDB.Deleted)
         {
-            throw new KeyNotFoundException($"Task {taskId} not found");
+            throw new NotSupportedException($"{taskId} is already deleted");
         }
         taskDB.Deleted = true;
         await _taskRepository.SaveChangesAsync();

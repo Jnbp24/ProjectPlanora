@@ -23,15 +23,7 @@ public class TaskController : ControllerBase
         // return 201 with location header pointing to the created resource
         return CreatedAtAction(nameof(GetByIdAsync), new { taskId = created.TaskId }, created);
     }
-
-    // PUT api/task/5
-    [HttpPut("{taskId:int}")]
-    public async Task<IActionResult> UpdateAsync([FromRoute] string taskId, [FromBody] TaskDTO dto)
-    {
-        var updated = await _taskService.UpdateAsync(taskId, dto);
-        return Ok(updated);
-    }
-        
+    
     // GET api/task
     [HttpGet]
     public async Task<ActionResult<IEnumerable<TaskDTO>>> GetAllAsync()
@@ -49,6 +41,15 @@ public class TaskController : ControllerBase
         return Ok(item);
     }
 
+
+    // PUT api/task/5
+    [HttpPut("{taskId:int}")]
+    public async Task<IActionResult> UpdateAsync([FromRoute] string taskId, [FromBody] TaskDTO dto)
+    {
+        var updated = await _taskService.UpdateAsync(taskId, dto);
+        return Ok(updated);
+    }
+    
     // DELETE api/task/5
     [HttpDelete("{taskId:int}")]
     public async Task<IActionResult> DeleteAsync([FromRoute] string taskId)
