@@ -35,9 +35,9 @@ namespace Planora.Api.Controllers
             {
 				return Ok(await _service.GetUser(id));
 			}
-			catch (KeyNotFoundException)
+			catch (KeyNotFoundException exception)
             {
-				return NotFound();
+				return NotFound(exception.Message);
 			}
 		}
 

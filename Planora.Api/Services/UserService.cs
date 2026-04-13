@@ -29,7 +29,7 @@ namespace Planora.Api.Services
             UserDB userDB = await _repository.GetUserByIdAsync(id);
 			if(userDB == null)
             {
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException("User was not found.");
             }
             return UserMapping.ToDTO(userDB);
         }
