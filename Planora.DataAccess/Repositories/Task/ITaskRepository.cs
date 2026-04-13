@@ -2,7 +2,7 @@
 
 namespace Planora.DataAccess.Repositories.Task;
 
-public interface ITaskRepository : IRepository<TaskDB>
+public interface ITaskRepository
 {
     Task<TaskDB> AssignUserToTaskAsync(string taskId, string userId);
     Task<TaskDB> AssignUserToTaskAsync(string taskId, string userId);

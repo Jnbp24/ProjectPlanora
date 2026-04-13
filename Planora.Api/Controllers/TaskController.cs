@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Planora.DTO.TaskDTO;
 using Planora.Api.Services;
+using Planora.Api.Services.Task;
 
 namespace Planora.Api.Controllers;
 
@@ -8,9 +9,9 @@ namespace Planora.Api.Controllers;
 [Route("api/[controller]")]
 public class TaskController : ControllerBase
 {
-    private readonly TaskService _taskService;
+    private readonly ITaskService _taskService;
 
-    public TaskController(TaskService service)
+    public TaskController(ITaskService service)
     {
         _taskService = service;
     }
@@ -26,7 +27,7 @@ public class TaskController : ControllerBase
 
     // PUT api/task/5
     [HttpPut("{taskId:int}")]
-    public async Task<IActionResult> UpdateTaskAsync([FromRoute] string taskId, [FromBody] TaskDTO dto)
+    public async Task<IActionResult> UpdateAsync([FromRoute] string taskId, [FromBody] TaskDTO dto)
     {
         var updated = await _taskService.UpdateAsync(taskId, dto);
         return Ok(updated);

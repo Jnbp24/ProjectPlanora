@@ -1,10 +1,11 @@
 ﻿using Planora.DataAccess.Mappers;
 using Planora.DataAccess.Repositories.Category;
 using Planora.DTO.CategoryDTO;
+using Planora.Api.Services.Category;
 
-namespace Planora.Api.Services;
+namespace Planora.Api.Services.Category;
 
-public class CategoryService 
+public class CategoryService : ICategoryService
 {
 	private ICategoryRepository _categoryRepository;
 	

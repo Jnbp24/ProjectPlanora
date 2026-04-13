@@ -1,5 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Planora.Api.Services;
+using Planora.Api.Services.User;
 using Planora.DTO.UserDTO;
 
 namespace Planora.Api.Controllers
@@ -8,9 +16,9 @@ namespace Planora.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
 
-        public UserController(UserService service)
+        public UserController(IUserService service)
         {
             _userService = service;
         }

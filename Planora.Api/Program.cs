@@ -4,9 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Planora.Api.Services.Auth;
 using Planora.DataAccess.Context;
 using Planora.DataAccess.Models.Auth;
-using Planora.Api.Controllers;
-using Planora.Api.Services;
-using Planora.DataAccess.Repositories.User;
 
 namespace Planora.Api
 {
@@ -19,17 +16,19 @@ namespace Planora.Api
             // Add services to the container.
 
             builder.Services.AddControllers();
-
-			builder.Services.AddScoped<UserRepository>();
-			builder.Services.AddScoped<UserService>();
-
-			builder.Services.AddDbContext<DbContext,DatabaseContext>(options => options.UseInMemoryDatabase("PlanoraDB"));
+            builder.Services.AddDbContext<DbContext,DatabaseContext>(options => options.UseInMemoryDatabase("PlanoraDB"));
+            
+            //Service Layer
+            builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ITaskService, TaskService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
 
             //Auth Services
             builder.Services.AddIdentity<AuthUser, IdentityRole>()
                 .AddEntityFrameworkStores<DatabaseContext>();
 
-            builder.Services.AddScoped<JwtTokenService>();
+            builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
                 
             var app = builder.Build();
 
@@ -41,6 +40,7 @@ namespace Planora.Api
 
 
             app.MapControllers();
+            app.MapStaticAssets();
 
             app.Run();
         }
