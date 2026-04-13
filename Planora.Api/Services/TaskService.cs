@@ -24,9 +24,6 @@ public class TaskService
     {
         var taskDB = await _taskRepository.GetTaskByIdAsync(taskId);
         if (taskDB == null)
-        {
-            throw new KeyNotFoundException($"Task {taskId} not found");
-        }
         taskDB.Title = dto.Title;
         taskDB.Content = dto.Content;
         await _taskRepository.SaveChangesAsync();
@@ -35,30 +32,36 @@ public class TaskService
         
     public async Task<IEnumerable<TaskDTO>> GetAllAsync()
     {
-        //TODO: should it filter out deleted tasks?
         var taskDBs = await _taskRepository.GetAllTasksAsync();
-        return taskDBs.Select(TaskMapping.ToDTO);
+
+
+        var filtered = taskDBs.Where(t => !t.Deleted);
+        return filtered.Select(TaskMapping.ToDTO);
     }
 
     public async Task<TaskDTO> GetByIdAsync(string taskId)
     {
         var taskDB = await _taskRepository.GetTaskByIdAsync(taskId);
-        if (taskDB == null)
-        {
-            throw new KeyNotFoundException($"Task {taskId} not found");
-        }
         return TaskMapping.ToDTO(taskDB);
     }
 
     public async Task<TaskDTO> DeleteAsync(string taskId)
     {
         var taskDB = await _taskRepository.GetTaskByIdAsync(taskId);
-        if (taskDB == null)
-        {
-            throw new KeyNotFoundException($"Task {taskId} not found");
-        }
         taskDB.Deleted = true;
         await _taskRepository.SaveChangesAsync();
         return TaskMapping.ToDTO(taskDB);
+    }
+
+    public async Task<TaskDTO> AssignCategoryByNameAsync(string taskId, string categoryName)
+    {
+        var task = await _taskRepository.AssignCategoryToTaskByNameAsync(taskId, categoryName);
+        return TaskMapping.ToDTO(task);
+    }
+
+    public async Task<TaskDTO> UnassignCategoryByNameAsync(string taskId, string categoryName)
+    {
+        var task = await _taskRepository.UnassignCategoryToTaskByNameAsync(taskId, categoryName);
+         return TaskMapping.ToDTO(task);
     }
 }

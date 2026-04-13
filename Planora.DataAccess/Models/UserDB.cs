@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Planora.DataAccess.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,7 +13,6 @@ namespace Planora.DataAccess
 		public string Email { get; set; }
         public bool Tovholder { get; set; }
         public bool Deleted { get; set; }
-
         public UserDB() { }
     }
 }
