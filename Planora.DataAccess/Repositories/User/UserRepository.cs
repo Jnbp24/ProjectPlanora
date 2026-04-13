@@ -24,7 +24,7 @@ public class UserRepository : IUserRepository
 
 	public async Task<UserDB?> GetUserByIdAsync(string id)
 	{
-		return await _context.Users.FindAsync(id);
+		return await _context.Users.FindAsync(Guid.Parse(id));
 	}
 
 	public async System.Threading.Tasks.Task SaveChangesAsync()
