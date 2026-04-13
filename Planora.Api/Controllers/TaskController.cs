@@ -33,7 +33,7 @@ public class TaskController : ControllerBase
     }
 
     // GET api/task/5
-    [HttpGet("{taskId:int}")]
+    [HttpGet("{taskId}")]
     public async Task<ActionResult<TaskDTO>> GetByIdAsync([FromRoute] string taskId)
     {
         var item = await _taskService.GetByIdAsync(taskId);
@@ -43,7 +43,7 @@ public class TaskController : ControllerBase
 
 
     // PUT api/task/5
-    [HttpPut("{taskId:int}")]
+    [HttpPut("{taskId}")]
     public async Task<IActionResult> UpdateAsync([FromRoute] string taskId, [FromBody] TaskDTO dto)
     {
         var updated = await _taskService.UpdateAsync(taskId, dto);
@@ -51,7 +51,7 @@ public class TaskController : ControllerBase
     }
     
     // DELETE api/task/5
-    [HttpDelete("{taskId:int}")]
+    [HttpDelete("{taskId}")]
     public async Task<IActionResult> DeleteAsync([FromRoute] string taskId)
     {
         await _taskService.DeleteAsync(taskId);
@@ -59,7 +59,7 @@ public class TaskController : ControllerBase
     }
 
     // PUT api/task/5/assign/123
-    [HttpPut("{taskId:int}/assign/{categoryName:string}")]
+    [HttpPut("{taskId:int}/assign/{categoryName}")]
     public async Task<IActionResult> AssignTaskAsync([FromRoute] string taskId, [FromRoute] string categoryName)
     {
         var updatedTask = await _taskService.AssignCategoryByNameAsync(taskId, categoryName);
@@ -67,7 +67,7 @@ public class TaskController : ControllerBase
     }
 
     // PUT api/task/5/unassign/123
-    [HttpPut("{taskId:int}/unassign/{categoryName:string}")]
+    [HttpPut("{taskId:int}/unassign/{categoryName}")]
     public async Task<IActionResult> UnassignTaskAsync([FromRoute] string taskId, [FromRoute] string categoryName)
     {
         var updatedTask = await _taskService.UnassignCategoryByNameAsync(taskId, categoryName);
