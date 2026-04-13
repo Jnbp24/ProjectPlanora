@@ -13,7 +13,8 @@ public class UserRepository : IUserRepository
 
 	public async Task<UserDB> CreateUserAsync(UserDB user)
 	{
-		throw new NotImplementedException();
+		_context.Users.Add(user);
+		return user;
 	}
 
 	public async Task<IEnumerable<UserDB>> GetAllUsersAsync()

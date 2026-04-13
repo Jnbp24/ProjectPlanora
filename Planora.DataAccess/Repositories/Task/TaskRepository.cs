@@ -1,78 +1,56 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Planora.DataAccess.Context;
-using Planora.DataAccess.Mappers;
-using Planora.DTO.TaskDTO;
+using Planora.DataAccess.Models;
 
 namespace Planora.DataAccess.Repositories.Task;
 
 public class TaskRepository : ITaskRepository
 {
     private readonly DatabaseContext _context;
+    private ITaskRepository _taskRepositoryImplementation;
 
     public TaskRepository(DatabaseContext context)
     {
         _context = context;
     }
 
-
-    public async Task<TaskDTO> CreateTaskAsync(TaskDTO dto)
+    public async Task<TaskDB> CreateTaskAsync(TaskDB task)
     {
-        var entity = TaskMapping.ToEntity(dto);
-        _context.Tasks.Add(entity);
+        _context.Tasks.Add(task);
         await _context.SaveChangesAsync();
-
-        return TaskMapping.ToDTO(entity);
-    }
-    
-    public async Task<IEnumerable<TaskDTO>> GetAllTasksAsync()
-    {
-        var tasks = await _context.Tasks.ToListAsync();
-
-        return tasks.Select(TaskMapping.ToDTO);
+        return task;
     }
 
-    public async Task<TaskDTO?> GetTaskByIdAsync(string id)
+    public Task<TaskDB> UpdateTaskAsync(string taskId, TaskDB task)
     {
-        var task = await _context.Tasks.FindAsync(id);
-
-        if (task is null)
-            throw new Exception("Task not found");
-
-        return TaskMapping.ToDTO(task);
+        throw new NotImplementedException();
+        //TODO: Might not need this method, since we can just update the entity and call SaveChangesAsync() in the service layer
+        //Check best practice
     }
-    
-    public async Task<TaskDTO> UpdateTaskAsync(string id, TaskDTO dto)
+
+    public Task<TaskDB> DeleteTaskAsync(string taskId)
     {
-        var task = await _context.Tasks.FindAsync(id);
+        throw new NotImplementedException();
+        //TODO: Might not need this method, since we can just update the entity and call SaveChangesAsync() in the service layer
+        //Check best practice
+    }
 
-        if (task == null)
-            throw new Exception("Task not found");
+    public async Task<IEnumerable<TaskDB>> GetAllTasksAsync()
+    {
+        return await _context.Tasks.ToListAsync();
+    }
 
-        // We only want to update the title and content for the task
-        task.Title = dto.Title;
-        task.Content = dto.Content;
+    public async Task<TaskDB?> GetTaskByIdAsync(string id)
+    {
+        return await _context.Tasks.FindAsync(Guid.Parse(id));
+    }
 
+    public async System.Threading.Tasks.Task SaveChangesAsync()
+    {
         await _context.SaveChangesAsync();
-
-        return TaskMapping.ToDTO(task);
     }
 
-
-    public async Task<TaskDTO> DeleteTaskAsync(string id)
-    {
-        var task = await _context.Tasks.FindAsync(id);
-
-        if (task == null)
-            throw new Exception("Task not found");
-
-        task.Deleted = true;
-        await _context.SaveChangesAsync();
-
-        return TaskMapping.ToDTO(task);
-
-    }
-    
-    public Task<TaskDTO> AssignUserToTaskAsync(string taskId, string userId)
+    public Task<TaskDB> AssignUserToTaskAsync(string taskId, string userId)
     {
         // Need to create user relation between task and user for this implementation
         throw new NotImplementedException();

@@ -59,5 +59,25 @@ namespace Planora.Api.Services.User
             return userDTO; 
 		}
 
+        public async Task<UserDTO> CreateUser(UserDTO userDTO)
+        {
+            if(await UserWithEmailExist(userDTO))
+            {
+                throw new InvalidOperationException("Email already exists");
+            }
+			UserDB userDB = UserMapping.ToEntity(userDTO);
+			await _repository.CreateUserAsync(userDB);
+            await _repository.SaveChangesAsync();
+            return userDTO;
+        }
+
+        public async Task<bool> UserWithEmailExist(UserDTO userDTO)
+        {
+            IEnumerable<UserDB> userDBs = await _repository.GetAllUsersAsync();
+            return userDBs
+                .Where(userDB => userDB.Email == userDTO.Email && userDB.Deleted == false)
+                .FirstOrDefault() != null;
+		}
+
     }
  }
