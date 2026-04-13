@@ -16,24 +16,17 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
     {
     }
 
-    public async Task<TaskDB> CreateTaskAsync(TaskDB task)
+    public override async Task<IEnumerable<TaskDB>> GetAllAsync()
     {
-        _context.Tasks.Add(task);
-        await _context.SaveChangesAsync();
-        return task;
+        return await _dbContext.Tasks.Include(t => t.Category).ToListAsync();
     }
 
-    public async Task<IEnumerable<TaskDB>> GetAllTasksAsync()
-    {
-        return await _context.Tasks.Include(t => t.Category).ToListAsync();
-    }
-
-    public async Task<TaskDB?> GetTaskByIdAsync(string id)
+    public override async Task<TaskDB> GetByIdAsync(string id)
     {
         if (!Guid.TryParse(id, out var guid))
-            throw new KeyNotFoundException($"Invalid task id: {id}");
+            throw new NotSupportedException($"Invalid id format: {id}");
 
-        var task = await _context.Tasks
+        var task = await _dbContext.Tasks
             .Include(t => t.Category)
             .FirstOrDefaultAsync(t => t.TaskId == guid);
 
@@ -41,11 +34,6 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
             throw new KeyNotFoundException($"Task {id} not found");
 
         return task;
-    }
-
-    public async System.Threading.Tasks.Task SaveChangesAsync()
-    {
-        await _context.SaveChangesAsync();
     }
 
     public Task<TaskDB> AssignUserToTaskAsync(string taskId, string userId)
@@ -64,16 +52,16 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
         // Forced lowercase to avoid inconsistencies between user input and DB
         var nameNormalized = categoryName.Trim().ToLowerInvariant();
 
-        var category = await _context.Categories
+        var category = await _dbContext.Categories
             .FirstOrDefaultAsync(c => c.Name.ToLower() == nameNormalized)
             ?? throw new KeyNotFoundException($"Category '{categoryName}' not found");
 
-        var task = await _context.Tasks.FindAsync(tGuid)
+        var task = await _dbContext.Tasks.FindAsync(tGuid)
             ?? throw new KeyNotFoundException($"Task {taskId} not found");
 
         task.CategoryId = category.CategoryId;
         task.Category = category;
-        await _context.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
         return task;
     }
     public async Task<TaskDB> UnassignCategoryToTaskByNameAsync(string taskId, string categoryName)
@@ -86,15 +74,15 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
 
         var nameNormalized = categoryName.Trim().ToLowerInvariant();
 
-        var category = await _context.Categories
+        var category = await _dbContext.Categories
             .FirstOrDefaultAsync(c => c.Name.ToLower() == nameNormalized)
             ?? throw new KeyNotFoundException($"Category '{categoryName}' not found");
 
-        var defaultCategory = await _context.Categories
+        var defaultCategory = await _dbContext.Categories
             .FirstOrDefaultAsync(c => c.Name.ToLower() == "default")
             ?? throw new KeyNotFoundException("Default category not found");
 
-        var task = await _context.Tasks.FindAsync(tGuid)
+        var task = await _dbContext.Tasks.FindAsync(tGuid)
             ?? throw new KeyNotFoundException($"Task {taskId} not found");
 
         // Ensure the task is actually assigned to the category we're "unassigning" from
@@ -105,7 +93,7 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
         task.CategoryId = defaultCategory.CategoryId;
         task.Category = defaultCategory;
 
-        await _context.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
         return task;
     }
 }
