@@ -7,7 +7,7 @@ public class TaskDB
     public TaskDB()
     {
     }
-    
+
     public TaskDB(string title, string content)
     {
         TaskId = Guid.NewGuid();
@@ -20,4 +20,7 @@ public class TaskDB
     public string Title { get; set; }
     public string Content { get; set; }
     public bool Deleted { get; set; }
+    public CategoryDB? Category { get; set; } 
+
+    public Guid? CategoryId { get; set; }
 }
