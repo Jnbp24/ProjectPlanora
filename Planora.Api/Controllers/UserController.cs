@@ -67,7 +67,14 @@ namespace Planora.Api.Controllers
 		[HttpPost]
         public async Task<ActionResult<UserDTO>> PostUser(UserDTO userDTO)
         {
-			throw new NotImplementedException();
+			try
+			{
+				return Ok(await _service.CreateUser(userDTO));
+			}
+			catch(InvalidOperationException exception)
+			{
+				return StatusCode(500, exception.Message);
+			}
 		}
 
 		[HttpDelete("{id}")]
