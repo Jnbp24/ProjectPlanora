@@ -43,7 +43,7 @@ namespace Planora.Api.Controllers
 		}
 
 		[HttpGet("{id}/role")]
-		public async Task<ActionResult<string>> GetRole()
+		public async Task<ActionResult<string>> GetRole(string id)
 		{
 			throw new NotImplementedException();
 		}
