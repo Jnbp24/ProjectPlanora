@@ -57,4 +57,15 @@ public class TaskService : ITaskService
 		_taskRepository.SaveChangesAsync();
 		return TaskMapping.ToDTO(taskDB);
 	}
+	public async Task<TaskDTO> AssignCategoryByNameAsync(string taskId, string categoryName)
+	{
+		var task = await _taskRepository.AssignCategoryToTaskByNameAsync(taskId, categoryName);
+		return TaskMapping.ToDTO(task);
+	}
+
+	public async Task<TaskDTO> UnassignCategoryByNameAsync(string taskId, string categoryName)
+	{
+		var task = await _taskRepository.UnassignCategoryToTaskByNameAsync(taskId, categoryName);
+		return TaskMapping.ToDTO(task);
+	}
 }
