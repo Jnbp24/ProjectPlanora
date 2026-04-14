@@ -38,7 +38,7 @@ namespace Planora.Api.Services.User
             userDB.LastName = userDTO.LastName;
             userDB.Tovholder = userDTO.Tovholder;
           
-            _userRepository.SaveChangesAsync();
+            await _userRepository.SaveChangesAsync();
             return userDTO; 
         }
 
@@ -50,7 +50,7 @@ namespace Planora.Api.Services.User
                 throw new NotSupportedException($"{id} is already deleted");
             }
             deletedUserDB.Deleted = true;
-            _userRepository.SaveChangesAsync();
+            await _userRepository.SaveChangesAsync();
             return UserMapping.ToDTO(deletedUserDB);
         }
 
@@ -62,7 +62,7 @@ namespace Planora.Api.Services.User
             }
 			UserDB userDB = UserMapping.ToEntity(userDTO);
 			await _userRepository.CreateAsync(userDB);
-            _userRepository.SaveChangesAsync();
+            await _userRepository.SaveChangesAsync();
             return UserMapping.ToDTO(userDB);
         }
 

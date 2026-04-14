@@ -30,7 +30,7 @@ public abstract class Repository<T> : IRepository<T> where T : class
         return await _dbSet.FindAsync(Guid.Parse(id)) ?? throw new KeyNotFoundException($"Key {id} does not exist.");
     }
     
-    public async void SaveChangesAsync()
+    public async System.Threading.Tasks.Task SaveChangesAsync()
     {
         await _dbContext.SaveChangesAsync();
     }
