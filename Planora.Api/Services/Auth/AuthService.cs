@@ -23,11 +23,10 @@ public class AuthService : IAuthService
             return new AuthResultDto{Success =  false, Error = "Invalid Credentials"};
 
         var validPassword = await _userManager.CheckPasswordAsync(authUser, dto.Password);
-        if (validPassword)
+        if (!validPassword)
             return new AuthResultDto{Success =  false, Error  = "Invalid Credentials"};
-            
 
-        var token = _jwtTokenService.GenerateToken(authUser, authUser.UserDb);
+        var token = _jwtTokenService.GenerateToken(authUser);
         return new AuthResultDto{Success =  true, Token = token};
     }
 }
