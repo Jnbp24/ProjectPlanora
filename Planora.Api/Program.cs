@@ -53,14 +53,13 @@ namespace Planora.Api
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-
             app.UseHttpsRedirection();
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             app.UseAuthorization();
-
-
             app.MapControllers();
-            app.MapStaticAssets();
 
             app.Run();
         }
