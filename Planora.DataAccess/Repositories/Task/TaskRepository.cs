@@ -49,7 +49,7 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
             .FirstOrDefaultAsync(t => t.TaskId == tGuid)
             ?? throw new KeyNotFoundException($"Task {taskId} not found");
         var user = await _dbContext.Users
-            .FirstOrDefaultAsync(u => u.Id == uGuid)
+            .FirstOrDefaultAsync(u => u.UserId == uGuid)
             ?? throw new KeyNotFoundException($"User {userId} not found");
         task.Users.Add(user);
     

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Planora.DTO.CategoryDTO;
+﻿using Planora.DTO.CategoryDTO;
 
 namespace Planora.Api.Services.Category
 {
