@@ -44,7 +44,7 @@ public class TaskController : ControllerBase
 
     // PUT api/task/5
     [HttpPut("{taskId}")]
-    public async Task<IActionResult> UpdateAsync([FromRoute] string taskId, [FromBody] TaskDTO dto)
+    public async Task<IActionResult> UpdateAsync(string taskId, TaskDTO dto)
     {
         var updated = await _taskService.UpdateAsync(taskId, dto);
         return Ok(updated);
@@ -59,16 +59,16 @@ public class TaskController : ControllerBase
     }
 
     // PUT api/task/5/assign/123
-    [HttpPut("{taskId:int}/assign/{categoryName}")]
-    public async Task<IActionResult> AssignTaskAsync([FromRoute] string taskId, [FromRoute] string categoryName)
+    [HttpPut("{taskId}/assign/{categoryName}")]
+    public async Task<IActionResult> AssignTaskAsync(string taskId, string categoryName)
     {
         var updatedTask = await _taskService.AssignCategoryByNameAsync(taskId, categoryName);
         return Ok(updatedTask);
     }
 
     // PUT api/task/5/unassign/123
-    [HttpPut("{taskId:int}/unassign/{categoryName}")]
-    public async Task<IActionResult> UnassignTaskAsync([FromRoute] string taskId, [FromRoute] string categoryName)
+    [HttpPut("{taskId}/unassign/{categoryName}")]
+    public async Task<IActionResult> UnassignTaskAsync(string taskId, string categoryName)
     {
         var updatedTask = await _taskService.UnassignCategoryByNameAsync(taskId, categoryName);
         return Ok();

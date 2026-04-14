@@ -23,4 +23,6 @@ public class TaskDB
     public CategoryDB? Category { get; set; } 
 
     public Guid? CategoryId { get; set; }
+    public ICollection<TaskUserDB> TaskUsers { get; set; } = new List<TaskUserDB>();
+
 }
