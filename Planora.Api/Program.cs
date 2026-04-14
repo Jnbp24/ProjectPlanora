@@ -28,8 +28,12 @@ namespace Planora.Api
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
-            builder.Services.AddDbContext<DbContext, DatabaseContext>(options => options.UseInMemoryDatabase("PlanoraDB"));
+            builder.Services.AddControllers(options =>
+            {
+                options.SuppressAsyncSuffixInActionNames = false;
+            });
+            builder.Services.AddDbContext<DbContext, DatabaseContext>(options => options.UseSqlServer(
+                builder.Configuration.GetConnectionString("DefaultConnection")));
             
             //Service Layer
             builder.Services.AddScoped<IAuthService, AuthService>();
@@ -93,15 +97,15 @@ namespace Planora.Api
             }
 
             // Configure the HTTP request pipeline.
-
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
-
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+          
             app.MapControllers();
-            app.MapStaticAssets();
 
             app.Run();
         }

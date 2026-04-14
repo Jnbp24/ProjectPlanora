@@ -21,8 +21,7 @@ public class TaskDB
     public string Content { get; set; }
     public bool Deleted { get; set; }
     public CategoryDB? Category { get; set; } 
-
-    public Guid? CategoryId { get; set; }
-    public ICollection<TaskUserDB> TaskUsers { get; set; } = new List<TaskUserDB>();
-
+    public List<UserDB> Users { get; set; }
+    
+    
 }

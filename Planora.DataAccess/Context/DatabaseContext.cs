@@ -4,31 +4,27 @@ using Planora.DataAccess.Models.Auth;
 
 namespace Planora.DataAccess.Context
 {
-    public class DatabaseContext : DbContext
+    public sealed class DatabaseContext : DbContext
     {
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
+            Database.EnsureCreated();
         }
 
-        protected DatabaseContext()
+        private DatabaseContext()
         {
+		    Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Create associations between classes
         }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            // Update to use SQLServer when going in production
-        }
-
+        
         public DbSet<UserDB> Users { get; set; }
         public DbSet<AuthUser> AuthUsers { get; set; }
         public DbSet<CategoryDB> Categories { get; set; }
         public DbSet<TaskDB> Tasks { get; set; }
-        public DbSet<TaskUserDB> TaskUsers { get; set; }
         public DbSet<ProjectDB> Projects { get; set; }
     }
 }

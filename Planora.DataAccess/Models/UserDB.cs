@@ -13,8 +13,9 @@ namespace Planora.DataAccess
 		public string Email { get; set; }
         public bool Tovholder { get; set; }
         public bool Deleted { get; set; }
+        public List<TaskDB> Tasks { get; set; }
+        
         public UserDB() { }
 
-        public ICollection<TaskUserDB> TaskUsers { get; set; } = new List<TaskUserDB>();
     }
 }

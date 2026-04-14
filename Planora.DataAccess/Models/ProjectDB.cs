@@ -1,4 +1,6 @@
-﻿namespace Planora.DataAccess.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Planora.DataAccess.Models;
 
 public class ProjectDB
 {
@@ -13,6 +15,7 @@ public class ProjectDB
         Content = content;
     }
 
+    [Key]
     public Guid ProjectId { get; set; }
     public string Title { get; set; }
     public string Content { get; set; }

@@ -1,16 +1,17 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project Planora - Login</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Planora - Login</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <script defer src="scripts/login.js"></script>
 </head>
 <body class="page-login">
   <main class="panel">
     <section class="left-side">
       <div class="brand">
-        <img class="brand-logo" src="planora-logo.png" alt="Project Planora logo">
+        <img class="brand-logo" src="images/planora-logo.png" alt="Project Planora logo">
         <span class="brand-text">Project Planora</span>
       </div>
     </section>
@@ -25,7 +26,7 @@
       <label for="password">Password</label>
       <input id="password" type="password" placeholder="Enter your password">
 
-      <button type="button">Login</button>
+      <button type="button" onclick="login()">Login</button>
     </section>
   </main>
 </body>
