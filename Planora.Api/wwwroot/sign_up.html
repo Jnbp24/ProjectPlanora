@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Project Planora - Register User</title>
+    <link rel="stylesheet" href="/styles/styles.css" />
+    <script defer src="scripts/sign_up.js"></script>
+</head>
+<body class="page-login">
+    <div class="panel">
+        <div class="left-side">
+            <div class="brand">
+                <img src="/planora-logo.png" class="brand-logo" alt="Planora" />
+                <span class="brand-text">Planora</span>
+            </div>
+        </div>
+        <div class="right-side">
+            <h1>Register new user</h1>
+            <p>Fill in the details below to create a user account.</p>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                <div>
+                    <label for="firstName">First name</label>
+                    <input type="text" id="firstName" placeholder="e.g. Anna" />
+                </div>
+                <div>
+                    <label for="lastName">Last name</label>
+                    <input type="text" id="lastName" placeholder="e.g. Jensen" />
+                </div>
+            </div>
+
+            <div>
+                <label for="email">Email address</label>
+                <input type="email" id="email" placeholder="anna@example.com" />
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;
+                  background:#f6f6f6;border:1px solid #e0e0e0;border-radius:10px;padding:12px 14px">
+                <div>
+                    <label style="margin:0">Tovholder</label>
+                    <p style="font-size:0.8rem;margin:2px 0 0">Grant tovholder responsibilities</p>
+                </div>
+                <input type="checkbox" id="tovholder" style="width:18px;height:18px;cursor:pointer" />
+            </div>
+            <button onclick="sign_up()">Create user</button>
+            <div id="msg" style="display:none;padding:10px 14px;border-radius:8px;font-size:0.88rem"></div>
+        </div>
+    </div>
+</body>
+</html>
