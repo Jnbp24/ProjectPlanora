@@ -21,7 +21,10 @@ namespace Planora.Api
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers(options =>
+            {
+                options.SuppressAsyncSuffixInActionNames = false;
+            });
             builder.Services.AddDbContext<DbContext, DatabaseContext>(options => options.UseInMemoryDatabase("PlanoraDB"));
             
             //Service Layer
