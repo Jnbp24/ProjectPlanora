@@ -6,4 +6,5 @@ public class AuthUser : IdentityUser
 {
     public Guid UserId { get; set; }
     public required UserDB UserDb { get; set; }
+    public string Role { get; set; }
 }
