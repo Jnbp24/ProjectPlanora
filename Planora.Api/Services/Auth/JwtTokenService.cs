@@ -5,7 +5,7 @@ using Planora.DataAccess.Models.Auth;
 
 namespace Planora.Api.Services.Auth;
 
-public class JwtTokenService
+public class JwtTokenService : IJwtTokenService
 {
     private readonly IConfiguration _configuration;
 

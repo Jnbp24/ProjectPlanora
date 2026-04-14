@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Planora.Api.Services;
+using Planora.Api.Services.User;
 using Planora.DTO.UserDTO;
 
 namespace Planora.Api.Controllers
@@ -15,34 +16,35 @@ namespace Planora.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserService _service;
+        private readonly IUserService _userService;
 
-        public UserController(UserService service)
+        public UserController(IUserService service)
         {
-            _service = service;
+            _userService = service;
         }
 
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
 		{
-			return Ok(await _service.GetAllUsers());
-		}
-
-		[HttpGet("{id}")]
-        public async Task<ActionResult<UserDTO>> GetUser(string id)
-        {
-            try
-            {
-				return Ok(await _service.GetUser(id));
-			}
-			catch (KeyNotFoundException)
-            {
-				return NotFound();
-			}
+			return Ok(await _userService.GetAllUsers());
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<string>> GetRole()
+		[Route("{id}")]
+        public async Task<ActionResult<UserDTO>> GetUser([FromRoute] string id)
+        {
+            try
+            {
+				return Ok(await _userService.GetUser(id));
+			}
+			catch (KeyNotFoundException exception)
+            {
+				return NotFound(exception.Message);
+			}
+		}
+
+		[HttpGet("{id}/role")]
+		public async Task<ActionResult<string>> GetRole(string id)
 		{
 			throw new NotImplementedException();
 		}
@@ -54,7 +56,7 @@ namespace Planora.Api.Controllers
         {
 			try
 			{
-				return Ok(await _service.UpdateUser(id, userDTO));
+				return Ok(await _userService.UpdateUser(id, userDTO));
 			}
 			catch (KeyNotFoundException e)
 			{
@@ -69,7 +71,7 @@ namespace Planora.Api.Controllers
         {
 			try
 			{
-				return Ok(await _service.CreateUser(userDTO));
+				return Ok(await _userService.CreateUser(userDTO));
 			}
 			catch(InvalidOperationException exception)
 			{
@@ -82,7 +84,7 @@ namespace Planora.Api.Controllers
         {
             try
             {
-                return Ok(await _service.DeleteUser(id));
+                return Ok(await _userService.DeleteUser(id));
             }
             catch (KeyNotFoundException e)
             {

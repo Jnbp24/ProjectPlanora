@@ -1,9 +1,6 @@
 ﻿namespace Planora.DataAccess.Repositories.User;
 
-public interface IUserRepository
+public interface IUserRepository : IRepository<UserDB>
 {
-	Task<UserDB?> GetUserByIdAsync(string id);
-	Task<IEnumerable<UserDB>> GetAllUsersAsync();
-	Task<UserDB> CreateUserAsync(UserDB user);
-	System.Threading.Tasks.Task SaveChangesAsync();
+
 }

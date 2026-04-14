@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Planora.DTO.TaskDTO;
 using Planora.Api.Services;
+using Planora.Api.Services.Task;
 
 namespace Planora.Api.Controllers;
 
@@ -8,28 +9,19 @@ namespace Planora.Api.Controllers;
 [Route("api/[controller]")]
 public class TaskController : ControllerBase
 {
-    private readonly TaskService _taskService;
+    private readonly ITaskService _taskService;
 
-    public TaskController(TaskService service)
+    public TaskController(ITaskService service)
     {
         _taskService = service;
     }
 
     // POST api/task
     [HttpPost]
-    public async Task<ActionResult<TaskDTO>> CreateAsync([FromBody] TaskDTO dto)
+    public async Task<ActionResult<TaskDTO>> CreateTaskAsync([FromBody] TaskDTO dto)
     {
         var created = await _taskService.CreateAsync(dto);
-        // return 201 with location header pointing to the created resource
         return CreatedAtAction(nameof(GetByIdAsync), new { taskId = created.TaskId }, created);
-    }
-
-    // PUT api/task/5
-    [HttpPut("{taskId:int}")]
-    public async Task<IActionResult> UpdateAsync([FromRoute] string taskId, [FromBody] TaskDTO dto)
-    {
-        var updated = await _taskService.UpdateAsync(taskId, dto);
-        return Ok(updated);
     }
         
     // GET api/task
@@ -41,7 +33,7 @@ public class TaskController : ControllerBase
     }
 
     // GET api/task/5
-    [HttpGet("{taskId:int}")]
+    [HttpGet("{taskId}")]
     public async Task<ActionResult<TaskDTO>> GetByIdAsync([FromRoute] string taskId)
     {
         var item = await _taskService.GetByIdAsync(taskId);
@@ -49,11 +41,37 @@ public class TaskController : ControllerBase
         return Ok(item);
     }
 
+
+    // PUT api/task/5
+    [HttpPut("{taskId}")]
+    public async Task<IActionResult> UpdateAsync([FromRoute] string taskId, [FromBody] TaskDTO dto)
+    {
+        var updated = await _taskService.UpdateAsync(taskId, dto);
+        return Ok(updated);
+    }
+    
     // DELETE api/task/5
-    [HttpDelete("{taskId:int}")]
+    [HttpDelete("{taskId}")]
     public async Task<IActionResult> DeleteAsync([FromRoute] string taskId)
     {
         await _taskService.DeleteAsync(taskId);
         return NoContent();
     }
+
+    // PUT api/task/5/assign/123
+    [HttpPut("{taskId:int}/assign/{categoryName}")]
+    public async Task<IActionResult> AssignTaskAsync([FromRoute] string taskId, [FromRoute] string categoryName)
+    {
+        var updatedTask = await _taskService.AssignCategoryByNameAsync(taskId, categoryName);
+        return Ok(updatedTask);
+    }
+
+    // PUT api/task/5/unassign/123
+    [HttpPut("{taskId:int}/unassign/{categoryName}")]
+    public async Task<IActionResult> UnassignTaskAsync([FromRoute] string taskId, [FromRoute] string categoryName)
+    {
+        var updatedTask = await _taskService.UnassignCategoryByNameAsync(taskId, categoryName);
+        return Ok();
+    }
+
 }

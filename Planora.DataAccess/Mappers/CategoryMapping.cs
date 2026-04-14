@@ -3,9 +3,9 @@ using Planora.DTO.CategoryDTO;
 
 namespace Planora.DataAccess.Mappers;
 
-internal class CategoryMapping 
+public static class CategoryMapping 
 {
-	internal static CategoryDB ToEntity(CategoryDTO categoryDto) 
+	public static CategoryDB ToEntity(CategoryDTO categoryDto) 
 	{
 		return new CategoryDB(
 			name: categoryDto.Name, 
@@ -13,7 +13,7 @@ internal class CategoryMapping
 		);
 	}
 	
-	internal static CategoryDTO ToDTO(CategoryDB categoryDb) {
+	public static CategoryDTO ToDTO(CategoryDB categoryDb) {
 		return new CategoryDTO(
 			CategoryId: categoryDb.CategoryId.ToString(), 
 			Name: categoryDb.Name, 
