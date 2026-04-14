@@ -82,7 +82,7 @@ namespace Planora.Api
             {
                 options.AddPolicy("DevOpenPolicy", policy =>
                 {
-                    policy.AllowAnyOrigin()  // Allows any Port/IP (Live Server, etc.)
+                    policy.SetIsOriginAllowed(origin => true)  // Allows any Port/IP (Live Server, etc.)
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials(); // Required if sending cookies/tokens in cookies
