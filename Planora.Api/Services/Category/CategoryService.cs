@@ -7,7 +7,7 @@ namespace Planora.Api.Services.Category;
 
 public class CategoryService : ICategoryService
 {
-	private ICategoryRepository _categoryRepository;
+	private readonly ICategoryRepository _categoryRepository;
 	
 	public CategoryService(ICategoryRepository categoryRepository) 
 	{
@@ -42,7 +42,7 @@ public class CategoryService : ICategoryService
 		}
 		categoryDB.Name = dto.Name;
 		categoryDB.HexColor = dto.HexColor;
-		_categoryRepository.SaveChangesAsync();
+		await _categoryRepository.SaveChangesAsync();
 		return CategoryMapping.ToDTO(categoryDB);
 	}
 
@@ -54,7 +54,7 @@ public class CategoryService : ICategoryService
 			throw new NotSupportedException($"{categoryId} is already deleted");
 		}
 		categoryDB.Deleted = true;
-		_categoryRepository.SaveChangesAsync();
+		await _categoryRepository.SaveChangesAsync();
 		return CategoryMapping.ToDTO(categoryDB);
 	}
 

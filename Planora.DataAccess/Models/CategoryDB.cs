@@ -20,5 +20,6 @@ public class CategoryDB
 	public string Name { get; set; }
 	public string HexColor { get; set; }
 	public bool Deleted { get; set; }
+	public List<Task> Tasks { get; set; }
 
 }
