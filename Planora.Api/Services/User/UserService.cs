@@ -1,9 +1,11 @@
 ﻿using System.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using Planora.DataAccess.Repositories;
 using Planora.DataAccess;
 using Planora.DataAccess.Mappers;
+using Planora.DataAccess.Models.Auth;
 using Planora.DataAccess.Repositories.User;
 using Planora.DTO.UserDTO;
 
@@ -12,10 +14,12 @@ namespace Planora.Api.Services.User
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly UserManager<AuthUser> _userManager;
         
-        public UserService(IUserRepository repository)
+        public UserService(IUserRepository repository, UserManager<AuthUser> userManager)
         {
             _userRepository = repository;
+            _userManager = userManager;
         }
 
 		public async Task<IEnumerable<UserDTO>> GetAllUsers()
@@ -56,6 +60,7 @@ namespace Planora.Api.Services.User
 
         public async Task<UserDTO> CreateUser(UserDTO userDTO)
         {
+            //TODO: We should consider making a transaction here, because we need to create an AuthUser and a UserDB, and if one of them fails, we should rollback the other one.
             if(await UserWithEmailExist(userDTO.Email))
             {
                 throw new InvalidOperationException("Email already exists");
@@ -63,6 +68,20 @@ namespace Planora.Api.Services.User
 			UserDB userDB = UserMapping.ToEntity(userDTO);
 			await _userRepository.CreateAsync(userDB);
             await _userRepository.SaveChangesAsync();
+            
+            var authUser = new AuthUser
+            {
+                UserName = userDTO.Email,
+                Email = userDTO.Email,
+                UserDBId = userDB.Id,
+                UserDb = userDB
+            };
+            
+            //TODO: Should be changed to a random password generator, and the password should be sent to the user via email, but for now we will use a hardcoded password.
+            await _userManager.CreateAsync(authUser, "PasswordRandom123!");
+            
+            //TODO: We should also consider adding the user to a default role (Frivillig) or send it as a parameter in the DTO.
+            
             return UserMapping.ToDTO(userDB);
         }
 

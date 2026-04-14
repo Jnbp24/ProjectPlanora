@@ -86,7 +86,7 @@ public class AuthServiceTests
 
         _jwtTokenServiceMock
             .Setup(x => x.GenerateToken(authUser))
-            .Returns("mocked.jwt.token");
+            .ReturnsAsync("mocked.jwt.token");
 
         var dto = new LoginRequestDto("user@email.com", "correctpassword");
 

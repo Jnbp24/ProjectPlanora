@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Planora.DataAccess;
 using Planora.DataAccess.Models;
@@ -11,14 +12,16 @@ namespace Planora.Api.Services.Auth;
 public class JwtTokenService : IJwtTokenService
 {
     private readonly IConfiguration _configuration;
+    private readonly UserManager<AuthUser> _userManager;
 
-    public JwtTokenService(IConfiguration configuration)
+    public JwtTokenService(IConfiguration configuration, UserManager<AuthUser> userManager)
     {
         _configuration = configuration;
+        _userManager = userManager;
     }
 
     //Should return string 
-    public string GenerateToken(AuthUser authUser)
+    public async Task<string> GenerateToken(AuthUser authUser)
     {
         var user = authUser.UserDb;
         if (user is null)
@@ -26,13 +29,19 @@ public class JwtTokenService : IJwtTokenService
             throw new ArgumentNullException(nameof(user));
         }
         
-        var claims = new []
+        var roles = await _userManager.GetRolesAsync(authUser);
+        
+        List<Claim> claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, authUser.Id),
             new Claim("ApplicationUserId", user.Id.ToString()),
-            new Claim(ClaimTypes.Role, authUser.Role),
             new Claim(ClaimTypes.Email, authUser.Email)
         };
+        
+        foreach (var role in roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role));
+        }
 
         //Get Symmetric key
         var key = new SymmetricSecurityKey(
