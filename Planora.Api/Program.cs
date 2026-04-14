@@ -29,7 +29,8 @@ namespace Planora.Api
             {
                 options.SuppressAsyncSuffixInActionNames = false;
             });
-            builder.Services.AddDbContext<DbContext, DatabaseContext>(options => options.UseInMemoryDatabase("PlanoraDB"));
+            builder.Services.AddDbContext<DbContext, DatabaseContext>(options => options.UseSqlServer(
+                builder.Configuration.GetConnectionString("DefaultConnection")));
             
             //Service Layer
             builder.Services.AddScoped<IAuthService, AuthService>();

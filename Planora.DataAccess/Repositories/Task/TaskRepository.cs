@@ -40,122 +40,128 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
     {
         if (!Guid.TryParse(taskId, out var tGuid))
             throw new ArgumentException("Invalid taskId");
-
+    
         if (!Guid.TryParse(userId, out var uGuid))
             throw new ArgumentException("Invalid userId");
-
+    
         var task = await _dbContext.Tasks
-            .Include(t => t.TaskUsers)
+            .Include(t => t.Users)
             .FirstOrDefaultAsync(t => t.TaskId == tGuid)
             ?? throw new KeyNotFoundException($"Task {taskId} not found");
-
         var user = await _dbContext.Users
             .FirstOrDefaultAsync(u => u.Id == uGuid)
             ?? throw new KeyNotFoundException($"User {userId} not found");
-
+        task.Users.Add(user);
+    
         // prevent duplicate users
-        if (task.TaskUsers.Any(tu => tu.UserId == uGuid))
-            return task;
-
-        task.TaskUsers.Add(new TaskUserDB
-        {
-            TaskId = task.TaskId,
-            UserId = user.Id,
-            Task = task,
-            User = user
-        });
-
+        // if (task.TaskUsers.Any(tu => tu.UserId == uGuid))
+        //     return task;
+        
         await _dbContext.SaveChangesAsync();
         return task;
     }
-
-    public async Task<TaskDB> UnassignUserFromTaskAsync(string taskId, string userId)
+    
+    // public async Task<TaskDB> UnassignUserFromTaskAsync(string taskId, string userId)
+    // {
+    //     if (!Guid.TryParse(taskId, out var tGuid))
+    //         throw new ArgumentException("Invalid taskId");
+    //
+    //     if (!Guid.TryParse(userId, out var uGuid))
+    //         throw new ArgumentException("Invalid userId");
+    //
+    //     var task = await _dbContext.Tasks
+    //         .Include(t => t.TaskUsers)
+    //         .FirstOrDefaultAsync(t => t.TaskId == tGuid)
+    //         ?? throw new KeyNotFoundException($"Task {taskId} not found");
+    //
+    //     var link = task.TaskUsers
+    //         .FirstOrDefault(tu => tu.UserId == uGuid)
+    //         ?? throw new KeyNotFoundException("User not assigned to this task");
+    //
+    //     task.TaskUsers.Remove(link);
+    //
+    //     await _dbContext.SaveChangesAsync();
+    //     return task;
+    // }
+    //
+    // public async Task<TaskDB> AssignCategoryToTaskByNameAsync(string taskId, string categoryName)
+    // {
+    //     if (!Guid.TryParse(taskId, out var tGuid))
+    //         throw new ArgumentException("Invalid taskId", nameof(taskId));
+    //
+    //     if (string.IsNullOrWhiteSpace(categoryName))
+    //         throw new ArgumentException("Category name must be provided", nameof(categoryName));
+    //
+    //     var nameNormalized = categoryName.Trim().ToLowerInvariant();
+    //
+    //     var category = await _dbContext.Categories
+    //         .FirstOrDefaultAsync(c => c.Name.ToLower() == nameNormalized)
+    //         ?? throw new KeyNotFoundException($"Category '{categoryName}' not found");
+    //
+    //     var task = await _dbContext.Tasks
+    //         .FirstOrDefaultAsync(t => t.TaskId == tGuid)
+    //         ?? throw new KeyNotFoundException($"Task {taskId} not found");
+    //
+    //     task.CategoryId = category.CategoryId;
+    //     task.Category = category;
+    //
+    //     await _dbContext.SaveChangesAsync();
+    //     return task;
+    // }
+    //
+    //
+    // public async Task<TaskDB> UnassignCategoryToTaskByNameAsync(string taskId, string categoryName)
+    // {
+    //     if (!Guid.TryParse(taskId, out var tGuid))
+    //         throw new ArgumentException("Invalid taskId", nameof(taskId));
+    //
+    //     if (string.IsNullOrWhiteSpace(categoryName))
+    //         throw new ArgumentException("Category name must be provided", nameof(categoryName));
+    //
+    //     var nameNormalized = categoryName.Trim().ToLowerInvariant();
+    //
+    //     var category = await _dbContext.Categories
+    //         .FirstOrDefaultAsync(c => c.Name.ToLower() == nameNormalized)
+    //         ?? throw new KeyNotFoundException($"Category '{categoryName}' not found");
+    //
+    //     var defaultCategory = await _dbContext.Categories
+    //         .FirstOrDefaultAsync(c => c.Name.ToLower() == "default")
+    //         ?? throw new KeyNotFoundException("Default category not found");
+    //
+    //     var task = await _dbContext.Tasks
+    //         .FirstOrDefaultAsync(t => t.TaskId == tGuid)
+    //         ?? throw new KeyNotFoundException($"Task {taskId} not found");
+    //
+    //     if (task.CategoryId != category.CategoryId)
+    //         throw new InvalidOperationException(
+    //             $"Task {taskId} is not assigned to category '{categoryName}'");
+    //
+    //     if (task.CategoryId != category.CategoryId)
+    //     {
+    //         throw new InvalidOperationException(
+    //             $"Task {taskId} is not assigned to category '{categoryName}'");
+    //     }
+    //
+    //     task.CategoryId = defaultCategory.CategoryId;
+    //     task.Category = defaultCategory;
+    //
+    //     await _dbContext.SaveChangesAsync();
+    //     return task;
+    // }
+    //
+    
+    public Task<TaskDB> UnassignUserFromTaskAsync(string taskId, string userId)
     {
-        if (!Guid.TryParse(taskId, out var tGuid))
-            throw new ArgumentException("Invalid taskId");
-
-        if (!Guid.TryParse(userId, out var uGuid))
-            throw new ArgumentException("Invalid userId");
-
-        var task = await _dbContext.Tasks
-            .Include(t => t.TaskUsers)
-            .FirstOrDefaultAsync(t => t.TaskId == tGuid)
-            ?? throw new KeyNotFoundException($"Task {taskId} not found");
-
-        var link = task.TaskUsers
-            .FirstOrDefault(tu => tu.UserId == uGuid)
-            ?? throw new KeyNotFoundException("User not assigned to this task");
-
-        task.TaskUsers.Remove(link);
-
-        await _dbContext.SaveChangesAsync();
-        return task;
+        throw new NotImplementedException();
     }
 
-    public async Task<TaskDB> AssignCategoryToTaskByNameAsync(string taskId, string categoryName)
+    public Task<TaskDB> AssignCategoryToTaskByNameAsync(string taskId, string categoryName)
     {
-        if (!Guid.TryParse(taskId, out var tGuid))
-            throw new ArgumentException("Invalid taskId", nameof(taskId));
-
-        if (string.IsNullOrWhiteSpace(categoryName))
-            throw new ArgumentException("Category name must be provided", nameof(categoryName));
-
-        var nameNormalized = categoryName.Trim().ToLowerInvariant();
-
-        var category = await _dbContext.Categories
-            .FirstOrDefaultAsync(c => c.Name.ToLower() == nameNormalized)
-            ?? throw new KeyNotFoundException($"Category '{categoryName}' not found");
-
-        var task = await _dbContext.Tasks
-            .FirstOrDefaultAsync(t => t.TaskId == tGuid)
-            ?? throw new KeyNotFoundException($"Task {taskId} not found");
-
-        task.CategoryId = category.CategoryId;
-        task.Category = category;
-
-        await _dbContext.SaveChangesAsync();
-        return task;
+        throw new NotImplementedException();
     }
 
-
-    public async Task<TaskDB> UnassignCategoryToTaskByNameAsync(string taskId, string categoryName)
+    public Task<TaskDB> UnassignCategoryToTaskByNameAsync(string taskId, string categoryName)
     {
-        if (!Guid.TryParse(taskId, out var tGuid))
-            throw new ArgumentException("Invalid taskId", nameof(taskId));
-
-        if (string.IsNullOrWhiteSpace(categoryName))
-            throw new ArgumentException("Category name must be provided", nameof(categoryName));
-
-        var nameNormalized = categoryName.Trim().ToLowerInvariant();
-
-        var category = await _dbContext.Categories
-            .FirstOrDefaultAsync(c => c.Name.ToLower() == nameNormalized)
-            ?? throw new KeyNotFoundException($"Category '{categoryName}' not found");
-
-        var defaultCategory = await _dbContext.Categories
-            .FirstOrDefaultAsync(c => c.Name.ToLower() == "default")
-            ?? throw new KeyNotFoundException("Default category not found");
-
-        var task = await _dbContext.Tasks
-            .FirstOrDefaultAsync(t => t.TaskId == tGuid)
-            ?? throw new KeyNotFoundException($"Task {taskId} not found");
-
-        if (task.CategoryId != category.CategoryId)
-            throw new InvalidOperationException(
-                $"Task {taskId} is not assigned to category '{categoryName}'");
-
-        if (task.CategoryId != category.CategoryId)
-        {
-            throw new InvalidOperationException(
-                $"Task {taskId} is not assigned to category '{categoryName}'");
-        }
-
-        task.CategoryId = defaultCategory.CategoryId;
-        task.Category = defaultCategory;
-
-        await _dbContext.SaveChangesAsync();
-        return task;
+        throw new NotImplementedException();
     }
-
-
 }

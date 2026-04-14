@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Planora.DTO.TaskDTO;
-using Planora.Api.Services;
 using Planora.Api.Services.Task;
 
 namespace Planora.Api.Controllers;
@@ -71,6 +70,14 @@ public class TaskController : ControllerBase
     public async Task<IActionResult> UnassignTaskAsync(string taskId, string categoryName)
     {
         var updatedTask = await _taskService.UnassignCategoryByNameAsync(taskId, categoryName);
+        return Ok();
+    }
+    
+    // PUT api/task/5/assign/123
+    [HttpPut("{taskId}/assignUser/{userId}")]
+    public async Task<IActionResult> AssignUserToTaskAsync(string taskId, string userId)
+    {
+        var updatedTask = await _taskService.AssignUserToTaskAsync(taskId, userId);
         return Ok();
     }
 
