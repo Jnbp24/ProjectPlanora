@@ -1,8 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.DotNet.Scaffolding.Shared.ProjectModel;
-using Planora.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Planora.Api.Services;
@@ -22,7 +20,7 @@ namespace Planora.Api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +30,7 @@ namespace Planora.Api
             {
                 options.SuppressAsyncSuffixInActionNames = false;
             });
-            builder.Services.AddDbContext<DbContext, DatabaseContext>(options => options.UseSqlServer(
+            builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(
                 builder.Configuration.GetConnectionString("DefaultConnection")));
             
             //Service Layer
@@ -82,14 +80,27 @@ namespace Planora.Api
             {
                 options.AddPolicy("DevOpenPolicy", policy =>
                 {
-                    policy.SetIsOriginAllowed(origin => true)  // Allows any Port/IP (Live Server, etc.)
+                    policy.SetIsOriginAllowed(origin => true) // Allows any Port/IP (Live Server, etc.)
                         .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials(); // Required if sending cookies/tokens in cookies
+                        .AllowAnyMethod(); 
                 });
             });
                 
             var app = builder.Build();
+            
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    await DbInitializer.SeedAdminUser(services);
+                }
+                catch (Exception ex)
+                {
+                    // Log errors here (e.g., using Serilog or built-in ILogger)
+                    Console.WriteLine($"An error occurred seeding the DB: {ex.Message}");
+                }
+            }
             
             if (app.Environment.IsDevelopment())
             {
