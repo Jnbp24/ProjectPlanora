@@ -27,5 +27,6 @@ namespace Planora.DataAccess.Context
         public DbSet<CategoryDB> Categories { get; set; }
         public DbSet<TaskDB> Tasks { get; set; }
         public DbSet<TaskUserDB> TaskUsers { get; set; }
+        public DbSet<ProjectDB> Projects { get; set; }
     }
 }
