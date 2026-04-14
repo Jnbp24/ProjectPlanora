@@ -18,7 +18,7 @@ public class CategoryController : ControllerBase
 	
 	// POST api/task
 	[HttpPost]
-	public async Task<ActionResult<CategoryDTO>> CreateAsync([FromBody] CategoryDTO categoryDto)
+	public async Task<ActionResult<CategoryDTO>> CreateAsync(CategoryDTO categoryDto)
 	{
 		var createdCategoryDto = await _categoryService.CreateAsync(categoryDto);
 		// return 201 with location header pointing to the created resource
@@ -38,9 +38,9 @@ public class CategoryController : ControllerBase
 		{
 			return Ok(await _categoryService.GetByIdAsync(categoryId));
 		}
-		catch (KeyNotFoundException)
+		catch (KeyNotFoundException e)
 		{
-			return NotFound();
+			return NotFound(e.Message);
 		}
 	}
 	
@@ -64,7 +64,8 @@ public class CategoryController : ControllerBase
 	{
 		try
 		{
-			return Ok(await _categoryService.DeleteAsync(categoryId));
+			await _categoryService.DeleteAsync(categoryId);
+			return NoContent();
 		}
 		catch (KeyNotFoundException e)
 		{
