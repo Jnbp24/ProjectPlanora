@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Category Test</title>
+    <style>
+        body { font-family: Arial; max-width: 500px; margin: 40px auto; }
+        input, button { display: block; width: 100%; padding: 8px; margin: 6px 0; box-sizing: border-box; }
+        button { color: white; border: none; cursor: pointer; }
+        .post { background: #4CAF50; }
+        .get { background: #2196F3; }
+        .put { background: #FF9800; }
+        .delete { background: #f44336; }
+        hr { margin: 20px 0; }
+        pre { background: #f4f4f4; padding: 10px; white-space: pre-wrap; }
+    </style>
+    <script src = "scripts/category.js" defer></script>
+</head>
+<body>
+    <h2>Category API Test</h2>
+
+    <label>CategoryId</label>
+    <input id="categoryId" placeholder="Guid (til GET, PUT, DELETE)">
+
+    <label>Name</label>
+    <input id="name" placeholder="Category name">
+
+    <label>HexColor</label>
+    <input id="hexColor" placeholder="#FF5733">
+
+    <hr>
+
+    <button class="post" onclick="create()">POST - Create</button>
+    <button class="get" onclick="getAll()">GET - All</button>
+    <button class="get" onclick="getById()">GET - By Id</button>
+    <button class="put" onclick="update()">PUT - Update</button>
+    <button class="delete" onclick="remove()">DELETE</button>
+
+    <h3>Response:</h3>
+    <pre id="result">...</pre>
+</body>
+</html>
