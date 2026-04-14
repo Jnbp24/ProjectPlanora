@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Planora - Dashboard</title>
     <link rel="stylesheet" href="styles/styles.css">
+    <link href="https://unpkg.com/vis-timeline@latest/styles/vis-timeline-graph2d.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.js"></script>
+    <script defer src="scripts/calendar.js"></script>
 </head>
 <body class="page-dashboard">
   <main class="dashboard">
@@ -28,11 +31,12 @@
     </aside>
 
     <section class="content">
-      <div class="topbar">
-        <input class="search-input" type="search" placeholder="Search">
-        <button class="new-task-btn" type="button">+ New task</button>
-        <button class="profile-btn" type="button" aria-label="Profile">A</button>
-      </div>
+        <div class="topbar">
+            <input class="search-input" type="search" placeholder="Search">
+            <button class="new-task-btn" type="button">+ New task</button>
+            <button class="profile-btn" type="button" aria-label="Profile">A</button>
+        </div>
+        <div id="timeline"></div>
     </section>
   </main>
 </body>
