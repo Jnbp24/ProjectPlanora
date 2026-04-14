@@ -45,4 +45,56 @@ public class AuthServiceTests
         Assert.False(result.Success);
         Assert.Equal("Invalid Credentials", result.Error);
     }
+    
+    [Fact]
+    public async Task LoginAsync_WrongPassword_ReturnsFailure()
+    {
+        // Arrange
+        var authUser = new AuthUser { Email = "user@email.com", UserDb = null};
+
+        _userManagerMock
+            .Setup(x => x.FindByEmailAsync("user@email.com"))
+            .ReturnsAsync(authUser);
+
+        _userManagerMock
+            .Setup(x => x.CheckPasswordAsync(authUser, "wrongpassword"))
+            .ReturnsAsync(false);
+
+        var dto = new LoginRequestDto("user@email.com", "wrongpassword");
+
+        // Act
+        var result = await _authService.LoginAsync(dto);
+
+        // Assert
+        Assert.False(result.Success);
+        Assert.Equal("Invalid Credentials", result.Error);
+    }
+    
+    [Fact]
+    public async Task LoginAsync_ValidCredentials_ReturnsToken()
+    {
+        // Arrange
+        var authUser = new AuthUser { Email = "user@email.com", UserDb = null };
+
+        _userManagerMock
+            .Setup(x => x.FindByEmailAsync("user@email.com"))
+            .ReturnsAsync(authUser);
+
+        _userManagerMock
+            .Setup(x => x.CheckPasswordAsync(authUser, "correctpassword"))
+            .ReturnsAsync(true);
+
+        _jwtTokenServiceMock
+            .Setup(x => x.GenerateToken(authUser))
+            .Returns("mocked.jwt.token");
+
+        var dto = new LoginRequestDto("user@email.com", "correctpassword");
+
+        // Act
+        var result = await _authService.LoginAsync(dto);
+
+        // Assert
+        Assert.True(result.Success);
+        Assert.Equal("mocked.jwt.token", result.Token);
+    }
 }

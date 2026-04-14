@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/tests/">
+    <Project Path="tests/Api.IntegrationTests/Api.IntegrationTests.csproj" />
     <Project Path="tests/Api.UnitTests/Api.UnitTests.csproj" />
   </Folder>
   <Project Path="Planora.Api/Planora.Api.csproj" />
