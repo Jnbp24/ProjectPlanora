@@ -302,10 +302,8 @@ body {
   }
 }
 
-/* vis-timeline */
-#timeline {
-    margin-top: 20px;
-    height: 300px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+/* Calendar */
+#calendar {
+    flex-grow: 1;
+    min-height: 0;
 }
