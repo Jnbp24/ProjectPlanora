@@ -17,7 +17,7 @@ public class TaskDB
     public Guid? ProjectId { get; set; }
     [ForeignKey("ProjectId")]
     public ProjectDB? Project { get; set; }
-    public List<UserDB> Users { get; set; }
+    public List<UserDB> Users { get; set; } = [];
     
     public TaskDB()
     {
