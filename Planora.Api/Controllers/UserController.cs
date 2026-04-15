@@ -17,7 +17,7 @@ namespace Planora.Api.Controllers
         
         // To authenticate Tovholder before creating
         // [Authorize(Roles = "Tovholder")]
-        // POST api/user/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
+        // POST api/user
         [HttpPost]
         public async Task<ActionResult<UserDTO>> CreateUserAsync(UserDTO userDTO)
         {
@@ -33,7 +33,8 @@ namespace Planora.Api.Controllers
 	        }
         }
 
-    [Authorize]
+ 		// GET api/user
+    	[Authorize]
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsersAsync()
 		{
