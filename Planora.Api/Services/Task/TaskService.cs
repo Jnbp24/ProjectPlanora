@@ -61,27 +61,27 @@ public class TaskService : ITaskService
         return TaskMapping.ToDTO(taskDB);
     }
 
-    public async Task<TaskDTO> AssignCategoryByNameAsync(string taskId, string categoryName)
+    public async Task<TaskDTO> AssignCategoryAsync(string taskId, string categoryName)
     {
-        var task = await _taskRepository.AssignCategoryToTaskByNameAsync(taskId, categoryName);
+        var task = await _taskRepository.AssignCategoryAsync(taskId, categoryName);
         return TaskMapping.ToDTO(task);
     }
 
-    public async Task<TaskDTO> UnassignCategoryByNameAsync(string taskId, string categoryName)
+    public async Task<TaskDTO> UnassignCategoryAsync(string taskId, string categoryName)
     {
-        var task = await _taskRepository.UnassignCategoryToTaskByNameAsync(taskId, categoryName);
+        var task = await _taskRepository.UnassignCategoryAsync(taskId, categoryName);
          return TaskMapping.ToDTO(task);
     }
 
-    public async Task<TaskDTO> AssignUserToTaskAsync(string taskId, string userId)
+    public async Task<TaskDTO> AssignUserAsync(string taskId, string userId)
     {
-        var task = await _taskRepository.AssignUserToTaskAsync(taskId, userId);
+        var task = await _taskRepository.AssignUserAsync(taskId, userId);
         return TaskMapping.ToDTO(task);
     }
 
-    public async Task<TaskDTO> UnassignUserFromTaskAsync(string taskId, string userId)
+    public async Task<TaskDTO> UnassignUserAsync(string taskId, string userId)
     {
-        var task = await _taskRepository.UnassignUserFromTaskAsync(taskId, userId);
+        var task = await _taskRepository.UnassignUserAsync(taskId, userId);
         return TaskMapping.ToDTO(task);
     }
 

@@ -32,7 +32,7 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
         return task;
     }
 
-    public async Task<TaskDB> AssignUserToTaskAsync(string taskId, string userId)
+    public async Task<TaskDB> AssignUserAsync(string taskId, string userId)
     {
         if (!Guid.TryParse(taskId, out var tGuid))
             throw new ArgumentException("Invalid taskId");
@@ -53,7 +53,7 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
         return task;
     }
 
-    public async Task<TaskDB> UnassignUserFromTaskAsync(string taskId, string userId)
+    public async Task<TaskDB> UnassignUserAsync(string taskId, string userId)
     {
         if (!Guid.TryParse(taskId, out var tGuid))
             throw new ArgumentException("Invalid taskId");
@@ -74,7 +74,7 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
         return task;
     }
 
-    public async Task<TaskDB> AssignCategoryToTaskByNameAsync(string taskId, string categoryName)
+    public async Task<TaskDB> AssignCategoryAsync(string taskId, string categoryName)
     {
         if (!Guid.TryParse(taskId, out var tGuid))
             throw new ArgumentException("Invalid taskId", nameof(taskId));
@@ -97,7 +97,7 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
         await _dbContext.SaveChangesAsync();
         return task;
     }
-    public async Task<TaskDB> UnassignCategoryToTaskByNameAsync(string taskId, string categoryName)
+    public async Task<TaskDB> UnassignCategoryAsync(string taskId, string categoryName)
     {
         if (!Guid.TryParse(taskId, out var tGuid))
             throw new ArgumentException("Invalid taskId", nameof(taskId));
