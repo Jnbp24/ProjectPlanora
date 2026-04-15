@@ -46,10 +46,16 @@ async function post(data) {
 		},
 		body: JSON.stringify(data)
 	});
-	if (!response.ok || !response.success) {
-		throw new Error(response.error)
+
+	const result = await response.json();
+
+	if (!response.ok) {
+		throw new Error(result.error)
 	}
-	sessionStorage.setItem("token", response.token)
+	if (response.error) {
+		throw new Error("issue of login")
+	}
+	sessionStorage.setItem("token", result.token)
 }
 
 function clear_input() {
