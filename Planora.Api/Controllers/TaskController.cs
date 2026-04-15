@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Planora.DTO.TaskDTO;
 using Planora.Api.Services.Task;
 
@@ -16,6 +17,7 @@ public class TaskController : ControllerBase
     }
 
     // POST api/task
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<TaskDTO>> CreateTaskAsync([FromBody] TaskDTO taskDTO)
     {
@@ -25,6 +27,7 @@ public class TaskController : ControllerBase
     }
         
     // GET api/task
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<TaskDTO>>> GetAllTasksAsync()
     {
@@ -32,6 +35,7 @@ public class TaskController : ControllerBase
     }
 
     // GET api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
+    [Authorize]
     [HttpGet("{taskId}")]
     public async Task<ActionResult<TaskDTO>> GetTaskByIdAsync(string taskId)
     {
@@ -47,6 +51,7 @@ public class TaskController : ControllerBase
 
 
     // PUT api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
+    [Authorize]
     [HttpPut("{taskId}")]
     public async Task<IActionResult> UpdateTaskAsync(string taskId, TaskDTO taskDTO)
     {
@@ -61,6 +66,7 @@ public class TaskController : ControllerBase
     }
     
     // DELETE api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
+    [Authorize]
     [HttpDelete("{taskId}")]
     public async Task<IActionResult> DeleteTaskAsync(string taskId)
     {
@@ -76,6 +82,7 @@ public class TaskController : ControllerBase
     }
     
     // PUT api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc/category
+    [Authorize]
     [HttpPut("{taskId}/category")]
     public async Task<IActionResult> AssignCategoryToTaskAsync(string taskId, [FromBody] string categoryName)
     {
@@ -84,6 +91,7 @@ public class TaskController : ControllerBase
     }
 
     // DELETE api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc/category
+    [Authorize]
     [HttpDelete("{taskId}/category")]
     public async Task<IActionResult> UnassignCategoryFromTaskAsync(string taskId, [FromBody] string categoryName)
     {
@@ -91,7 +99,8 @@ public class TaskController : ControllerBase
     }
     
     // POST api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc/user
-    [HttpPut("{taskId}/user")]
+    [Authorize]
+    [HttpPost("{taskId}/user")]
     public async Task<IActionResult> AssignUserAsync(string taskId, [FromBody] string userId)
     {
         var updatedTask = await _taskService.AssignUserAsync(taskId, userId);
@@ -99,6 +108,7 @@ public class TaskController : ControllerBase
     }
 
     // DELETE api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc/user
+    [Authorize]
     [HttpDelete("{taskId}/user")]
     public async Task<IActionResult> UnassignUserAsync(string taskId, [FromBody] string userId)
     {

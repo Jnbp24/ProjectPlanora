@@ -19,6 +19,7 @@ namespace Planora.Api.Controllers
         // To authenticate Tovholder before creating
         // [Authorize(Roles = "Tovholder")]
         // POST api/user
+        [Authorize(Roles = "Tovholder")]
         [HttpPost]
         public async Task<ActionResult<UserDTO>> CreateUserAsync(UserDTO userDTO)
         {
@@ -43,6 +44,7 @@ namespace Planora.Api.Controllers
 		}
 
 		// GET api/user/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
+		[Authorize]
 		[HttpGet]
 		[Route("{userId}")]
         public async Task<ActionResult<UserDTO>> GetUserByIdAsync(string userId)
@@ -56,16 +58,11 @@ namespace Planora.Api.Controllers
 				return NotFound(exception.Message);
 			}
 		}
-        
-		[HttpGet("{userId}/role")]
-		public async Task<ActionResult<string>> GetRoleAsync(string userId)
-		{
-			throw new NotImplementedException();
-		}
 
 		// To authenticate Tovholder before update
 		// [Authorize(Roles = "Tovholder")]
 		// PUT api/user/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
+		[Authorize(Roles = "Tovholder")]
 		[HttpPut("{userId}")]
         public async Task<IActionResult> UpdateUserAsync(string userId, UserDTO userDTO)
         {
@@ -80,6 +77,7 @@ namespace Planora.Api.Controllers
 		}
 
         // DELETE api/user/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
+        [Authorize]
 		[HttpDelete("{userId}")]
         public async Task<IActionResult> DeleteUser(string userId)
         {
