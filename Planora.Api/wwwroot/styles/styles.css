@@ -19,11 +19,12 @@
 }
 
 body {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  background: var(--bg);
-  color: var(--text);
+    height: 100vh;
+    display: grid;
+    place-items: center;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
 }
 
 .page-login .panel {
@@ -120,13 +121,13 @@ body {
 }
 
 .page-dashboard {
-  display: block;
-  padding: 0;
+    display: block;
+    place-items: initial;
 }
 
 .dashboard {
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
   background: var(--surface);
   border-radius: 0;
   box-shadow: none;
@@ -208,10 +209,12 @@ body {
 }
 
 .content {
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .topbar {
@@ -305,5 +308,6 @@ body {
 /* Calendar */
 #calendar {
     flex-grow: 1;
-    min-height: 0;
+    height: 100vh;
+    overflow: hidden;
 }
