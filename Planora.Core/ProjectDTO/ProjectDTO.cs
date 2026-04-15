@@ -1,3 +1,3 @@
 ﻿namespace Planora.DTO.ProjectDTO;
 
-public record ProjectDTO(string ProjectId, string Content, string Title);
+public record ProjectDTO(string? ProjectId, string Content, string Title);

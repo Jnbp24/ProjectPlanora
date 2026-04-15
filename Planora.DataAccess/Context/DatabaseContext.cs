@@ -18,7 +18,15 @@ namespace Planora.DataAccess.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Create associations between classes
+            // Fixes naming scheme for database
+            modelBuilder.Entity<TaskDB>()
+                .HasMany(t => t.Users)
+                .WithMany(u => u.Tasks)
+                .UsingEntity<Dictionary<string, object>>(
+                    "TaskUser",
+                    j => j.HasOne<UserDB>().WithMany().HasForeignKey("UserId"),
+                    j => j.HasOne<TaskDB>().WithMany().HasForeignKey("TaskId")
+                );
         }
         
         public DbSet<UserDB> Users { get; set; }

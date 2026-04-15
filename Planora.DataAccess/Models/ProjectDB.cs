@@ -1,24 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Planora.DataAccess.Models;
 
 public class ProjectDB
 {
-	public ProjectDB()
-	{
-	}
-
-    public ProjectDB(string title, string content)
-    {
-        ProjectId = Guid.NewGuid();
-        Title = title;
-        Content = content;
-    }
-
     [Key]
-    public Guid ProjectId { get; set; }
+    [Column("Id")]
+    public required Guid ProjectId { get; set; }
     public string Title { get; set; }
     public string Content { get; set; }
     public bool Deleted { get; set; }
-
+    private List<TaskDB> Tasks { get; set; }
+    
+    public ProjectDB()
+    {
+    }
 }

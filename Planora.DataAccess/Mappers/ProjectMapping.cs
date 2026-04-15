@@ -7,10 +7,12 @@ public static class ProjectMapping
 {
     public static ProjectDB ToEntity(ProjectDTO dto)
     {
-        return new ProjectDB(
-            title: dto.Title,
-            content: dto.Content
-            );
+        return new ProjectDB
+        {
+            ProjectId = Guid.NewGuid(),
+            Title = dto.Title,
+            Content = dto.Content
+            };
     }
 
     public static ProjectDTO ToDTO(ProjectDB entity) {
