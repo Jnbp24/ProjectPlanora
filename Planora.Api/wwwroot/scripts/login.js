@@ -1,4 +1,9 @@
-﻿
+﻿document.addEventListener("keydown", (event) => {
+	if (event.key === "Enter") {
+		event.preventDefault();
+		login();
+	}
+});
 
 async function login() {
 	try {
@@ -40,7 +45,7 @@ async function post(data) {
 		},
 		body: JSON.stringify(data)
 	});
-	if (!response.success) {
+	if (!response.ok || !response.success) {
 		throw new Error(response.error)
 	}
 	sessionStorage.setItem("token", response.token)
