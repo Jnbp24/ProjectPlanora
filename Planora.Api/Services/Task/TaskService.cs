@@ -50,9 +50,9 @@ public class TaskService : ITaskService
         {
             throw new NotSupportedException($"{taskId} is already deleted");
         }
-        taskDB.Title = dto.Title;
-        taskDB.Content = dto.Content;
-        taskDB.Deadline = dto.Deadline;
+        taskDB.Title = taskDTO.Title;
+        taskDB.Content = taskDTO.Content;
+        taskDB.Deadline = taskDTO.Deadline;
         await _taskRepository.SaveChangesAsync();
         return TaskMapping.ToDTO(taskDB);
     }

@@ -10,6 +10,7 @@ public class TaskDB
     public required Guid TaskId { get; set; }
     public string Title { get; set; }
     public string Content { get; set; }
+    public DateTime? Deadline { get; set; }
     public bool Deleted { get; set; }
     public Guid? CategoryId { get; set; }
     [ForeignKey("CategoryId")]
