@@ -75,7 +75,14 @@ public class TaskService : ITaskService
 
     public async Task<TaskDTO> AssignUserToTaskAsync(string taskId, string userId)
     {
-        return TaskMapping.ToDTO(await _taskRepository.AssignUserToTaskAsync(taskId, userId));
+        var task = await _taskRepository.AssignUserToTaskAsync(taskId, userId);
+        return TaskMapping.ToDTO(task);
+    }
+
+    public async Task<TaskDTO> UnassignUserFromTaskAsync(string taskId, string userId)
+    {
+        var task = await _taskRepository.UnassignUserFromTaskAsync(taskId, userId);
+        return TaskMapping.ToDTO(task);
     }
 
 }

@@ -1,0 +1,4 @@
+$kind: http-request
+method: PUT
+url: '{{baseUrl}}/api/Task/{{taskId}}/assignUser/{{userId}}'
+order: 8000
