@@ -96,7 +96,7 @@ public class JwtTokenServiceTests
     {
         // Arrange
         var guid = Guid.NewGuid();
-        var appUser = new UserDB { UsedId = guid};
+        var appUser = new UserDB { UserId = guid};
         var authUser = new AuthUser { Id = "auth-123", Email = "user@email.com",  UserDb = appUser};
         
         var roles = new List<string> { "Tovholder" };

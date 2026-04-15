@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Planora.DataAccess;
 using Planora.DataAccess.Context;
+using Planora.DataAccess.Models;
 using Planora.DataAccess.Models.Auth;
 
 namespace Planora.Api;
@@ -30,7 +31,7 @@ public static class DbInitializer
         {
             var user = new UserDB
             {
-                Id = Guid.NewGuid(),
+                UserId = Guid.NewGuid(),
                 Email = adminEmail,
                 FirstName = "System",
                 LastName = "Admin",
@@ -47,7 +48,7 @@ public static class DbInitializer
                 UserName = adminEmail,
                 Email = adminEmail,
                 EmailConfirmed = true,
-                UserDBId = user.Id,
+                UserDBId = user.UserId,
                 UserDb = user
             };
 
