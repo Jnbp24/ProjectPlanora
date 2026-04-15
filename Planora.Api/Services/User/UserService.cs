@@ -76,7 +76,7 @@ namespace Planora.Api.Services.User
             {
                 UserName = userDTO.Email,
                 Email = userDTO.Email,
-                UserDBId = userDB.Id,
+                UserDBId = userDB.UserId,
                 UserDb = userDB
             };
             
