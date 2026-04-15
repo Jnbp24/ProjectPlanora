@@ -26,7 +26,7 @@ public class AuthService : IAuthService
         if (!validPassword)
             return new AuthResultDto{Success =  false, Error  = "Invalid Credentials"};
 
-        var token = _jwtTokenService.GenerateToken(authUser);
+        var token = await _jwtTokenService.GenerateToken(authUser);
         return new AuthResultDto{Success =  true, Token = token};
     }
 }
