@@ -47,12 +47,16 @@ public class CategoryController : ControllerBase
 		{
 			return NotFound(e.Message);
 		}
+		catch (ArgumentException e)
+		{
+			return BadRequest(e.Message);
+		}
 	}
 	
 	// PUT api/category/d3eb20c6-2b60-4c82-95e3-
 	[Authorize]
 	[HttpPut("{categoryId}")]
-	public async Task<IActionResult> UpdateCategoryAsync(string categoryId, CategoryDTO categoryDTO)
+	public async Task<IActionResult> UpdateCategoryAsync(string categoryId, [FromBody] CategoryDTO categoryDTO)
 	{
 		try
 		{
@@ -61,6 +65,10 @@ public class CategoryController : ControllerBase
 		catch (KeyNotFoundException e)
 		{
 			return NotFound(e.Message);
+		}
+		catch (ArgumentException e)
+		{
+			return BadRequest(e.Message);
 		}
 	}
 	
@@ -77,6 +85,10 @@ public class CategoryController : ControllerBase
 		catch (KeyNotFoundException e)
 		{
 			return NotFound(e.Message);
+		}
+		catch (ArgumentException e)
+		{
+			return BadRequest(e.Message);
 		}
 	}
 }

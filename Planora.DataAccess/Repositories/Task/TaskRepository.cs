@@ -17,17 +17,14 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
         return await _dbContext.Tasks.Include(t => t.Category).ToListAsync();
     }
 
-    public override async Task<TaskDB> GetByIdAsync(string id)
+    public override async Task<TaskDB> GetByIdAsync(Guid taskId)
     {
-        if (!Guid.TryParse(id, out var guid))
-            throw new ArgumentException("Invalid taskId", nameof(id));
-
         var task = await _dbContext.Tasks
             .Include(t => t.Category)
-            .FirstOrDefaultAsync(t => t.TaskId == guid);
+            .FirstOrDefaultAsync(t => t.TaskId == taskId);
 
         if (task == null)
-            throw new KeyNotFoundException($"Task {id} not found");
+            throw new KeyNotFoundException($"Task {taskId} not found");
 
         return task;
     }
