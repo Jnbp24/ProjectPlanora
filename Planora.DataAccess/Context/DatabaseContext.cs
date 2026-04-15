@@ -16,10 +16,16 @@ namespace Planora.DataAccess.Context
         {
             base.OnModelCreating(modelBuilder);  // Sets up Identity tables and relationships
             
-            modelBuilder.Entity<AuthUser>()
-                .HasOne(a => a.UserDb)
-                .WithOne() // Assuming UserDB doesn't have a navigation property back
-                .HasForeignKey<AuthUser>(a => a.UserDBId);
+            modelBuilder.Entity<AuthUser>(entity => 
+            {
+                entity.HasOne(a => a.UserDb)
+                    .WithOne() 
+                    .HasForeignKey<AuthUser>(a => a.UserDBId);
+
+                // ALWAYS fetch the UserDb profile when fetching an AuthUser
+                entity.Navigation(a => a.UserDb)
+                    .AutoInclude();
+            });
         }
         
         public DbSet<UserDB> Users { get; set; }

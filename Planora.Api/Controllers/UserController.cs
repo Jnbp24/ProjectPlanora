@@ -23,6 +23,7 @@ namespace Planora.Api.Controllers
             _userService = service;
         }
 
+        [Authorize]
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
 		{

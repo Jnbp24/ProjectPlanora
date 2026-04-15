@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Data;
+using Microsoft.AspNetCore.Identity;
 using Planora.DataAccess;
 using Planora.DataAccess.Context;
 using Planora.DataAccess.Models.Auth;
@@ -12,6 +13,8 @@ public static class DbInitializer
         var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
         var userManager = serviceProvider.GetRequiredService<UserManager<AuthUser>>();
         var context = serviceProvider.GetRequiredService<DatabaseContext>();
+        
+        var configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
         //Ensure the Admin Role exists
         if (!await roleManager.RoleExistsAsync("Tovholder"))
@@ -48,7 +51,12 @@ public static class DbInitializer
                 UserDb = user
             };
 
-            var createResult = await userManager.CreateAsync(adminUser, "SecureAdmin123!");
+            var password = configuration["PasswordManager:adminPassword"];
+            
+            if (password is null)
+                throw new NoNullAllowedException("Loaded password for seedUser is null");
+            
+            var createResult = await userManager.CreateAsync(adminUser, password);
 
             if (createResult.Succeeded)
             {
