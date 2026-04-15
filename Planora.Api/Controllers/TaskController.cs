@@ -81,40 +81,38 @@ public class TaskController : ControllerBase
         }
     }
     
-    // ALL CODE BELOW THIS HAS NOT BEEN TESTED PROPERLY
-    
-    // PUT api/task/5/assign/123
+    // PUT api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc/category
     [Authorize]
-    [HttpPut("{taskId}/assign/{categoryName}")]
-    public async Task<IActionResult> AssignTaskAsync(string taskId, string categoryName)
+    [HttpPut("{taskId}/category")]
+    public async Task<IActionResult> AssignCategoryToTaskAsync(string taskId, [FromBody] string categoryName)
     {
-        var updatedTask = await _taskService.AssignCategoryByNameAsync(taskId, categoryName);
+        var updatedTask = await _taskService.AssignCategoryAsync(taskId, categoryName);
         return Ok(updatedTask);
     }
 
-    // PUT api/task/5/unassign/123
+    // DELETE api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc/category
     [Authorize]
-    [HttpPut("{taskId}/unassign/{categoryName}")]
-    public async Task<IActionResult> UnassignTaskAsync(string taskId, string categoryName)
+    [HttpDelete("{taskId}/category")]
+    public async Task<IActionResult> UnassignCategoryFromTaskAsync(string taskId, [FromBody] string categoryName)
     {
-        var updatedTask = await _taskService.UnassignCategoryByNameAsync(taskId, categoryName);
-        return Ok(updatedTask);
+        return Ok(await _taskService.UnassignCategoryAsync(taskId, categoryName));
     }
     
-    // PUT api/task/5/assign/123
+    // POST api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc/user
     [Authorize]
-    [HttpPut("{taskId}/assignUser/{userId}")]
-    public async Task<IActionResult> AssignUserToTaskAsync(string taskId, string userId)
+    [HttpPost("{taskId}/user")]
+    public async Task<IActionResult> AssignUserAsync(string taskId, [FromBody] string userId)
     {
-        var updatedTask = await _taskService.AssignUserToTaskAsync(taskId, userId);
+        var updatedTask = await _taskService.AssignUserAsync(taskId, userId);
         return Ok(updatedTask);
     }
 
+    // DELETE api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc/user
     [Authorize]
-    [HttpPut("{taskId}/unassignUser/{userId}")]
-    public async Task<IActionResult> UnassignUserFromTaskAsync(string taskId, string userId)
+    [HttpDelete("{taskId}/user")]
+    public async Task<IActionResult> UnassignUserAsync(string taskId, [FromBody] string userId)
     {
-        var updatedTask = await _taskService.UnassignUserFromTaskAsync(taskId, userId);
+        var updatedTask = await _taskService.UnassignUserAsync(taskId, userId);
         return Ok(updatedTask);
     }
 }

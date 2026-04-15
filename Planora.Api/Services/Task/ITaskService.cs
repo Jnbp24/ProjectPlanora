@@ -13,10 +13,10 @@ namespace Planora.Api.Services.Task
         Task<IEnumerable<TaskDTO>> GetAllAsync();
         Task<TaskDTO?> GetByIdAsync(string taskId);
         Task<TaskDTO> DeleteAsync(string taskId);
-        Task<TaskDTO> AssignCategoryByNameAsync(string taskId, string categoryName);
-        Task<TaskDTO> UnassignCategoryByNameAsync(string taskId, string categoryName);
-        Task<TaskDTO> AssignUserToTaskAsync(string taskId, string userId);
-        Task<TaskDTO> UnassignUserFromTaskAsync(string taskId, string userId);
+        Task<TaskDTO> AssignCategoryAsync(string taskId, string categoryName);
+        Task<TaskDTO> UnassignCategoryAsync(string taskId, string categoryName);
+        Task<TaskDTO> AssignUserAsync(string taskId, string userId);
+        Task<TaskDTO> UnassignUserAsync(string taskId, string userId);
 
     }
 }
