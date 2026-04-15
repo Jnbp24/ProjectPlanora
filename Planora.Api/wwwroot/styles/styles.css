@@ -369,3 +369,7 @@ body {
 .taskquickmenu select:focus {
     background: #fff;
 }
+
+#delete-task-btn {
+    visibility: hidden;
+}
