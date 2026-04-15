@@ -309,3 +309,71 @@ body {
     border: 1px solid #ccc;
     border-radius: 8px;
 }
+/* =========================
+   QUICK TASK BAR CONTAINER
+========================= */
+.taskquickmenu {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+    max-width: 520px;
+    background: #f6f6f6;
+    border: 1px solid #e3e3e3;
+    border-radius: 14px;
+    padding: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+    /* =========================
+   INPUT + SELECT BASE STYLE
+   (IMPORTANT FIXED PART)
+========================= */
+    .taskquickmenu input,
+    .taskquickmenu select {
+        flex: 1; /* ensures usable click area */
+        min-width: 0; /* prevents flex overflow issues */
+
+        border: none;
+        outline: none;
+        background: transparent;
+        padding: 10px 12px;
+        font-size: 0.9rem;
+        border-radius: 10px;
+        color: var(--text);
+        cursor: text;
+    }
+
+        /* =========================
+   FOCUS STATE (nice UX)
+========================= */
+        .taskquickmenu input:focus,
+        .taskquickmenu select:focus {
+            background: #ffffff;
+        }
+
+/* =========================
+   FIELD SIZING
+========================= */
+.task-name {
+    min-width: 140px;
+    font-weight: 600;
+}
+
+.task-content {
+    min-width: 200px;
+    color: var(--muted);
+}
+
+.task-category {
+    min-width: 140px;
+    cursor: pointer;
+    color: var(--muted);
+}
+
+    /* =========================
+   PLACEHOLDER STYLE FOR SELECT
+========================= */
+    .task-category:invalid {
+        color: var(--muted);
+    }

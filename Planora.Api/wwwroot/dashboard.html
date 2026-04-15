@@ -8,6 +8,7 @@
     <link href="https://unpkg.com/vis-timeline@latest/styles/vis-timeline-graph2d.min.css" rel="stylesheet">
     <script src="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.js"></script>
     <script defer src="scripts/calendar.js"></script>
+    <script defer src="scripts/task.js"></script>
 </head>
 <body class="page-dashboard">
   <main class="dashboard">
@@ -32,7 +33,15 @@
 
     <section class="content">
         <div class="topbar">
-            <input class="search-input" type="search" placeholder="Search">
+            <div class="taskquickmenu">
+                <input type="text" placeholder="Enter task name.." class="task-name" />
+                <input type="text" placeholder="Enter task content.." class="task-content" />
+
+                <select class="task-category">
+                    <option value="" disabled selected hidden >Choose a category</option>
+                </select>
+
+            </div>
             <button class="new-task-btn" type="button">+ New task</button>
             <button class="profile-btn" type="button" aria-label="Profile">A</button>
         </div>
