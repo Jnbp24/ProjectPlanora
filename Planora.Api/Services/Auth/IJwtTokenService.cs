@@ -5,5 +5,5 @@ namespace Planora.Api.Services.Auth;
 
 public interface IJwtTokenService
 {
-    string GenerateToken(AuthUser authUser);
+    Task<string> GenerateToken(AuthUser authUser);
 }

@@ -85,7 +85,7 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
         var nameNormalized = categoryName.Trim().ToLowerInvariant();
 
         var category = await _dbContext.Categories
-            .FirstOrDefaultAsync(c => c.Name.ToLower() == nameNormalized)
+            .FirstOrDefaultAsync(c => c.Name.ToLower().Equals(nameNormalized))
             ?? throw new KeyNotFoundException($"Category '{categoryName}' not found");
 
         var task = await _dbContext.Tasks
