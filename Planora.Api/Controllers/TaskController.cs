@@ -54,7 +54,7 @@ public class TaskController : ControllerBase
     public async Task<IActionResult> DeleteAsync([FromRoute] string taskId)
     {
         await _taskService.DeleteAsync(taskId);
-        return NoContent();
+        return Ok("Task deleted successfully");
     }
 
     // PUT api/task/5/assign/123
@@ -70,7 +70,7 @@ public class TaskController : ControllerBase
     public async Task<IActionResult> UnassignTaskAsync(string taskId, string categoryName)
     {
         var updatedTask = await _taskService.UnassignCategoryByNameAsync(taskId, categoryName);
-        return Ok();
+        return Ok(updatedTask);
     }
     
     // PUT api/task/5/assign/123
@@ -78,7 +78,14 @@ public class TaskController : ControllerBase
     public async Task<IActionResult> AssignUserToTaskAsync(string taskId, string userId)
     {
         var updatedTask = await _taskService.AssignUserToTaskAsync(taskId, userId);
-        return Ok();
+        return Ok(updatedTask);
+    }
+
+    [HttpPut("{taskId}/unassignUser/{userId}")]
+    public async Task<IActionResult> UnassignUserFromTaskAsync(string taskId, string userId)
+    {
+        var updatedTask = await _taskService.UnassignUserFromTaskAsync(taskId, userId);
+        return Ok(updatedTask);
     }
 
 }
