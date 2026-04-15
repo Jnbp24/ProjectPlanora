@@ -1,4 +1,5 @@
-﻿using Planora.DTO.UserDTO;
+﻿using Planora.DataAccess.Models;
+using Planora.DTO.UserDTO;
 
 namespace Planora.DataAccess.Mappers;
 
@@ -8,7 +9,7 @@ public static class UserMapping
 	{
 		return new UserDB
 		{
-			Id = new Guid(),
+			UserId = Guid.NewGuid(),
 			FirstName = dto.FirstName,
 			LastName = dto.LastName,
 			Email = dto.Email,
@@ -19,7 +20,7 @@ public static class UserMapping
 	public static UserDTO ToDTO(UserDB entity)
 	{
 		return new UserDTO(
-			Id: entity.Id.ToString(),
+			UserId: entity.UserId.ToString(),
 			FirstName: entity.FirstName,
 			LastName: entity.LastName,
 			Email: entity.Email,

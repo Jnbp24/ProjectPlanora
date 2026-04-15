@@ -6,6 +6,7 @@ using Planora.DataAccess.Repositories;
 using Planora.DataAccess;
 using Planora.DataAccess.Mappers;
 using Planora.DataAccess.Models.Auth;
+using Planora.DataAccess.Models;
 using Planora.DataAccess.Repositories.User;
 using Planora.DTO.UserDTO;
 

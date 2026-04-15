@@ -34,7 +34,7 @@ public class JwtTokenService : IJwtTokenService
         List<Claim> claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, authUser.Id),
-            new Claim("ApplicationUserId", user.Id.ToString()),
+            new Claim("ApplicationUserId", user.UserId.ToString()),
             new Claim(ClaimTypes.Email, authUser.Email)
         };
         

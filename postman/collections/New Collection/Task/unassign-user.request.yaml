@@ -1,0 +1,4 @@
+$kind: http-request
+method: PUT
+url: '{{baseUrl}}/api/Task/{{taskId}}/unassignUser/{{userId}}'
+order: 9000

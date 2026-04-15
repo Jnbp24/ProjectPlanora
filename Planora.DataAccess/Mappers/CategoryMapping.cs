@@ -7,7 +7,8 @@ public static class CategoryMapping
 {
 	public static CategoryDB ToEntity(CategoryDTO categoryDto) 
 	{
-		return new CategoryDB{
+		return new CategoryDB
+		{
 			CategoryId = Guid.NewGuid(),
 			Name = categoryDto.Name, 
 			HexColor =  categoryDto.HexColor

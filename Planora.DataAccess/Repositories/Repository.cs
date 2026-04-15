@@ -5,7 +5,7 @@ namespace Planora.DataAccess.Repositories;
 public abstract class Repository<T> : IRepository<T> where T : class
 {
     protected readonly DatabaseContext _dbContext;
-    protected readonly DbSet<T> _dbSet;
+    private readonly DbSet<T> _dbSet;
 
     protected Repository(DatabaseContext dbContext)
     {

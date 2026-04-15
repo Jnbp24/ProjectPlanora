@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Planora.DTO.ProjectDTO;
-using Planora.Api.Services;
 using Planora.Api.Services.Project;
 
 namespace Planora.Api.Controllers;
@@ -18,43 +17,61 @@ public class ProjectController : ControllerBase
 
     // POST api/project
     [HttpPost]
-    public async Task<ActionResult<ProjectDTO>> CreateAsync([FromBody] ProjectDTO dto)
+    public async Task<ActionResult<ProjectDTO>> CreateProjectAsync([FromBody] ProjectDTO projectDTO)
     {
-        var created = await _projectService.CreateAsync(dto);
+        var createdProjectDto = await _projectService.CreateAsync(projectDTO);
         // return 201 with location header pointing to the created resource
-        return CreatedAtAction(nameof(GetByIdAsync), new { projectId = created.ProjectId }, created);
+        return CreatedAtAction(nameof(GetProjectByIdAsync), new { projectId = createdProjectDto.ProjectId }, createdProjectDto);
     }
-
-    // PUT api/project/5
-    [HttpPut("{projectId:int}")]
-    public async Task<IActionResult> UpdateAsync([FromRoute] string projectId, [FromBody] ProjectDTO dto)
-    {
-        var updated = await _projectService.UpdateAsync(projectId, dto);
-        return Ok(updated);
-    }
-
+    
     // GET api/project
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProjectDTO>>> GetAllAsync()
+    public async Task<ActionResult<IEnumerable<ProjectDTO>>> GetAllProjectsAsync()
     {
-        var items = await _projectService.GetAllAsync();
-        return Ok(items);
+        return Ok(await _projectService.GetAllAsync());
     }
 
-    // GET api/project/5
-    [HttpGet("{projectId:int}")]
-    public async Task<ActionResult<ProjectDTO>> GetByIdAsync([FromRoute] string projectId)
+    // GET api/project/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
+    [HttpGet("{projectId}")]
+    public async Task<ActionResult<ProjectDTO>> GetProjectByIdAsync(string projectId)
     {
-        var item = await _projectService.GetByIdAsync(projectId);
-        if (item is null) return NotFound();
-        return Ok(item);
+        try
+        {
+            return Ok(await _projectService.GetByIdAsync(projectId));
+        }
+        catch (KeyNotFoundException e)
+        {
+            return NotFound();
+        }
     }
 
-    // DELETE api/project/5
-    [HttpDelete("{projectId:int}")]
-    public async Task<IActionResult> DeleteAsync([FromRoute] string projectId)
+
+    // PUT api/project/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
+    [HttpPut("{projectId}")]
+    public async Task<IActionResult> UpdateProjectAsync(string projectId, [FromBody] ProjectDTO projectDTO)
     {
-        await _projectService.DeleteAsync(projectId);
-        return NoContent();
+        try
+        {
+            return Ok(await _projectService.UpdateAsync(projectId, projectDTO));
+        }
+        catch (KeyNotFoundException e)
+        {
+            return NotFound();
+        }
+        
+    }
+    // DELETE api/project/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
+    [HttpDelete("{projectId}")]
+    public async Task<IActionResult> DeleteProjectAsync(string projectId)
+    {
+        try
+        {
+            await _projectService.DeleteAsync(projectId);
+            return NoContent();
+        }
+        catch (KeyNotFoundException e)
+        {
+            return NotFound();
+        }
     }
 }

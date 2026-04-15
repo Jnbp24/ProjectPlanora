@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Planora.Api.Services;
 using Planora.Api.Services.Category;
 using Planora.DTO.CategoryDTO;
 
@@ -9,28 +8,31 @@ namespace Planora.Api.Controllers;
 [Route("api/[controller]")]
 public class CategoryController : ControllerBase 
 {
-	private ICategoryService _categoryService;
+	private readonly ICategoryService _categoryService;
 	
 	public CategoryController(ICategoryService categoryService) 
 	{
 		_categoryService = categoryService;
 	}
 	
-	// POST api/task
+	// POST api/category
 	[HttpPost]
-	public async Task<ActionResult<CategoryDTO>> CreateAsync(CategoryDTO categoryDto)
+	public async Task<ActionResult<CategoryDTO>> CreateCategoryAsync([FromBody] CategoryDTO categoryDTO)
 	{
-		var createdCategoryDto = await _categoryService.CreateAsync(categoryDto);
+		var createdCategoryDto = await _categoryService.CreateAsync(categoryDTO);
 		// return 201 with location header pointing to the created resource
 		return CreatedAtAction(nameof(GetCategoryByIdAsync), new { categoryId = createdCategoryDto.CategoryId }, createdCategoryDto);
 	}
 
+	// GET api/category
+	//[Authorize]
 	[HttpGet]
 	public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAllCategoriesAsync()
 	{
 		return Ok(await _categoryService.GetAllAsync());
 	}
 	
+	// GET api/category/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
 	[HttpGet("{categoryId}")]
 	public async Task<ActionResult<CategoryDTO>> GetCategoryByIdAsync(string categoryId)
 	{
@@ -44,21 +46,21 @@ public class CategoryController : ControllerBase
 		}
 	}
 	
+	// PUT api/category/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
 	[HttpPut("{categoryId}")]
-	public async Task<IActionResult> UpdateCategoryAsync(string categoryId, CategoryDTO categoryDto)
+	public async Task<IActionResult> UpdateCategoryAsync(string categoryId, CategoryDTO categoryDTO)
 	{
 		try
 		{
-			return Ok(await _categoryService.UpdateAsync(categoryId, categoryDto));
+			return Ok(await _categoryService.UpdateAsync(categoryId, categoryDTO));
 		}
 		catch (KeyNotFoundException e)
 		{
-			return NotFound();
+			return NotFound(e.Message);
 		}
 	}
-
-
 	
+	// DELETE api/category/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
 	[HttpDelete("{categoryId}")]
 	public async Task<IActionResult> DeleteCategoryAsync(string categoryId)
 	{
@@ -69,7 +71,7 @@ public class CategoryController : ControllerBase
 		}
 		catch (KeyNotFoundException e)
 		{
-			return NotFound();
+			return NotFound(e.Message);
 		}
 	}
 }

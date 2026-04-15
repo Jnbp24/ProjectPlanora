@@ -16,6 +16,7 @@ namespace Planora.Api.Services.Task
         Task<TaskDTO> AssignCategoryByNameAsync(string taskId, string categoryName);
         Task<TaskDTO> UnassignCategoryByNameAsync(string taskId, string categoryName);
         Task<TaskDTO> AssignUserToTaskAsync(string taskId, string userId);
+        Task<TaskDTO> UnassignUserFromTaskAsync(string taskId, string userId);
 
-	}
+    }
 }

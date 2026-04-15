@@ -7,10 +7,12 @@ public static class TaskMapping
 {
     public static TaskDB ToEntity(TaskDTO dto)
     {
-        return new TaskDB(
-            title: dto.Title,
-            content: dto.Content
-            );
+        return new TaskDB
+        {
+            TaskId = Guid.NewGuid(),
+            Title =  dto.Title,
+            Content =  dto.Content
+        };
     }
 
     public static TaskDTO ToDTO(TaskDB entity) {

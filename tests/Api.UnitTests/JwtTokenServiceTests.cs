@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Moq;
 using Planora.Api.Services.Auth;
 using Planora.DataAccess;
+using Planora.DataAccess.Models;
 using Planora.DataAccess.Models.Auth;
 
 namespace Api.UnitTests;
@@ -49,7 +50,7 @@ public class JwtTokenServiceTests
     {
         // Arrange
         var guid = Guid.NewGuid();
-        var appUser = new UserDB { Id = guid};
+        var appUser = new UserDB { UserId = guid};
         var authUser = new AuthUser { Id = "auth-123", Email = "user@email.com", UserDb = appUser};
         
         var roles = new List<string> { "Tovholder" };
@@ -69,7 +70,7 @@ public class JwtTokenServiceTests
     {
         // Arrange
         var guid = Guid.NewGuid();
-        var appUser = new UserDB { Id = guid};
+        var appUser = new UserDB { UserId = guid};
         var authUser = new AuthUser { Id = "auth-123", Email = "user@email.com", UserDb = appUser};
         
         var roles = new List<string> { "Tovholder" };
@@ -95,7 +96,7 @@ public class JwtTokenServiceTests
     {
         // Arrange
         var guid = Guid.NewGuid();
-        var appUser = new UserDB { Id = guid};
+        var appUser = new UserDB { UsedId = guid};
         var authUser = new AuthUser { Id = "auth-123", Email = "user@email.com",  UserDb = appUser};
         
         var roles = new List<string> { "Tovholder" };
@@ -117,7 +118,7 @@ public class JwtTokenServiceTests
     {
         // Arrange
         var guid = Guid.NewGuid();
-        var appUser = new UserDB { Id = guid};
+        var appUser = new UserDB { UserId = guid};
         var authUser = new AuthUser { Id = "auth-123", Email = "user@email.com", UserDb = appUser};
         
         var roles = new List<string> { "Tovholder" };
