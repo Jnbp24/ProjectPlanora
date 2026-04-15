@@ -1,10 +1,8 @@
 $kind: http-request
+url: "{{baseUrl}}/api/Task"
 method: POST
-url: '{{baseUrl}}/api/Task'
-order: 1000
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
 body:
   type: json
   content: |-
@@ -13,3 +11,4 @@ body:
       "Content": "Example task content",
       "Title": "Example task"
     }
+order: 1000

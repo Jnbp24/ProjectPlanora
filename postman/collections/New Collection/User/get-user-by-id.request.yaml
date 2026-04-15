@@ -1,7 +1,6 @@
 $kind: http-request
+url: "{{baseUrl}}/api/User/:id"
 method: GET
-url: '{{baseUrl}}/api/User/:id'
-order: 2000
 pathVariables:
-  - key: id
-    value: user-1
+  id: user-1
+order: 2000

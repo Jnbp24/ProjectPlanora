@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --bg: #e7de55;
   --card: #f5f5f5;
   --surface: #f4f4f4;
@@ -293,6 +293,10 @@ body {
   }
 }
 
+.new-task-btn {
+    white-space: nowrap; 
+}
+
 @media (max-width: 780px) {
   .page-login .panel {
     grid-template-columns: 1fr;
@@ -304,10 +308,64 @@ body {
     border-bottom: 1px solid var(--border);
   }
 }
-
+=======
 /* Calendar */
 #calendar {
     flex-grow: 1;
     height: 100vh;
     overflow: hidden;
+}
+
+
+/* vis-timeline */
+#timeline {
+    margin-top: 20px;
+    height: 300px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+.taskquickmenu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 100%;
+}
+
+    /* shared input styling */
+    .taskquickmenu input,
+    .taskquickmenu select {
+        border: none;
+        outline: none;
+        background: transparent;
+        padding: 10px 12px;
+        font-size: 0.9rem;
+        border-radius: 10px;
+        color: var(--text);
+        min-width: 0;
+    }
+
+.task-name {
+    min-width: 180px;
+}
+
+.task-content {
+    min-width: 180px;
+    color: var(--muted);
+}
+
+.task-category {
+    min-width: 160px;
+    cursor: pointer;
+    color: var(--muted);
+}
+
+.task-deadline {
+    min-width: 140px;
+    cursor: pointer;
+}
+
+.taskquickmenu input:focus,
+.taskquickmenu select:focus {
+    background: #fff;
 }

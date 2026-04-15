@@ -1,4 +1,4 @@
 $kind: http-request
+url: "{{baseUrl}}/api/Category"
 method: GET
-url: '{{baseUrl}}/api/Category'
 order: 1000

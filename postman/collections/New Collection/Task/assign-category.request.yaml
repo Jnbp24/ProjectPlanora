@@ -1,4 +1,4 @@
 $kind: http-request
+url: "{{baseUrl}}/api/Task/{{taskId}}/assign/{{categoryName}}"
 method: PUT
-url: '{{baseUrl}}/api/Task/{{taskId}}/assign/{{categoryName}}'
 order: 6000

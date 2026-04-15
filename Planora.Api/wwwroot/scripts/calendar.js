@@ -12,16 +12,24 @@ async function setup_calendar() {
 }
 
 async function get(url, error_message) {
-    const response = await fetch(url)
+    const token = sessionStorage.getItem("token");
+
+    const response = await fetch("/api/Task", {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+
     if (!response.ok) {
-        throw new Error(error_message)
+        throw new Error(error_message);
     }
-    return await response.json()
+
+    return await response.json();
 }
 
 function map_to_task(data) {
     return data.map(task => ({
-        id: task.taskid,
+        id: task.taskId,
         title: task.title,
         start: new Date("2026-05-15"),
     }));
