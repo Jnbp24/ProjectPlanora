@@ -1,14 +1,14 @@
 $kind: http-request
+url: "{{baseUrl}}/api/Category"
 method: POST
-url: '{{baseUrl}}/api/Category'
-order: 2000
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
 body:
   type: json
   content: |-
     {
       "categoryId": "1",
-      "name": "Example Category"
+      "name": "JonasTestCategory",
+      "hexColor": "#FF0000"
     }
+order: 2000

@@ -1,4 +1,4 @@
 $kind: http-request
+url: "{{baseUrl}}/api/Project/{{projectId}}"
 method: DELETE
-url: '{{baseUrl}}/api/Project/{{projectId}}'
 order: 5000

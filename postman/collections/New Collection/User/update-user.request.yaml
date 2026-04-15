@@ -1,13 +1,10 @@
 $kind: http-request
+url: "{{baseUrl}}/api/User/:id"
 method: PUT
-url: '{{baseUrl}}/api/User/:id'
-order: 3000
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
 pathVariables:
-  - key: id
-    value: user-1
+  id: user-1
 body:
   type: json
   content: |-
@@ -18,3 +15,4 @@ body:
       "Email": "jonas@example.com",
       "Tovholder": true
     }
+order: 3000

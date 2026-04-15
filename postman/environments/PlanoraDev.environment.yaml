@@ -1,0 +1,6 @@
+name: PlanoraDev
+values:
+  - key: jwt_token
+    value: ""
+    enabled: true
+color: null

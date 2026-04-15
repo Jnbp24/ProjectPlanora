@@ -11,7 +11,8 @@ public static class TaskMapping
         {
             TaskId = Guid.NewGuid(),
             Title =  dto.Title,
-            Content =  dto.Content
+            Content =  dto.Content,
+            Deadline = dto.Deadline
         };
     }
 
@@ -19,7 +20,8 @@ public static class TaskMapping
         return new TaskDTO(
             TaskId: entity.TaskId.ToString(), 
             Title: entity.Title, 
-            Content: entity.Content
+            Content: entity.Content,
+            Deadline: entity.Deadline
             );
     }
 }

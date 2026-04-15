@@ -1,11 +1,8 @@
 $kind: http-request
-name: 'Create User (Not Implemented)'
+url: "{{baseUrl}}/api/User"
 method: POST
-url: '{{baseUrl}}/api/User'
-order: 4000
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
 body:
   type: json
   content: |-
@@ -16,3 +13,4 @@ body:
       "Email": "jonas@example.com",
       "Tovholder": true
     }
+order: 4000

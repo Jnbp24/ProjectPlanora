@@ -1,4 +1,9 @@
 $kind: collection
-name: New Collection
 variables:
   baseUrl: ""
+auth:
+  - id: db02d30b-1c08-4a56-916e-2952ec7d7ceb
+    type: bearer
+    name: bearer auth
+    credentials:
+      token: "{{jwt_token}}"
