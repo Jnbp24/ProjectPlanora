@@ -9,9 +9,10 @@ async function login() {
 	try {
 		const data = create_data()
 		await post(data)
-		clear_input()
+		window.location.href = "/dashboard.html"
 	} catch (error) {
 		error_message(error.message)
+		clear_input()
 	}
 }
 
