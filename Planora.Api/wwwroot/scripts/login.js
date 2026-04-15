@@ -9,9 +9,10 @@ async function login() {
 	try {
 		const data = create_data()
 		await post(data)
-		clear_input()
+		window.location.href = "/dashboard.html"
 	} catch (error) {
 		error_message(error.message)
+		clear_input()
 	}
 }
 
@@ -45,10 +46,16 @@ async function post(data) {
 		},
 		body: JSON.stringify(data)
 	});
-	if (!response.ok || !response.success) {
-		throw new Error(response.error)
+
+	const result = await response.json();
+
+	if (!response.ok) {
+		throw new Error(result.error)
 	}
-	sessionStorage.setItem("token", response.token)
+	if (response.error) {
+		throw new Error("issue of login")
+	}
+	sessionStorage.setItem("token", result.token)
 }
 
 function clear_input() {
