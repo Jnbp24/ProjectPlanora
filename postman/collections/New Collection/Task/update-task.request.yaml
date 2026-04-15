@@ -1,13 +1,10 @@
 $kind: http-request
+url: "{{baseUrl}}/api/Task/:taskId"
 method: PUT
-url: '{{baseUrl}}/api/Task/:taskId'
-order: 2000
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
 pathVariables:
-  - key: taskId
-    value: '1'
+  taskId: "1"
 body:
   type: json
   content: |-
@@ -16,3 +13,4 @@ body:
       "Content": "Updated task content",
       "Title": "Updated title"
     }
+order: 2000

@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --bg: #e7de55;
   --card: #f5f5f5;
   --surface: #f4f4f4;
@@ -293,6 +293,10 @@ body {
   }
 }
 
+.new-task-btn {
+    white-space: nowrap; 
+}
+
 @media (max-width: 780px) {
   .page-login .panel {
     grid-template-columns: 1fr;
@@ -320,31 +324,17 @@ body {
     border: 1px solid #ccc;
     border-radius: 8px;
 }
-/* =========================
-   QUICK TASK BAR CONTAINER
-========================= */
 .taskquickmenu {
     display: flex;
     align-items: center;
-    gap: 6px;
-    flex: 1;
-    max-width: 520px;
-    background: #f6f6f6;
-    border: 1px solid #e3e3e3;
-    border-radius: 14px;
-    padding: 6px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    gap: 10px;
+    width: 100%;
+    max-width: 100%;
 }
 
-    /* =========================
-   INPUT + SELECT BASE STYLE
-   (IMPORTANT FIXED PART)
-========================= */
+    /* shared input styling */
     .taskquickmenu input,
     .taskquickmenu select {
-        flex: 1; /* ensures usable click area */
-        min-width: 0; /* prevents flex overflow issues */
-
         border: none;
         outline: none;
         background: transparent;
@@ -352,40 +342,30 @@ body {
         font-size: 0.9rem;
         border-radius: 10px;
         color: var(--text);
-        cursor: text;
+        min-width: 0;
     }
 
-        /* =========================
-   FOCUS STATE (nice UX)
-========================= */
-        .taskquickmenu input:focus,
-        .taskquickmenu select:focus {
-            background: #ffffff;
-        }
-
-/* =========================
-   FIELD SIZING
-========================= */
 .task-name {
-    min-width: 140px;
-    font-weight: 600;
+    min-width: 180px;
 }
 
 .task-content {
-    min-width: 200px;
+    min-width: 180px;
     color: var(--muted);
 }
 
 .task-category {
-    min-width: 140px;
+    min-width: 160px;
     cursor: pointer;
     color: var(--muted);
 }
 
-    /* =========================
-   PLACEHOLDER STYLE FOR SELECT
-========================= */
-    .task-category:invalid {
-        color: var(--muted);
-    }
+.task-deadline {
+    min-width: 140px;
+    cursor: pointer;
+}
 
+.taskquickmenu input:focus,
+.taskquickmenu select:focus {
+    background: #fff;
+}

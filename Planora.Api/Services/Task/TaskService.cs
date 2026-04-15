@@ -45,6 +45,7 @@ public class TaskService : ITaskService
         }
         taskDB.Title = dto.Title;
         taskDB.Content = dto.Content;
+        taskDB.Deadline = dto.Deadline;
         await _taskRepository.SaveChangesAsync();
         return TaskMapping.ToDTO(taskDB);
     }

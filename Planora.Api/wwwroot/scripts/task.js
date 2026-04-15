@@ -4,19 +4,13 @@
     const titleInput = document.querySelector(".task-name");
     const contentInput = document.querySelector(".task-content");
     const categoryInput = document.querySelector(".task-category");
+    const dateInput = document.querySelector(".task-date");
 
     let categoriesMap = {};
 
-
     async function loadCategories() {
         try {
-            const response = await fetch("/api/Category");
-
-            if (!response.ok) {
-                throw new Error("Failed to load categories");
-            }
-
-            const categories = await response.json();
+            const categories = await get("/api/Category", "Failed to load categories");
 
             console.log("Loaded categories:", categories);
 
@@ -66,6 +60,7 @@
         const title = titleInput.value.trim();
         const content = contentInput.value.trim();
         const categoryId = categoryInput.value || null;
+        const deadline = dateInput.value || null;
 
         if (!title) {
             titleInput.focus();
@@ -76,17 +71,12 @@
             taskId: null,
             title,
             content,
-            categoryId: null
+            categoryId: null,
+            deadline
         };
 
         try {
-            const response = await fetch("/api/Task", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(task)
-            });
+            const response = await post("/api/Task", task);
 
             if (!response.ok) throw new Error("Failed to create task");
 
@@ -96,35 +86,82 @@
             const DEFAULT_CATEGORY_NAME = "Default";
 
             const selectedCategory = categoryId
-                ? categoriesMap[categoryId]
+                ? categoriesMap[String(categoryId)]
                 : null;
 
             const categoryName =
                 selectedCategory?.name ?? DEFAULT_CATEGORY_NAME;
 
-            await fetch(`/api/task/${taskId}/assign/${categoryName}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
+            const assignResponse = await put(
+                `/api/task/${taskId}/category`,
+                categoryName
+            );
+
+            if (!assignResponse.ok) throw new Error("Failed to assign category");
 
             console.log("Assigned category:", categoryName);
 
             titleInput.value = "";
             contentInput.value = "";
             categoryInput.selectedIndex = 0;
+            dateInput.value = "";
 
             categoryInput.style.color = "";
             categoryInput.style.background = "";
-
-            updateButtonText();
 
         } catch (err) {
             console.error("Error:", err);
         }
     }
+
     newTaskBtn.addEventListener("click", createTask);
 
     loadCategories();
 });
+
+async function get(url, error_message) {
+    const token = sessionStorage.getItem("token");
+
+    const response = await fetch(url, {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error(error_message);
+    }
+
+    return await response.json();
+}
+
+async function post(url, data) {
+    const token = sessionStorage.getItem("token");
+
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+    });
+
+    return response;
+}
+
+async function put(url, data = null) {
+    const token = sessionStorage.getItem("token");
+
+    const response = await fetch(url, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: data ? JSON.stringify(data) : null
+    });
+
+    return response;
+}
