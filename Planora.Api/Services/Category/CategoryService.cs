@@ -29,13 +29,23 @@ public class CategoryService : ICategoryService
 	
 	public async Task<CategoryDTO> GetByIdAsync(string categoryId)
 	{
-		var categoryDB = await _categoryRepository.GetByIdAsync(categoryId);
+		if (!Guid.TryParse(categoryId, out var cGuid))
+		{
+			throw new ArgumentException($"Invalid categoryId {categoryId}");
+		}
+
+		var categoryDB = await _categoryRepository.GetByIdAsync(cGuid);
 		return CategoryMapping.ToDTO(categoryDB);
 	}
 	
 	public async Task<CategoryDTO> UpdateAsync(string categoryId, CategoryDTO dto)
 	{
-		var categoryDB = await _categoryRepository.GetByIdAsync(categoryId);
+		if (!Guid.TryParse(categoryId, out var cGuid))
+		{
+			throw new ArgumentException($"Invalid categoryId {categoryId}");
+		}
+		
+		var categoryDB = await _categoryRepository.GetByIdAsync(cGuid);
 		if (categoryDB.Deleted)
 		{
 			throw new NotSupportedException($"{categoryId} is already deleted");
@@ -48,7 +58,12 @@ public class CategoryService : ICategoryService
 
 	public async Task<CategoryDTO> DeleteAsync(string categoryId)
 	{
-		var categoryDB = await _categoryRepository.GetByIdAsync(categoryId);
+		if (!Guid.TryParse(categoryId, out var cGuid))
+		{
+			throw new ArgumentException($"Invalid categoryId {categoryId}");
+		}
+		
+		var categoryDB = await _categoryRepository.GetByIdAsync(cGuid);
 		if (categoryDB.Deleted)
 		{
 			throw new NotSupportedException($"{categoryId} is already deleted");

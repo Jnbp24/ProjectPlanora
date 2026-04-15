@@ -31,15 +31,25 @@ namespace Planora.Api.Services.User
             return userDBs.Select(UserMapping.ToDTO);
 		}
 
-        public async Task<UserDTO> GetUser(string id)
+        public async Task<UserDTO> GetUser(string userId)
         {
-            UserDB userDB = await _userRepository.GetByIdAsync(id);
+            if (!Guid.TryParse(userId, out var uGuid))
+            {
+                throw new ArgumentException($"Invalid userId {uGuid}");
+            }
+            
+            UserDB userDB = await _userRepository.GetByIdAsync(uGuid);
             return UserMapping.ToDTO(userDB);
         }
         
-        public async Task<UserDTO> UpdateUser(string id, UserDTO userDTO)
+        public async Task<UserDTO> UpdateUser(string userId, UserDTO userDTO)
         {
-            UserDB userDB = await _userRepository.GetByIdAsync(id);
+            if (!Guid.TryParse(userId, out var uGuid))
+            {
+                throw new ArgumentException($"Invalid userId {uGuid}");
+            }
+            
+            UserDB userDB = await _userRepository.GetByIdAsync(uGuid);
           
             userDB.FirstName = userDTO.FirstName;
             userDB.LastName = userDTO.LastName;
@@ -49,12 +59,17 @@ namespace Planora.Api.Services.User
             return userDTO; 
         }
 
-        public async Task<UserDTO> DeleteUser(string id)
+        public async Task<UserDTO> DeleteUser(string userId)
         {
-            UserDB deletedUserDB = await _userRepository.GetByIdAsync(id);
+            if (!Guid.TryParse(userId, out var uGuid))
+            {
+                throw new ArgumentException($"Invalid userId {uGuid}");
+            }
+            
+            UserDB deletedUserDB = await _userRepository.GetByIdAsync(uGuid);
             if (deletedUserDB.Deleted)
             {
-                throw new NotSupportedException($"{id} is already deleted");
+                throw new NotSupportedException($"{userId} is already deleted");
             }
             deletedUserDB.Deleted = true;
             await _userRepository.SaveChangesAsync();
