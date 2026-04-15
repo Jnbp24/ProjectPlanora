@@ -20,7 +20,6 @@ async function refresh_calendar() {
         const tasks = map_to_task(data);
 
         if (!calendar) return;
-
         calendar.removeAllEvents();
         calendar.addEventSource(map_to_task(data));
 
