@@ -14,9 +14,9 @@ public class CategoryRepository : Repository<CategoryDB>, ICategoryRepository
 		return await _dbContext.Categories.Where(c => !c.Deleted).Include(c => c.Tasks).ToListAsync();
 	}
 
-	public override async Task<CategoryDB> GetByIdAsync(string id)
+	public override async Task<CategoryDB> GetByIdAsync(Guid categoryId)
 	{
-		return await _dbContext.Categories.Where(c => !c.Deleted).FirstOrDefaultAsync(c => c.CategoryId == Guid.Parse(id)) ?? throw new KeyNotFoundException($"Key {id} does not exist.");
+		return await _dbContext.Categories.Where(c => !c.Deleted).FirstOrDefaultAsync(c => c.CategoryId == categoryId) ?? throw new KeyNotFoundException($"Key {categoryId} does not exist.");
 	}
 
 }

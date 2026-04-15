@@ -47,6 +47,10 @@ public class ProjectController : ControllerBase
         {
             return NotFound();
         }
+        catch (ArgumentException e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
 
@@ -57,11 +61,17 @@ public class ProjectController : ControllerBase
     {
         try
         {
-            return Ok(await _projectService.UpdateAsync(projectId, projectDTO));
+            await _projectService.UpdateAsync(projectId, projectDTO);
+            return NoContent();
+
         }
         catch (KeyNotFoundException e)
         {
             return NotFound();
+        }
+        catch (ArgumentException e)
+        {
+            return BadRequest(e.Message);
         }
         
     }
@@ -78,6 +88,10 @@ public class ProjectController : ControllerBase
         catch (KeyNotFoundException e)
         {
             return NotFound();
+        }
+        catch (ArgumentException e)
+        {
+            return BadRequest(e.Message);
         }
     }
 }

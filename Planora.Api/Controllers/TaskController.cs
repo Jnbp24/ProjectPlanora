@@ -47,13 +47,17 @@ public class TaskController : ControllerBase
         {
             return NotFound(e.Message);
         }
+        catch (ArgumentException e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
 
     // PUT api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
     [Authorize]
     [HttpPut("{taskId}")]
-    public async Task<IActionResult> UpdateTaskAsync(string taskId, TaskDTO taskDTO)
+    public async Task<IActionResult> UpdateTaskAsync(string taskId, [FromBody] TaskDTO taskDTO)
     {
         try
         {
@@ -62,6 +66,10 @@ public class TaskController : ControllerBase
         catch (KeyNotFoundException e)
         {
             return NotFound(e.Message);
+        }
+        catch (ArgumentException e)
+        {
+            return BadRequest(e.Message);
         }
     }
     
@@ -78,6 +86,10 @@ public class TaskController : ControllerBase
         catch (KeyNotFoundException e)
         {
             return NotFound(e.Message);
+        }
+        catch (ArgumentException e)
+        {
+            return BadRequest(e.Message);
         }
     }
     

@@ -25,9 +25,9 @@ public abstract class Repository<T> : IRepository<T> where T : class
         return await _dbSet.ToListAsync();
     }
 
-    public virtual async Task<T> GetByIdAsync(string id)
+    public virtual async Task<T> GetByIdAsync(Guid id)
     {
-        return await _dbSet.FindAsync(Guid.Parse(id)) ?? throw new KeyNotFoundException($"Key {id} does not exist.");
+        return await _dbSet.FindAsync(id) ?? throw new KeyNotFoundException($"Key {id} does not exist.");
     }
     
     public async System.Threading.Tasks.Task SaveChangesAsync()

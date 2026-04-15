@@ -21,17 +21,7 @@ public class ProjectService : IProjectService
         var createdProjectDB = await _projectRepository.CreateAsync(projectDB);
         return ProjectMapping.ToDTO(createdProjectDB);
     }
-
-    public async Task<ProjectDTO> UpdateAsync(string projectId, ProjectDTO dto)
-    {
-        var projectDB = await _projectRepository.GetByIdAsync(projectId);
-        
-        projectDB.Title = dto.Title;
-        projectDB.Content = dto.Content;
-        await _projectRepository.SaveChangesAsync();
-        return ProjectMapping.ToDTO(projectDB);
-    }
-
+    
     public async Task<IEnumerable<ProjectDTO>> GetAllAsync()
     {
         //TODO: should it filter out deleted projects?
@@ -39,16 +29,40 @@ public class ProjectService : IProjectService
         return projectDBs.Select(ProjectMapping.ToDTO);
     }
 
+    public async Task<ProjectDTO> UpdateAsync(string projectId, ProjectDTO projectDTO)
+    {
+        
+        if (!Guid.TryParse(projectId, out var pGuid))
+        {
+            throw new ArgumentException($"Invalid projectId {projectId}");
+        }
+        
+        var projectDB = await _projectRepository.GetByIdAsync(pGuid);
+        projectDB.Title = projectDTO.Title;
+        projectDB.Content = projectDTO.Content;
+        await _projectRepository.SaveChangesAsync();
+        return ProjectMapping.ToDTO(projectDB);
+    }
+
     public async Task<ProjectDTO> GetByIdAsync(string projectId)
     {
-        var projectDB = await _projectRepository.GetByIdAsync(projectId);
+        if (!Guid.TryParse(projectId, out var pGuid))
+        {
+            throw new ArgumentException($"Invalid projectId {projectId}");
+        }
+        
+        var projectDB = await _projectRepository.GetByIdAsync(pGuid);
         
         return ProjectMapping.ToDTO(projectDB);
     }
 
     public async Task<ProjectDTO> DeleteAsync(string projectId)
     {
-        var projectDB = await _projectRepository.GetByIdAsync(projectId);
+        if (!Guid.TryParse(projectId, out var pGuid))
+        {
+            throw new ArgumentException($"Invalid projectId {projectId}");
+        }
+        var projectDB = await _projectRepository.GetByIdAsync(pGuid);
         
         projectDB.Deleted = true;
         await _projectRepository.SaveChangesAsync();
