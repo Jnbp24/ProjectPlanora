@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Planora.Api.Services.Category;
 using Planora.DTO.CategoryDTO;
 
@@ -16,6 +17,7 @@ public class CategoryController : ControllerBase
 	}
 	
 	// POST api/category
+	[Authorize]
 	[HttpPost]
 	public async Task<ActionResult<CategoryDTO>> CreateCategoryAsync([FromBody] CategoryDTO categoryDTO)
 	{
@@ -25,7 +27,7 @@ public class CategoryController : ControllerBase
 	}
 
 	// GET api/category
-	//[Authorize]
+	[Authorize]
 	[HttpGet]
 	public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAllCategoriesAsync()
 	{
@@ -33,6 +35,7 @@ public class CategoryController : ControllerBase
 	}
 	
 	// GET api/category/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
+	[Authorize]
 	[HttpGet("{categoryId}")]
 	public async Task<ActionResult<CategoryDTO>> GetCategoryByIdAsync(string categoryId)
 	{
@@ -46,7 +49,8 @@ public class CategoryController : ControllerBase
 		}
 	}
 	
-	// PUT api/category/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
+	// PUT api/category/d3eb20c6-2b60-4c82-95e3-
+	[Authorize]
 	[HttpPut("{categoryId}")]
 	public async Task<IActionResult> UpdateCategoryAsync(string categoryId, CategoryDTO categoryDTO)
 	{
@@ -61,6 +65,7 @@ public class CategoryController : ControllerBase
 	}
 	
 	// DELETE api/category/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
+	[Authorize]
 	[HttpDelete("{categoryId}")]
 	public async Task<IActionResult> DeleteCategoryAsync(string categoryId)
 	{
