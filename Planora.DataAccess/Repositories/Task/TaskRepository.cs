@@ -66,7 +66,7 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
             .FirstOrDefaultAsync(t => t.TaskId == tGuid)
             ?? throw new KeyNotFoundException($"Task {taskId} not found");
         var user = await _dbContext.Users
-            .FirstOrDefaultAsync(u => u.Id == uGuid)
+            .FirstOrDefaultAsync(u => u.UserId == uGuid)
             ?? throw new KeyNotFoundException($"User {userId} not found");
         task.Users.Remove(user);
 
@@ -85,7 +85,7 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
         var nameNormalized = categoryName.Trim().ToLowerInvariant();
 
         var category = await _dbContext.Categories
-            .FirstOrDefaultAsync(c => c.Name.ToLower() == nameNormalized)
+            .FirstOrDefaultAsync(c => c.Name.ToLower().Equals(nameNormalized))
             ?? throw new KeyNotFoundException($"Category '{categoryName}' not found");
 
         var task = await _dbContext.Tasks

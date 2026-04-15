@@ -11,7 +11,7 @@ public class CategoryDB
 	public string Name { get; set; }
 	public string HexColor { get; set; }
 	public bool Deleted { get; set; }
-	public List<TaskDB> Tasks { get; set; }
+	public List<TaskDB> Tasks { get; set; } = [];
 
 	public CategoryDB()
 	{
