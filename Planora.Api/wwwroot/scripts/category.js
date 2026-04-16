@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function render() {
-        let categories = await apiFetch(API)
+        let categories = await get(API, "Failed to load categories")
         listEl.querySelectorAll('.category-card').forEach(el => el.remove());
 
         if (categories.length === 0) {
@@ -109,31 +109,28 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-    async function apiFetch(url, options = {}) {
-        const token = sessionStorage.getItem("token");
+async function get(url) {
+    const token = sessionStorage.getItem("token");
 
-        const response = await fetch(url, {
-            ...options,
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
-                ...options.headers
-            }
-        });
-
-        if (response.status === 401) {
-            // Token missing or expired — send to login
-            sessionStorage.removeItem("token");
-            window.location.href = "/login";
-            return;
+    const response = await fetch(url, {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
         }
+    });
 
-        if (response.status === 403) {
-            // Authenticated but wrong role — show error, stay on page
-            alert("You do not have permission to do this");
-            return;
-        }
-
-        return await response.json();
+   if (response.status === 401) {
+        sessionStorage.removeItem("token");
+        window.location.href = "/login";
+        return;
     }
+
+    if (response.status === 403) {
+        alert("You do not have permission to do this");
+        return;
+    }
+
+    return await response.json();
+}
+
 
