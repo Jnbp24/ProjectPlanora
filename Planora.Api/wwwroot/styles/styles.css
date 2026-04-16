@@ -370,6 +370,6 @@ body {
     background: #fff;
 }
 
-#delete-task-btn {
+.invisible {
     visibility: hidden;
 }
