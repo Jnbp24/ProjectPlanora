@@ -1,35 +1,37 @@
-﻿const url = "api/task"
-const read_fail = "Failed to read tasks"
+﻿const url = "api/task";
+const read_fail = "Failed to read tasks";
+
+let calendar;
 
 async function setup_calendar() {
     try {
-        const data = await get(url, read_fail)
+        const data = await get(url, read_fail);
         const events = map_to_event(data)
+
         create_calendar(events)
     } catch (error) {
-        error_message(error.message)
+        error_message(error.message);
     }
 }
 
-async function get(url, error_message) {
-    const token = sessionStorage.getItem("token");
+async function refresh_calendar() {
+    try {
+        const data = await get(url, read_fail);
+        const tasks = map_to_task(data);
 
-    const response = await fetch("/api/Task", {
-        headers: {
-            "Authorization": `Bearer ${token}`
-        }
-    });
+        if (!calendar) return;
 
-    if (!response.ok) {
-        throw new Error(error_message);
+        calendar.removeAllEvents();
+        calendar.addEventSource(map_to_task(data));
+
+    } catch (error) {
+        error_message(error.message);
     }
-
-    return await response.json();
 }
 
 function map_to_event(data) {
     return data.map(task => ({
-        id: task.taskId,
+        id: task.taskid,
         title: task.title,
         start: task.deadline,
         extendedProps: {
@@ -39,23 +41,24 @@ function map_to_event(data) {
         allDay: true
     }));
 }
-/* All tasks in calendar => events must follow this format
+
+/*
+FullCalendar event format:
 {
-  id: '1',               // Optional: useful for lookups
-  title: 'Finish Report', // Required: what appears on the calendar
-  start: '2026-04-20',   // Required: ISO8601 string or Date object
-  end: '2026-04-21',     // Optional: for multi-day events
-  allDay: true           // Optional: defaults to true for date strings
+  id: '1',
+  title: 'Task',
+  start: '2026-04-20',
+  end: '2026-04-21',
+  allDay: true
 }
 */
+
 function create_calendar(tasks) {
-    const calendarElement = document.getElementById("calendar")
+    const calendarElement = document.getElementById("calendar");
 
-    if (!calendarElement) {
-        return
-    }
+    if (!calendarElement) return;
 
-    const calendar = new FullCalendar.Calendar(calendarElement, {
+    calendar = new FullCalendar.Calendar(calendarElement, {
         initialView: 'listMonth',
         events: tasks,
         eventClick: task_click_handler
@@ -117,7 +120,26 @@ function map_to_task(data) {
 }
 
 function error_message(message) {
-    alert(message)
+    alert(message);
 }
 
-setup_calendar()
+async function get(url, error_message) {
+    const token = sessionStorage.getItem("token");
+
+    const response = await fetch(url, {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error(error_message);
+    }
+
+    return await response.json();
+}
+
+window.refresh_calendar = refresh_calendar;
+
+setup_calendar();
