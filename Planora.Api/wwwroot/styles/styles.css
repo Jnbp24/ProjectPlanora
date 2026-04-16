@@ -365,6 +365,13 @@ color: var(--text);
 min-width: 180px;
 }
 
+.taskquickmenu input:focus,
+.taskquickmenu select:focus {
+    background: #fff;
+}
+
+.invisible {
+    visibility: hidden;
 .task-category {
 min-width: 160px;
 cursor: pointer;
