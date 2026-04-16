@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Planora - Dashboard</title>
     <link rel="stylesheet" href="styles/styles.css">
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
-    <script defer src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
-    <script defer src="scripts/calendar.js"></script>
     <script defer src="scripts/category.js"></script>
+
 </head>
 <body class="page-dashboard">
   <main class="dashboard">
@@ -19,10 +17,10 @@
           <span class="brand-text">Planora</span>
         </div>
         <ul class="nav-list">
-          <li class="nav-item active" data-tab="dashboard"><a href="#">Dashboard</a></li>
-          <li class="nav-item" data-tab="categories"><a href="#">Categories</a></li>
-          <li class="nav-item"><a href="#">My tasks</a></li>
-          <li class="nav-item"><a href="#">Projects</a></li>
+          <li class="nav-item"><a href="dashboard.html">Dashboard</a></li>
+          <li class="nav-item"><a href="tasks.html">My tasks</a></li>
+          <li class="nav-item active"><a href="category.html">Categories</a></li>
+          <li class="nav-item"><a href="project.html">Projects</a></li>
         </ul>
       </div>
 
@@ -32,23 +30,8 @@
       </div>
     </aside>
 
-    <!-- Dashboard tab -->
-    <section class="content tab-content" id="tab-dashboard">
-        <div class="topbar">
-            <input class="search-input" type="search" placeholder="Search">
-            <button class="new-task-btn" type="button">+ New task</button>
-            <button class="profile-btn" type="button" aria-label="Profile">A</button>
-        </div>
-        <div id="calendar"></div>
-    </section>
-
     <!-- Categories tab -->
-    <section class="content tab-content" id="tab-categories" style="display:none;">
-        <div class="topbar">
-            <input class="search-input" type="search" placeholder="Search categories...">
-            <button class="profile-btn" type="button" aria-label="Profile" style="margin-left:auto;">A</button>
-        </div>
-
+    <section class="content tab-content" id="tab-categories"">
         <div class="category-create-bar">
             <input
               class="category-name-input"
