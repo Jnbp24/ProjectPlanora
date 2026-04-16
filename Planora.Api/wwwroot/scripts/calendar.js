@@ -69,6 +69,10 @@ function task_click_handler(info) {
     const task = map_to_task(data)
 
     const topbar_element = document.querySelector(".topbar")
+    if (topbar_element.id === task.id) {
+        reset_top_bar()
+        return
+    }
     topbar_element.id = task.id
 
     const delete_task_btn = document.getElementById("delete_task_btn")
@@ -87,6 +91,19 @@ function task_click_handler(info) {
     if (task.deadline) {
         dateInput.value = new Date(task.deadline).toISOString().split("T")[0]
     }
+}
+
+function reset_top_bar() {
+    const top_bar_element = document.querySelector(".topbar")
+    top_bar_element.id = ""
+
+    const delete_task_btn = document.getElementById("delete_task_btn")
+    delete_task_btn.classList.add("invisible")
+
+    document.querySelector(".task-name").value = ""
+    document.querySelector(".task-content").value = ""
+    document.querySelector(".task-category").value = ""
+    document.querySelector(".task-date").value = ""
 }
 
 function map_to_task(data) {
