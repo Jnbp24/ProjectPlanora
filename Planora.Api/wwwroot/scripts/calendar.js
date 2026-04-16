@@ -1,21 +1,76 @@
-﻿const url = "api/task"
-const read_fail = "Failed to read tasks"
+﻿const url = "api/task";
+const read_fail = "Failed to read tasks";
+
+let calendar;
 
 async function setup_calendar() {
     try {
-        const data = await get(url, read_fail)
-        const tasks = map_to_task(data)
-        create_calendar(tasks)
+        const data = await get(url, read_fail);
+        const tasks = map_to_task(data);
+
+        create_calendar(tasks);
     } catch (error) {
-        error_message(error.message)
+        error_message(error.message);
     }
+}
+
+async function refresh_calendar() {
+    try {
+        const data = await get(url, read_fail);
+        const tasks = map_to_task(data);
+
+        if (!calendar) return;
+
+        calendar.removeAllEvents();
+        calendar.addEventSource(map_to_task(data));
+
+    } catch (error) {
+        error_message(error.message);
+    }
+}
+
+function map_to_task(data) {
+    return data.map(task => ({
+        id: task.taskid,
+        title: task.title,
+        start: task.deadline
+    }));
+}
+
+/*
+FullCalendar event format:
+{
+  id: '1',
+  title: 'Task',
+  start: '2026-04-20',
+  end: '2026-04-21',
+  allDay: true
+}
+*/
+
+function create_calendar(tasks) {
+    const calendarElement = document.getElementById("calendar");
+
+    if (!calendarElement) return;
+
+    calendar = new FullCalendar.Calendar(calendarElement, {
+        initialView: 'listMonth',
+        events: tasks
+    });
+
+    calendar.render();
+}
+
+function error_message(message) {
+    alert(message);
 }
 
 async function get(url, error_message) {
     const token = sessionStorage.getItem("token");
 
-    const response = await fetch("/api/Task", {
+    const response = await fetch(url, {
         headers: {
+            "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
         }
     });
@@ -27,39 +82,6 @@ async function get(url, error_message) {
     return await response.json();
 }
 
-function map_to_task(data) {
-    return data.map(task => ({
-        id: task.taskId,
-        title: task.title,
-        start: new Date("2026-05-15"),
-    }));
-}
-/* All tasks in calendar => events must follow this format
-{
-  id: '1',               // Optional: useful for lookups
-  title: 'Finish Report', // Required: what appears on the calendar
-  start: '2026-04-20',   // Required: ISO8601 string or Date object
-  end: '2026-04-21',     // Optional: for multi-day events
-  allDay: true           // Optional: defaults to true for date strings
-}
-*/
-function create_calendar(tasks) {
-    const calendarElement = document.getElementById("calendar")
+window.refresh_calendar = refresh_calendar;
 
-    if (!calendarElement) {
-        return
-    }
-
-    const calendar = new FullCalendar.Calendar(calendarElement, {
-        initialView: 'listMonth',
-        events: tasks
-    })
-
-    calendar.render();
-}
-
-function error_message(message) {
-    alert(message)
-}
-
-setup_calendar()
+setup_calendar();
