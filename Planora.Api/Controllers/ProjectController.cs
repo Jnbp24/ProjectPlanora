@@ -21,7 +21,7 @@ public class ProjectController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<ProjectDTO>> CreateProjectAsync([FromBody] ProjectDTO projectDTO)
     {
-        var createdProjectDto = await _projectService.CreateAsync(projectDTO);
+        var createdProjectDto = await _projectService.CreateProjectAsync(projectDTO);
         // return 201 with location header pointing to the created resource
         return CreatedAtAction(nameof(GetProjectByIdAsync), new { projectId = createdProjectDto.ProjectId }, createdProjectDto);
     }
@@ -31,7 +31,7 @@ public class ProjectController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ProjectDTO>>> GetAllProjectsAsync()
     {
-        return Ok(await _projectService.GetAllAsync());
+        return Ok(await _projectService.GetAllProjectsAsync());
     }
 
     // GET api/project/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
@@ -41,7 +41,7 @@ public class ProjectController : ControllerBase
     {
         try
         {
-            return Ok(await _projectService.GetByIdAsync(projectId));
+            return Ok(await _projectService.GetProjectByIdAsync(projectId));
         }
         catch (KeyNotFoundException e)
         {
@@ -57,11 +57,11 @@ public class ProjectController : ControllerBase
     // PUT api/project/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
     [Authorize]
     [HttpPut("{projectId}")]
-    public async Task<IActionResult> UpdateProjectAsync(string projectId, [FromBody] ProjectDTO projectDTO)
+    public async Task<IActionResult> UpdateProjectByIdAsync(string projectId, [FromBody] ProjectDTO projectDTO)
     {
         try
         {
-            await _projectService.UpdateAsync(projectId, projectDTO);
+            await _projectService.UpdateProjectByIdAsync(projectId, projectDTO);
             return NoContent();
 
         }
@@ -78,11 +78,11 @@ public class ProjectController : ControllerBase
     // DELETE api/project/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
     [Authorize]
     [HttpDelete("{projectId}")]
-    public async Task<IActionResult> DeleteProjectAsync(string projectId)
+    public async Task<IActionResult> DeleteProjectByIdAsync(string projectId)
     {
         try
         {
-            await _projectService.DeleteAsync(projectId);
+            await _projectService.DeleteProjectByIdAsync(projectId);
             return NoContent();
         }
         catch (KeyNotFoundException e)
