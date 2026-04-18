@@ -25,13 +25,13 @@ namespace Planora.Api.Services.User
             _configuration = configuration;
         }
 
-		public async Task<IEnumerable<UserDTO>> GetAllUsers()
+		public async Task<IEnumerable<UserDTO>> GetAllUsersAsync()
 		{
             IEnumerable<UserDB> userDBs = await _userRepository.GetAllAsync();
             return userDBs.Select(UserMapping.ToDTO);
 		}
 
-        public async Task<UserDTO> GetUser(string userId)
+        public async Task<UserDTO> GetUserAsync(string userId)
         {
             if (!Guid.TryParse(userId, out var uGuid))
             {
@@ -42,7 +42,7 @@ namespace Planora.Api.Services.User
             return UserMapping.ToDTO(userDB);
         }
         
-        public async Task<UserDTO> UpdateUser(string userId, UserDTO userDTO)
+        public async Task<UserDTO> UpdateUserAsync(string userId, UserDTO userDTO)
         {
             if (!Guid.TryParse(userId, out var uGuid))
             {
@@ -59,7 +59,7 @@ namespace Planora.Api.Services.User
             return userDTO; 
         }
 
-        public async Task<UserDTO> DeleteUser(string userId)
+        public async Task<UserDTO> DeleteUserAsync(string userId)
         {
             if (!Guid.TryParse(userId, out var uGuid))
             {
@@ -76,10 +76,10 @@ namespace Planora.Api.Services.User
             return UserMapping.ToDTO(deletedUserDB);
         }
 
-        public async Task<UserDTO> CreateUser(UserDTO userDTO)
+        public async Task<UserDTO> CreateUserAsync(UserDTO userDTO)
         {
             //TODO: We should consider making a transaction here, because we need to create an AuthUser and a UserDB, and if one of them fails, we should rollback the other one.
-            if(await UserWithEmailExist(userDTO.Email))
+            if(await UserWithEmailExistAsync(userDTO.Email))
             {
                 throw new InvalidOperationException("Email already exists");
             }
@@ -108,7 +108,7 @@ namespace Planora.Api.Services.User
             return UserMapping.ToDTO(userDB);
         }
 
-        public async Task<bool> UserWithEmailExist(string email)
+        public async Task<bool> UserWithEmailExistAsync(string email)
         {
             IEnumerable<UserDB> userDBs = await _userRepository.GetAllAsync();
             return userDBs
