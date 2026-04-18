@@ -13,23 +13,22 @@ public class TaskService : ITaskService
         _taskRepository = taskRepository;
     }
 
-    public async Task<TaskDTO> CreateAsync(TaskDTO taskDTO)
+    public async Task<TaskDTO> CreateTaskAsync(TaskDTO taskDTO)
     {
         var taskDB = TaskMapping.ToEntity(taskDTO);
         var createdTaskDB = await _taskRepository.CreateAsync(taskDB);
         return TaskMapping.ToDTO(createdTaskDB);
     }
         
-    public async Task<IEnumerable<TaskDTO>> GetAllAsync()
+    public async Task<IEnumerable<TaskDTO>> GetAllTasksAsync()
     {
         var taskDBs = await _taskRepository.GetAllAsync();
-
-
+        
         var filtered = taskDBs.Where(t => !t.Deleted);
         return filtered.Select(TaskMapping.ToDTO);
     }
 
-    public async Task<TaskDTO> GetByIdAsync(string taskId)
+    public async Task<TaskDTO> GetTaskByIdAsync(string taskId)
     {
         if (!Guid.TryParse(taskId, out var tGuid))
         {
@@ -39,7 +38,7 @@ public class TaskService : ITaskService
         return TaskMapping.ToDTO(taskDB);
     }
 
-    public async Task<TaskDTO> UpdateAsync(string taskId, TaskDTO taskDTO)
+    public async Task<TaskDTO> UpdateTaskByIdAsync(string taskId, TaskDTO taskDTO)
     {
         if (!Guid.TryParse(taskId, out var tGuid))
         {
@@ -57,7 +56,7 @@ public class TaskService : ITaskService
         return TaskMapping.ToDTO(taskDB);
     }
 
-    public async Task<TaskDTO> DeleteAsync(string taskId)
+    public async Task<TaskDTO> DeleteTaskByIdAsync(string taskId)
     {
         if (!Guid.TryParse(taskId, out var tGuid))
         {
@@ -73,7 +72,7 @@ public class TaskService : ITaskService
         return TaskMapping.ToDTO(taskDB);
     }
 
-    public async Task<TaskDTO> AssignCategoryAsync(string taskId, string categoryName)
+    public async Task<TaskDTO> AssignCategoryToTaskAsync(string taskId, string categoryName)
     {
         if (!Guid.TryParse(taskId, out var tGuid))
         {
@@ -84,7 +83,7 @@ public class TaskService : ITaskService
         return TaskMapping.ToDTO(task);
     }
 
-    public async Task<TaskDTO> UnassignCategoryAsync(string taskId, string categoryName)
+    public async Task<TaskDTO> UnassignCategoryFromTaskAsync(string taskId, string categoryName)
     {
         if (!Guid.TryParse(taskId, out var tGuid))
         {
@@ -95,7 +94,7 @@ public class TaskService : ITaskService
          return TaskMapping.ToDTO(task);
     }
 
-    public async Task<TaskDTO> AssignUserAsync(string taskId, string userId)
+    public async Task<TaskDTO> AssignUserToTaskAsync(string taskId, string userId)
     {
         if (!Guid.TryParse(taskId, out var tGuid))
         {
@@ -106,7 +105,7 @@ public class TaskService : ITaskService
         return TaskMapping.ToDTO(task);
     }
 
-    public async Task<TaskDTO> UnassignUserAsync(string taskId, string userId)
+    public async Task<TaskDTO> UnassignUserFromTaskAsync(string taskId, string userId)
     {
         if (!Guid.TryParse(taskId, out var tGuid))
         {

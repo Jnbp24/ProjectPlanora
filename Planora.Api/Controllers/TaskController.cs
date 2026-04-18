@@ -21,7 +21,7 @@ public class TaskController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<TaskDTO>> CreateTaskAsync([FromBody] TaskDTO taskDTO)
     {
-        var createdTaskDto = await _taskService.CreateAsync(taskDTO);
+        var createdTaskDto = await _taskService.CreateTaskAsync(taskDTO);
         // return 201 with location header pointing to the created resource
         return CreatedAtAction(nameof(GetTaskByIdAsync), new { taskId = createdTaskDto.TaskId }, createdTaskDto);
     }
@@ -31,7 +31,7 @@ public class TaskController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<TaskDTO>>> GetAllTasksAsync()
     {
-        return Ok(await _taskService.GetAllAsync());
+        return Ok(await _taskService.GetAllTasksAsync());
     }
 
     // GET api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
@@ -41,7 +41,7 @@ public class TaskController : ControllerBase
     {
         try
         {
-            return Ok(await _taskService.GetByIdAsync(taskId));
+            return Ok(await _taskService.GetTaskByIdAsync(taskId));
         }
         catch (KeyNotFoundException e)
         {
@@ -57,11 +57,11 @@ public class TaskController : ControllerBase
     // PUT api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
     [Authorize]
     [HttpPut("{taskId}")]
-    public async Task<IActionResult> UpdateTaskAsync(string taskId, [FromBody] TaskDTO taskDTO)
+    public async Task<IActionResult> UpdateTaskByIdAsync(string taskId, [FromBody] TaskDTO taskDTO)
     {
         try
         {
-            return Ok(await _taskService.UpdateAsync(taskId, taskDTO));
+            return Ok(await _taskService.UpdateTaskByIdAsync(taskId, taskDTO));
         }
         catch (KeyNotFoundException e)
         {
@@ -76,11 +76,11 @@ public class TaskController : ControllerBase
     // DELETE api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
     [Authorize]
     [HttpDelete("{taskId}")]
-    public async Task<IActionResult> DeleteTaskAsync(string taskId)
+    public async Task<IActionResult> DeleteTaskByIdAsync(string taskId)
     {
         try
         {
-            await _taskService.DeleteAsync(taskId);
+            await _taskService.DeleteTaskByIdAsync(taskId);
             return NoContent();
         }
         catch (KeyNotFoundException e)
@@ -98,7 +98,7 @@ public class TaskController : ControllerBase
     [HttpPut("{taskId}/category")]
     public async Task<IActionResult> AssignCategoryToTaskAsync(string taskId, [FromBody] string categoryName)
     {
-        var updatedTask = await _taskService.AssignCategoryAsync(taskId, categoryName);
+        var updatedTask = await _taskService.AssignCategoryToTaskAsync(taskId, categoryName);
         return Ok(updatedTask);
     }
 
@@ -107,7 +107,7 @@ public class TaskController : ControllerBase
     [HttpDelete("{taskId}/category")]
     public async Task<IActionResult> UnassignCategoryFromTaskAsync(string taskId, [FromBody] string categoryName)
     {
-        return Ok(await _taskService.UnassignCategoryAsync(taskId, categoryName));
+        return Ok(await _taskService.UnassignCategoryFromTaskAsync(taskId, categoryName));
     }
     
     // POST api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc/user
@@ -115,7 +115,7 @@ public class TaskController : ControllerBase
     [HttpPost("{taskId}/user")]
     public async Task<IActionResult> AssignUserAsync(string taskId, [FromBody] string userId)
     {
-        var updatedTask = await _taskService.AssignUserAsync(taskId, userId);
+        var updatedTask = await _taskService.AssignUserToTaskAsync(taskId, userId);
         return Ok(updatedTask);
     }
 
@@ -124,7 +124,7 @@ public class TaskController : ControllerBase
     [HttpDelete("{taskId}/user")]
     public async Task<IActionResult> UnassignUserAsync(string taskId, [FromBody] string userId)
     {
-        var updatedTask = await _taskService.UnassignUserAsync(taskId, userId);
+        var updatedTask = await _taskService.UnassignUserFromTaskAsync(taskId, userId);
         return Ok(updatedTask);
     }
 }
