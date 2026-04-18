@@ -72,8 +72,7 @@ public class UserController : ControllerBase
 	{
 		try
 		{
-			await _userService.UpdateUserByIdAsync(userId, userDTO);
-			return NoContent();
+			return Ok(await _userService.UpdateUserByIdAsync(userId, userDTO));
 		}
 		catch (KeyNotFoundException e)
 		{
@@ -92,7 +91,8 @@ public class UserController : ControllerBase
 	{
 		try
 		{
-			return Ok(await _userService.DeleteUserByIdAsync(userId));
+			 await _userService.DeleteUserByIdAsync(userId);
+			 return NoContent();
 		}
 		catch (KeyNotFoundException e)
 		{
