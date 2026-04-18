@@ -51,7 +51,7 @@ public class UserController : ControllerBase
 	{
 		try
 		{
-			return Ok(await _userService.GetUserAsync(userId));
+			return Ok(await _userService.GetUserByIdAsync(userId));
 		}
 		catch (KeyNotFoundException exception)
 		{
@@ -68,11 +68,11 @@ public class UserController : ControllerBase
 	// PUT api/user/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
 	[Authorize(Roles = "Tovholder")]
 	[HttpPut("{userId}")]
-	public async Task<IActionResult> UpdateUserAsync(string userId, [FromBody] UserDTO userDTO)
+	public async Task<IActionResult> UpdateUserByIdAsync(string userId, [FromBody] UserDTO userDTO)
 	{
 		try
 		{
-			await _userService.UpdateUserAsync(userId, userDTO);
+			await _userService.UpdateUserByIdAsync(userId, userDTO);
 			return NoContent();
 		}
 		catch (KeyNotFoundException e)
@@ -88,11 +88,11 @@ public class UserController : ControllerBase
 	// DELETE api/user/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
 	[Authorize]
 	[HttpDelete("{userId}")]
-	public async Task<IActionResult> DeleteUser(string userId)
+	public async Task<IActionResult> DeleteUserById(string userId)
 	{
 		try
 		{
-			return Ok(await _userService.DeleteUserAsync(userId));
+			return Ok(await _userService.DeleteUserByIdAsync(userId));
 		}
 		catch (KeyNotFoundException e)
 		{

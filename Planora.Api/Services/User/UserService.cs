@@ -1,9 +1,5 @@
 ﻿using System.Data;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
-using Planora.DataAccess.Repositories;
-using Planora.DataAccess;
 using Planora.DataAccess.Mappers;
 using Planora.DataAccess.Models.Auth;
 using Planora.DataAccess.Models;
@@ -24,58 +20,7 @@ public class UserService : IUserService
         _userManager = userManager;
         _configuration = configuration;
     }
-
-    public async Task<IEnumerable<UserDTO>> GetAllUsersAsync()
-    {
-        IEnumerable<UserDB> userDBs = await _userRepository.GetAllAsync();
-        return userDBs.Select(UserMapping.ToDTO);
-    }
-
-    public async Task<UserDTO> GetUserAsync(string userId)
-    {
-        if (!Guid.TryParse(userId, out var uGuid))
-        {
-            throw new ArgumentException($"Invalid userId {uGuid}");
-        }
-            
-        UserDB userDB = await _userRepository.GetByIdAsync(uGuid);
-        return UserMapping.ToDTO(userDB);
-    }
-        
-    public async Task<UserDTO> UpdateUserAsync(string userId, UserDTO userDTO)
-    {
-        if (!Guid.TryParse(userId, out var uGuid))
-        {
-            throw new ArgumentException($"Invalid userId {uGuid}");
-        }
-            
-        UserDB userDB = await _userRepository.GetByIdAsync(uGuid);
-          
-        userDB.FirstName = userDTO.FirstName;
-        userDB.LastName = userDTO.LastName;
-        userDB.Tovholder = userDTO.Tovholder;
-          
-        await _userRepository.SaveChangesAsync();
-        return userDTO; 
-    }
-
-    public async Task<UserDTO> DeleteUserAsync(string userId)
-    {
-        if (!Guid.TryParse(userId, out var uGuid))
-        {
-            throw new ArgumentException($"Invalid userId {uGuid}");
-        }
-            
-        UserDB deletedUserDB = await _userRepository.GetByIdAsync(uGuid);
-        if (deletedUserDB.Deleted)
-        {
-            throw new NotSupportedException($"{userId} is already deleted");
-        }
-        deletedUserDB.Deleted = true;
-        await _userRepository.SaveChangesAsync();
-        return UserMapping.ToDTO(deletedUserDB);
-    }
-
+    
     public async Task<UserDTO> CreateUserAsync(UserDTO userDTO)
     {
         //TODO: We should consider making a transaction here, because we need to create an AuthUser and a UserDB, and if one of them fails, we should rollback the other one.
@@ -106,6 +51,57 @@ public class UserService : IUserService
         //TODO: We should also consider adding the user to a default role (Frivillig) or send it as a parameter in the DTO.
             
         return UserMapping.ToDTO(userDB);
+    }
+
+    public async Task<IEnumerable<UserDTO>> GetAllUsersAsync()
+    {
+        IEnumerable<UserDB> userDBs = await _userRepository.GetAllAsync();
+        return userDBs.Select(UserMapping.ToDTO);
+    }
+
+    public async Task<UserDTO> GetUserByIdAsync(string userId)
+    {
+        if (!Guid.TryParse(userId, out var uGuid))
+        {
+            throw new ArgumentException($"Invalid userId {uGuid}");
+        }
+            
+        UserDB userDB = await _userRepository.GetByIdAsync(uGuid);
+        return UserMapping.ToDTO(userDB);
+    }
+        
+    public async Task<UserDTO> UpdateUserByIdAsync(string userId, UserDTO userDTO)
+    {
+        if (!Guid.TryParse(userId, out var uGuid))
+        {
+            throw new ArgumentException($"Invalid userId {uGuid}");
+        }
+            
+        UserDB userDB = await _userRepository.GetByIdAsync(uGuid);
+          
+        userDB.FirstName = userDTO.FirstName;
+        userDB.LastName = userDTO.LastName;
+        userDB.Tovholder = userDTO.Tovholder;
+          
+        await _userRepository.SaveChangesAsync();
+        return userDTO; 
+    }
+
+    public async Task<UserDTO> DeleteUserByIdAsync(string userId)
+    {
+        if (!Guid.TryParse(userId, out var uGuid))
+        {
+            throw new ArgumentException($"Invalid userId {uGuid}");
+        }
+            
+        UserDB deletedUserDB = await _userRepository.GetByIdAsync(uGuid);
+        if (deletedUserDB.Deleted)
+        {
+            throw new NotSupportedException($"{userId} is already deleted");
+        }
+        deletedUserDB.Deleted = true;
+        await _userRepository.SaveChangesAsync();
+        return UserMapping.ToDTO(deletedUserDB);
     }
 
     public async Task<bool> UserWithEmailExistAsync(string email)
