@@ -31,7 +31,7 @@ public class UserController : ControllerBase
 		}
 		catch(InvalidOperationException exception)
 		{
-			return StatusCode(500, exception.Message);
+			return Conflict(exception.Message);
 		}
 	}
 
