@@ -63,7 +63,7 @@ public class UserService : IUserService
     {
         if (!Guid.TryParse(userId, out var uGuid))
         {
-            throw new ArgumentException($"Invalid userId {uGuid}");
+            throw new ArgumentException($"Invalid userId {userId}");
         }
             
         UserDB userDB = await _userRepository.GetByIdAsync(uGuid);
@@ -74,7 +74,7 @@ public class UserService : IUserService
     {
         if (!Guid.TryParse(userId, out var uGuid))
         {
-            throw new ArgumentException($"Invalid userId {uGuid}");
+            throw new ArgumentException($"Invalid userId {userId}");
         }
             
         UserDB userDB = await _userRepository.GetByIdAsync(uGuid);
@@ -91,7 +91,7 @@ public class UserService : IUserService
     {
         if (!Guid.TryParse(userId, out var uGuid))
         {
-            throw new ArgumentException($"Invalid userId {uGuid}");
+            throw new ArgumentException($"Invalid userId {userId}");
         }
             
         UserDB deletedUserDB = await _userRepository.GetByIdAsync(uGuid);

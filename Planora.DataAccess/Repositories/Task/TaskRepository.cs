@@ -29,20 +29,14 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
         return task;
     }
 
-    public async Task<TaskDB> AssignUserAsync(string taskId, string userId)
+    public async Task<TaskDB> AssignUserAsync(Guid taskId, Guid userId)
     {
-        if (!Guid.TryParse(taskId, out var tGuid))
-            throw new ArgumentException("Invalid taskId");
-    
-        if (!Guid.TryParse(userId, out var uGuid))
-            throw new ArgumentException("Invalid userId");
-    
         var task = await _dbContext.Tasks
             .Include(t => t.Users)
-            .FirstOrDefaultAsync(t => t.TaskId == tGuid)
+            .FirstOrDefaultAsync(t => t.TaskId == taskId)
             ?? throw new KeyNotFoundException($"Task {taskId} not found");
         var user = await _dbContext.Users
-            .FirstOrDefaultAsync(u => u.UserId == uGuid)
+            .FirstOrDefaultAsync(u => u.UserId == userId)
             ?? throw new KeyNotFoundException($"User {userId} not found");
         task.Users.Add(user);
     
@@ -50,20 +44,14 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
         return task;
     }
 
-    public async Task<TaskDB> UnassignUserAsync(string taskId, string userId)
+    public async Task<TaskDB> UnassignUserAsync(Guid taskId, Guid userId)
     {
-        if (!Guid.TryParse(taskId, out var tGuid))
-            throw new ArgumentException("Invalid taskId");
-
-        if (!Guid.TryParse(userId, out var uGuid))
-            throw new ArgumentException("Invalid userId");
-
         var task = await _dbContext.Tasks
             .Include(t => t.Users)
-            .FirstOrDefaultAsync(t => t.TaskId == tGuid)
+            .FirstOrDefaultAsync(t => t.TaskId == taskId)
             ?? throw new KeyNotFoundException($"Task {taskId} not found");
         var user = await _dbContext.Users
-            .FirstOrDefaultAsync(u => u.UserId == uGuid)
+            .FirstOrDefaultAsync(u => u.UserId == userId)
             ?? throw new KeyNotFoundException($"User {userId} not found");
         task.Users.Remove(user);
 
@@ -71,11 +59,8 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
         return task;
     }
 
-    public async Task<TaskDB> AssignCategoryAsync(string taskId, string categoryName)
+    public async Task<TaskDB> AssignCategoryAsync(Guid taskId, string categoryName)
     {
-        if (!Guid.TryParse(taskId, out var tGuid))
-            throw new ArgumentException("Invalid taskId", nameof(taskId));
-
         if (string.IsNullOrWhiteSpace(categoryName))
             throw new ArgumentException("Category name must be provided", nameof(categoryName));
 
@@ -86,7 +71,7 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
             ?? throw new KeyNotFoundException($"Category '{categoryName}' not found");
 
         var task = await _dbContext.Tasks
-            .FirstOrDefaultAsync(t => t.TaskId == tGuid)
+            .FirstOrDefaultAsync(t => t.TaskId == taskId)
             ?? throw new KeyNotFoundException($"Task {taskId} not found");
 
         category.Tasks.Add(task);
@@ -94,11 +79,8 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
         await _dbContext.SaveChangesAsync();
         return task;
     }
-    public async Task<TaskDB> UnassignCategoryAsync(string taskId, string categoryName)
+    public async Task<TaskDB> UnassignCategoryAsync(Guid taskId, string categoryName)
     {
-        if (!Guid.TryParse(taskId, out var tGuid))
-            throw new ArgumentException("Invalid taskId", nameof(taskId));
-
         if (string.IsNullOrWhiteSpace(categoryName))
             throw new ArgumentException("Category name must be provided", nameof(categoryName));
 
@@ -113,7 +95,7 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
             ?? throw new KeyNotFoundException("Default category not found");
 
         var task = await _dbContext.Tasks
-            .FirstOrDefaultAsync(t => t.TaskId == tGuid)
+            .FirstOrDefaultAsync(t => t.TaskId == taskId)
             ?? throw new KeyNotFoundException($"Task {taskId} not found");
 
         // When removing a task from it's category, it should auto-assign back to the default category

@@ -93,23 +93,6 @@ public class TaskController : ControllerBase
         }
     }
     
-    // PUT api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc/category
-    [Authorize]
-    [HttpPut("{taskId}/category")]
-    public async Task<IActionResult> AssignCategoryToTaskAsync(string taskId, [FromBody] string categoryName)
-    {
-        var updatedTask = await _taskService.AssignCategoryToTaskAsync(taskId, categoryName);
-        return Ok(updatedTask);
-    }
-
-    // DELETE api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc/category
-    [Authorize]
-    [HttpDelete("{taskId}/category")]
-    public async Task<IActionResult> UnassignCategoryFromTaskAsync(string taskId, [FromBody] string categoryName)
-    {
-        return Ok(await _taskService.UnassignCategoryFromTaskAsync(taskId, categoryName));
-    }
-    
     // POST api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc/user
     [Authorize]
     [HttpPost("{taskId}/user")]
@@ -126,5 +109,22 @@ public class TaskController : ControllerBase
     {
         var updatedTask = await _taskService.UnassignUserFromTaskAsync(taskId, userId);
         return Ok(updatedTask);
+    }
+    
+    // PUT api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc/category
+    [Authorize]
+    [HttpPut("{taskId}/category")]
+    public async Task<IActionResult> AssignCategoryToTaskAsync(string taskId, [FromBody] string categoryName)
+    {
+        var updatedTask = await _taskService.AssignCategoryToTaskAsync(taskId, categoryName);
+        return Ok(updatedTask);
+    }
+
+    // DELETE api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc/category
+    [Authorize]
+    [HttpDelete("{taskId}/category")]
+    public async Task<IActionResult> UnassignCategoryFromTaskAsync(string taskId, [FromBody] string categoryName)
+    {
+        return Ok(await _taskService.UnassignCategoryFromTaskAsync(taskId, categoryName));
     }
 }
