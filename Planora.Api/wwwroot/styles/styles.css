@@ -626,6 +626,7 @@ min-width: 180px;
 
 .invisible {
     visibility: hidden;
+}
 .task-category {
 min-width: 160px;
 cursor: pointer;
