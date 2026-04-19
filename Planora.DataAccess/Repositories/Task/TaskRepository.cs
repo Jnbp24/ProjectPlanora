@@ -38,6 +38,10 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
         var user = await _dbContext.Users
             .FirstOrDefaultAsync(u => u.UserId == userId)
             ?? throw new KeyNotFoundException($"User {userId} not found");
+        if (task.Users.Contains(user))
+        {
+            throw new InvalidOperationException($"User {userId} is already assigned to task {taskId}");
+        }
         task.Users.Add(user);
     
         await _dbContext.SaveChangesAsync();

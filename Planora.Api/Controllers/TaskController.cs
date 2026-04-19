@@ -98,8 +98,22 @@ public class TaskController : ControllerBase
     [HttpPost("{taskId}/user")]
     public async Task<IActionResult> AssignUserAsync(string taskId, [FromBody] string userId)
     {
-        var updatedTask = await _taskService.AssignUserToTaskAsync(taskId, userId);
-        return Ok(updatedTask);
+        try
+        {
+            return Ok(await _taskService.AssignUserToTaskAsync(taskId, userId));
+        }
+        catch (KeyNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+        catch (ArgumentException e)
+        {
+            return BadRequest(e.Message);
+        }
+        catch (InvalidOperationException e)
+        {
+            return Conflict(e.Message);
+        }
     }
 
     // DELETE api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc/user
@@ -107,8 +121,19 @@ public class TaskController : ControllerBase
     [HttpDelete("{taskId}/user")]
     public async Task<IActionResult> UnassignUserAsync(string taskId, [FromBody] string userId)
     {
-        var updatedTask = await _taskService.UnassignUserFromTaskAsync(taskId, userId);
-        return Ok(updatedTask);
+        try
+        {
+            await _taskService.UnassignUserFromTaskAsync(taskId, userId);
+            return NoContent();
+        }
+        catch (KeyNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+        catch (ArgumentException e)
+        {
+            return BadRequest(e.Message);
+        }
     }
     
     // PUT api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc/category
@@ -116,8 +141,18 @@ public class TaskController : ControllerBase
     [HttpPut("{taskId}/category")]
     public async Task<IActionResult> AssignCategoryToTaskAsync(string taskId, [FromBody] string categoryName)
     {
-        var updatedTask = await _taskService.AssignCategoryToTaskAsync(taskId, categoryName);
-        return Ok(updatedTask);
+        try
+        {
+            return Ok(await _taskService.AssignCategoryToTaskAsync(taskId, categoryName));
+        }
+        catch (KeyNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+        catch (ArgumentException e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     // DELETE api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc/category
@@ -125,6 +160,18 @@ public class TaskController : ControllerBase
     [HttpDelete("{taskId}/category")]
     public async Task<IActionResult> UnassignCategoryFromTaskAsync(string taskId, [FromBody] string categoryName)
     {
-        return Ok(await _taskService.UnassignCategoryFromTaskAsync(taskId, categoryName));
+        try
+        {
+            await _taskService.UnassignCategoryFromTaskAsync(taskId, categoryName);
+            return NoContent();
+        }
+        catch (KeyNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+        catch (ArgumentException e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 }
