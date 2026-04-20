@@ -81,7 +81,12 @@ function task_click_handler(info) {
     const delete_task_btn = document.getElementById("delete_task_btn")
     delete_task_btn.classList.remove("invisible")
 
+    const update_task_btn = document.getElementById("update_task_btn")
+    update_task_btn.classList.remove("invisible")
+
     const newTaskBtn = document.querySelector(".new-task-btn")
+    newTaskBtn.classList.add("btn-disabled")
+    newTaskBtn.disabled = true
     
     const titleInput = document.querySelector(".task-name")
     const contentInput = document.querySelector(".task-content")
@@ -102,6 +107,13 @@ function reset_top_bar() {
 
     const delete_task_btn = document.getElementById("delete_task_btn")
     delete_task_btn.classList.add("invisible")
+
+    const update_task_btn = document.getElementById("update_task_btn")
+    update_task_btn.classList.add("invisible")
+
+    const newTaskBtn = document.querySelector(".new-task-btn")
+    newTaskBtn.classList.remove("btn-disabled")
+    newTaskBtn.disabled = false
 
     document.querySelector(".task-name").value = ""
     document.querySelector(".task-content").value = ""

@@ -794,6 +794,12 @@ min-width: 180px;
 .invisible {
     visibility: hidden;
 }
+.btn-disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+    filter: grayscale(0.3);
+}
 .task-category {
 min-width: 160px;
 cursor: pointer;
