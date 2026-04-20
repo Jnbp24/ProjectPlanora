@@ -1,20 +1,21 @@
-using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Planora.Api.Services;
 using Planora.Api.Services.Auth;
-using Planora.DataAccess.Context;
-using Planora.DataAccess.Models.Auth;
-using Planora.Api.Services.User;
-using Planora.Api.Services.Task;
 using Planora.Api.Services.Category;
 using Planora.Api.Services.Project;
+using Planora.Api.Services.Task;
+using Planora.Api.Services.User;
+using Planora.DataAccess.Context;
+using Planora.DataAccess.Models.Auth;
 using Planora.DataAccess.Repositories.Category;
 using Planora.DataAccess.Repositories.Project;
 using Planora.DataAccess.Repositories.Task;
 using Planora.DataAccess.Repositories.User;
+using System.Text;
 
 namespace Planora.Api;
 
@@ -106,6 +107,20 @@ public class Program
         {
             app.UseCors("DevOpenPolicy");
         }
+
+        app.UseExceptionHandler(err => err.Run(async controllerException =>
+        {
+            var exception = controllerException.Features.Get<IExceptionHandlerFeature>()?.Error;
+            var (status, message) = exception switch
+            {
+                KeyNotFoundException e => (404, e.Message),
+                ArgumentException e => (400, e.Message),
+                InvalidOperationException => (409, exception?.Message ?? "Conflict"),
+                _ => (500, "An error occurred")
+            };
+            controllerException.Response.StatusCode = status;
+            await controllerException.Response.WriteAsJsonAsync(new { error = message });
+        }));
 
         // Configure the HTTP request pipeline.
         app.UseHttpsRedirection();

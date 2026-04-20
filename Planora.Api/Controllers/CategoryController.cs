@@ -22,7 +22,6 @@ public class CategoryController : ControllerBase
 	public async Task<ActionResult<CategoryDTO>> CreateCategoryAsync([FromBody] CategoryDTO categoryDTO)
 	{
 		var createdCategoryDto = await _categoryService.CreateCategoryAsync(categoryDTO);
-		// return 201 with location header pointing to the created resource
 		return CreatedAtAction(nameof(GetCategoryByIdAsync), new { categoryId = createdCategoryDto.CategoryId }, createdCategoryDto);
 	}
 
@@ -39,18 +38,7 @@ public class CategoryController : ControllerBase
 	[HttpGet("{categoryId}")]
 	public async Task<ActionResult<CategoryDTO>> GetCategoryByIdAsync(string categoryId)
 	{
-		try
-		{
-			return Ok(await _categoryService.GetCategoryByIdAsync(categoryId));
-		}
-		catch (KeyNotFoundException e)
-		{
-			return NotFound(e.Message);
-		}
-		catch (ArgumentException e)
-		{
-			return BadRequest(e.Message);
-		}
+		return Ok(await _categoryService.GetCategoryByIdAsync(categoryId));
 	}
 	
 	// PUT api/category/d3eb20c6-2b60-4c82-95e3-
@@ -58,37 +46,15 @@ public class CategoryController : ControllerBase
 	[HttpPut("{categoryId}")]
 	public async Task<IActionResult> UpdateCategoryByIdAsync(string categoryId, [FromBody] CategoryDTO categoryDTO)
 	{
-		try
-		{
-			return Ok(await _categoryService.UpdateCategoryByIdAsync(categoryId, categoryDTO));
-		}
-		catch (KeyNotFoundException e)
-		{
-			return NotFound(e.Message);
-		}
-		catch (ArgumentException e)
-		{
-			return BadRequest(e.Message);
-		}
+		return Ok(await _categoryService.UpdateCategoryByIdAsync(categoryId, categoryDTO));
 	}
 	
 	// DELETE api/category/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
-	[Authorize]
+	[Authorize(Roles = "Tovholder")]
 	[HttpDelete("{categoryId}")]
 	public async Task<IActionResult> DeleteCategoryByIdAsync(string categoryId)
 	{
-		try
-		{
-			await _categoryService.DeleteCategoryByIdAsync(categoryId);
-			return NoContent();
-		}
-		catch (KeyNotFoundException e)
-		{
-			return NotFound(e.Message);
-		}
-		catch (ArgumentException e)
-		{
-			return BadRequest(e.Message);
-		}
+		await _categoryService.DeleteCategoryByIdAsync(categoryId);
+		return NoContent();
 	}
 }
