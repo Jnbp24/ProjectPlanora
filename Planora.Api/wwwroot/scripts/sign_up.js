@@ -43,6 +43,17 @@ async function post(data) {
 		},
 		body: JSON.stringify(data)
 	});
+	if (response.ok) {
+		error_message("User successfully created")
+	}
+	if (response.status === 409) {
+		const error = await response.json()
+		error_message(error.message)
+		return
+	}
+	if (!response.ok) {
+		error_message("Unexpected sign up error")
+	}
 }
 
 function clear_input() {
