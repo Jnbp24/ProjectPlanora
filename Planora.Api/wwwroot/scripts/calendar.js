@@ -17,12 +17,11 @@ async function setup_calendar() {
 async function refresh_calendar() {
     try {
         const data = await get(url, read_fail);
-        const tasks = map_to_task(data);
 
         if (!calendar) return;
 
         calendar.removeAllEvents();
-        calendar.addEventSource(map_to_task(data));
+        calendar.addEventSource(map_to_event(data));
 
     } catch (error) {
         error_message(error.message);
@@ -31,7 +30,7 @@ async function refresh_calendar() {
 
 function map_to_event(data) {
     return data.map(task => ({
-        id: task.taskid,
+        id: task.taskId,
         title: task.title,
         start: task.deadline,
         extendedProps: {
