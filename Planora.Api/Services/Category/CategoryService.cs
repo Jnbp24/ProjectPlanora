@@ -50,6 +50,7 @@ public class CategoryService : ICategoryService
 			throw new NotSupportedException($"{categoryId} is already deleted");
 		}
 		categoryDB.Name = categoryDTO.Name;
+		categoryDB.Content = categoryDTO.Content;
 		categoryDB.HexColor = categoryDTO.HexColor;
 		await _categoryRepository.SaveChangesAsync();
 		return CategoryMapping.ToDTO(categoryDB);
