@@ -1,65 +1,85 @@
 const API = "https://localhost:7127/api/Category"
 // --- Category management ---
-const nameInput = document.getElementById('category-name');
-const colorInput = document.getElementById('category-color');
-const addBtn = document.getElementById('add-category-btn');
-const listEl = document.getElementById('category-list');
-const emptyState = document.getElementById('category-empty');
+const nameInput = document.getElementById('category-name')
+const contentInput = document.getElementById('category-content')
+const colorInput = document.getElementById('category-color')
+const addBtn = document.getElementById('add-category-btn')
+const listEl = document.getElementById('category-list')
+const emptyState = document.getElementById('category-empty')
 
-addBtn.addEventListener('click', async () => await createCategory());
+addBtn.addEventListener('click', async () => await createCategory())
 nameInput.addEventListener('keydown', async e => {
     if (e.key === 'Enter') {
         await createCategory()
     }
-});
+})
+contentInput.addEventListener('keydown', async e => {
+    if (e.key === 'Enter') {
+        await createCategory()
+    }
+})
 
 render()
 
 async function createCategory() {
-    const name = nameInput.value.trim();
-    const hexColor = colorInput.value;
+    const name = nameInput.value.trim()
+    const content = contentInput.value.trim()
+    const hexColor = colorInput.value
 
-    if (!name) {
-        nameInput.focus();
-        nameInput.classList.add('shake');
-        setTimeout(() => nameInput.classList.remove('shake'), 400);
-        return;
+    if (!name || !content) {
+        if(!name) {
+            nameInput.focus()
+        }
+        else {
+            contentInput.focus()
+        }
+        nameInput.classList.add('shake')
+        contentInput.classList.add('shake')
+        setTimeout(() => {
+            nameInput.classList.remove('shake')
+            contentInput.classList.remove('shake')
+        }, 400)
+        return
     }
 
-    // Matches CategoryDTO(string? CategoryId, string Name, string HexColor)
+    // Matches CategoryDTO(string? CategoryId, string Name, string Content, string HexColor)
     // CategoryId is not included — generated server-side
-    const category = { name, hexColor };
+    const category = { name, content, hexColor }
 
     await apiFetch(API, {
         method: "POST",
         body: JSON.stringify(category)
     })
-    await render();
+    await render()
 
-    nameInput.value = '';
-    nameInput.focus();
+    nameInput.value = ''
+    contentInput.value = ''
+    nameInput.focus()
 }
 
 async function render() {
     const categories = await getAllCategories()
-    listEl.querySelectorAll('.category-card').forEach(el => el.remove());
+    listEl.querySelectorAll('.category-card').forEach(el => el.remove())
 
     if (categories.length === 0) {
         emptyState.style.display = '';
-        return;
+        return
     }
 
-    emptyState.style.display = 'none';
+    emptyState.style.display = 'none'
 
     categories.forEach((cat, i) => {
-        const card = document.createElement('div');
+        const card = document.createElement('div')
         card.id = cat.categoryId
-        card.className = 'category-card';
-        card.style.animationDelay = `${i * 40}ms`;
+        card.className = 'category-card'
+        card.style.animationDelay = `${i * 40}ms`
 
         card.innerHTML = `
             <span class="category-color-dot" style="background:${cat.hexColor}"></span>
-            <span class="category-card-name">${escapeHtml(cat.name)}</span>
+            <div class="category-card-text">
+                <span class="category-card-name">${escapeHtml(cat.name)}</span>
+                ${cat.content ? `<span class="category-card-content">${escapeHtml(cat.content)}</span>` : ''}
+            </div>
             <button class="category-delete-btn" aria-label="Delete category">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -69,17 +89,16 @@ async function render() {
             </button>
         `;
 
-        card.querySelector('.category-delete-btn').addEventListener('click', async () => await deleteCategory(cat.categoryId));
-        listEl.appendChild(card);
-    });
+        card.querySelector('.category-delete-btn').addEventListener('click', async () => await deleteCategory(cat.categoryId))
+        listEl.appendChild(card)
+    })
 }
 
 function escapeHtml(str) {
-    const d = document.createElement('div');
-    d.textContent = str;
-    return d.innerHTML;
+    const d = document.createElement('div')
+    d.textContent = str
+    return d.innerHTML
 }
-
 
 async function getAllCategories() {
     return await apiFetch(API)
@@ -89,11 +108,11 @@ async function deleteCategory(id) {
     await apiFetch(API + `/${id}`, {
         method: "DELETE"
     })
-    await render();
+    await render()
 }
 
 async function apiFetch(url, options = {}) {
-    const token = sessionStorage.getItem("token");
+    const token = sessionStorage.getItem("token")
 
     const response = await fetch(url, {
         ...options,
@@ -102,27 +121,22 @@ async function apiFetch(url, options = {}) {
             "Authorization": `Bearer ${token}`,
             ...options.headers
         }
-    });
+    })
 
     if (response.status === 401) {
-        // Token missing or expired — send to login
-        sessionStorage.removeItem("token");
-        window.location.href = "/";
-        return;
+        sessionStorage.removeItem("token")
+        window.location.href = "/"
+        return
     }
 
     if (response.status === 403) {
-        // Authenticated but wrong role — show error, stay on page
         alert("You do not have permission to do this");
-        return;
+        return
     }
 
-    // Returner null hvis der ikke er noget body
     if (response.status === 204) {
         return null
     }
 
-    return response.json();
+    return response.json()
 }
-
-
