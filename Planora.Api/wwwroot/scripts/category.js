@@ -122,7 +122,6 @@ async function render() {
             }
 
             await updateCategory(cat.categoryId, {
-                categoryId: cat.categoryId,
                 name: newName,
                 content: newContent,
                 hexColor: newColor
