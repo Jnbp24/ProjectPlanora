@@ -36,10 +36,13 @@ function validateInput(firstname, lastname, email) {
 }
 
 async function post(data) {
+	const token = sessionStorage.getItem("token");
+
 	const response = await fetch("/api/user", {
 		method: "POST",
 		headers: {
-			"Content-Type": "application/json"
+			"Content-Type": "application/json",
+			"Authorization": `Bearer ${token}`
 		},
 		body: JSON.stringify(data)
 	});
