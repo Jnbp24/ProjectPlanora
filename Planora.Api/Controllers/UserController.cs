@@ -23,16 +23,8 @@ public class UserController : ControllerBase
 	[HttpPost]
 	public async Task<ActionResult<UserDTO>> CreateUserAsync(UserDTO userDTO)
 	{
-		try
-		{
 			var createdProjectDto = await _userService.CreateUserAsync(userDTO);
-			// return 201 with location header pointing to the created resource
 			return CreatedAtAction(nameof(GetUserByIdAsync), new { userId = createdProjectDto.UserId }, createdProjectDto);
-		}
-		catch(InvalidOperationException exception)
-		{
-			return Conflict(exception.Message);
-		}
 	}
 
 	// GET api/user
@@ -49,18 +41,7 @@ public class UserController : ControllerBase
 	[Route("{userId}")]
 	public async Task<ActionResult<UserDTO>> GetUserByIdAsync(string userId)
 	{
-		try
-		{
-			return Ok(await _userService.GetUserByIdAsync(userId));
-		}
-		catch (KeyNotFoundException exception)
-		{
-			return NotFound(exception.Message);
-		}
-		catch (ArgumentException e)
-		{
-			return BadRequest(e.Message);
-		}
+		return Ok(await _userService.GetUserByIdAsync(userId));
 	}
 
 	// To authenticate Tovholder before update
@@ -70,38 +51,16 @@ public class UserController : ControllerBase
 	[HttpPut("{userId}")]
 	public async Task<IActionResult> UpdateUserByIdAsync(string userId, [FromBody] UserDTO userDTO)
 	{
-		try
-		{
-			return Ok(await _userService.UpdateUserByIdAsync(userId, userDTO));
-		}
-		catch (KeyNotFoundException e)
-		{
-			return NotFound(e.Message);
-		}
-		catch (ArgumentException e)
-		{
-			return BadRequest(e.Message);
-		}
+		return Ok(await _userService.UpdateUserByIdAsync(userId, userDTO));
+	
 	}
 
 	// DELETE api/user/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
-	[Authorize]
+	[Authorize(Roles = "Tovholder")]
 	[HttpDelete("{userId}")]
 	public async Task<IActionResult> DeleteUserById(string userId)
 	{
-		try
-		{
 			 await _userService.DeleteUserByIdAsync(userId);
 			 return NoContent();
-		}
-		catch (KeyNotFoundException e)
-		{
-			return NotFound(e.Message);
-		}
-		catch (ArgumentException e)
-		{
-			return BadRequest(e.Message);
-		}
 	}
-        
 }

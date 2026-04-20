@@ -22,7 +22,6 @@ public class ProjectController : ControllerBase
     public async Task<ActionResult<ProjectDTO>> CreateProjectAsync([FromBody] ProjectDTO projectDTO)
     {
         var createdProjectDto = await _projectService.CreateProjectAsync(projectDTO);
-        // return 201 with location header pointing to the created resource
         return CreatedAtAction(nameof(GetProjectByIdAsync), new { projectId = createdProjectDto.ProjectId }, createdProjectDto);
     }
     
@@ -39,18 +38,8 @@ public class ProjectController : ControllerBase
     [HttpGet("{projectId}")]
     public async Task<ActionResult<ProjectDTO>> GetProjectByIdAsync(string projectId)
     {
-        try
-        {
-            return Ok(await _projectService.GetProjectByIdAsync(projectId));
-        }
-        catch (KeyNotFoundException e)
-        {
-            return NotFound();
-        }
-        catch (ArgumentException e)
-        {
-            return BadRequest(e.Message);
-        }
+        return Ok(await _projectService.GetProjectByIdAsync(projectId));
+   
     }
 
 
@@ -59,39 +48,15 @@ public class ProjectController : ControllerBase
     [HttpPut("{projectId}")]
     public async Task<IActionResult> UpdateProjectByIdAsync(string projectId, [FromBody] ProjectDTO projectDTO)
     {
-        try
-        {
-            await _projectService.UpdateProjectByIdAsync(projectId, projectDTO);
-            return NoContent();
-
-        }
-        catch (KeyNotFoundException e)
-        {
-            return NotFound();
-        }
-        catch (ArgumentException e)
-        {
-            return BadRequest(e.Message);
-        }
-        
+        await _projectService.UpdateProjectByIdAsync(projectId, projectDTO);
+        return NoContent();
     }
     // DELETE api/project/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
-    [Authorize]
+    [Authorize(Roles = "Tovholder")]
     [HttpDelete("{projectId}")]
     public async Task<IActionResult> DeleteProjectByIdAsync(string projectId)
     {
-        try
-        {
-            await _projectService.DeleteProjectByIdAsync(projectId);
-            return NoContent();
-        }
-        catch (KeyNotFoundException e)
-        {
-            return NotFound();
-        }
-        catch (ArgumentException e)
-        {
-            return BadRequest(e.Message);
-        }
+        await _projectService.DeleteProjectByIdAsync(projectId);
+        return NoContent();
     }
 }
