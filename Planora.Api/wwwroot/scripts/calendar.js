@@ -96,7 +96,11 @@ function task_click_handler(info) {
     contentInput.value = task.content
     categoryInput.value = task.category
     if (task.deadline) {
-        dateInput.value = new Date(task.deadline).toISOString().split("T")[0]
+        const deadline = task.deadline
+        const year = deadline.getFullYear()
+        const month = String(deadline.getMonth() + 1).padStart(2, "0")
+        const day = String(deadline.getDate()).padStart(2, "0")
+        dateInput.value = `${year}-${month}-${day}`
     }
 }
 
