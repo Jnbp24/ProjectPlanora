@@ -17,12 +17,11 @@ async function setup_calendar() {
 async function refresh_calendar() {
     try {
         const data = await get(url, read_fail);
-        const tasks = map_to_task(data);
 
         if (!calendar) return;
 
         calendar.removeAllEvents();
-        calendar.addEventSource(map_to_task(data));
+        calendar.addEventSource(map_to_event(data));
 
     } catch (error) {
         error_message(error.message);
@@ -31,7 +30,7 @@ async function refresh_calendar() {
 
 function map_to_event(data) {
     return data.map(task => ({
-        id: task.taskid,
+        id: task.taskId,
         title: task.title,
         start: task.deadline,
         extendedProps: {
@@ -81,7 +80,12 @@ function task_click_handler(info) {
     const delete_task_btn = document.getElementById("delete_task_btn")
     delete_task_btn.classList.remove("invisible")
 
+    const update_task_btn = document.getElementById("update_task_btn")
+    update_task_btn.classList.remove("invisible")
+
     const newTaskBtn = document.querySelector(".new-task-btn")
+    newTaskBtn.classList.add("btn-disabled")
+    newTaskBtn.disabled = true
     
     const titleInput = document.querySelector(".task-name")
     const contentInput = document.querySelector(".task-content")
@@ -92,7 +96,11 @@ function task_click_handler(info) {
     contentInput.value = task.content
     categoryInput.value = task.category
     if (task.deadline) {
-        dateInput.value = new Date(task.deadline).toISOString().split("T")[0]
+        const deadline = task.deadline
+        const year = deadline.getFullYear()
+        const month = String(deadline.getMonth() + 1).padStart(2, "0")
+        const day = String(deadline.getDate()).padStart(2, "0")
+        dateInput.value = `${year}-${month}-${day}`
     }
 }
 
@@ -102,6 +110,13 @@ function reset_top_bar() {
 
     const delete_task_btn = document.getElementById("delete_task_btn")
     delete_task_btn.classList.add("invisible")
+
+    const update_task_btn = document.getElementById("update_task_btn")
+    update_task_btn.classList.add("invisible")
+
+    const newTaskBtn = document.querySelector(".new-task-btn")
+    newTaskBtn.classList.remove("btn-disabled")
+    newTaskBtn.disabled = false
 
     document.querySelector(".task-name").value = ""
     document.querySelector(".task-content").value = ""
