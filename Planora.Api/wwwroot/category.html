@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Planora - Dashboard</title>
+    <title>Project Planora - Categories</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=check,close,delete,edit,folder_open"/>    
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles/styles.css">
     <script defer src="scripts/category.js"></script>
 
@@ -56,9 +58,7 @@
 
         <div class="category-list" id="category-list">
             <div class="category-empty-state" id="category-empty">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-                </svg>
+                <span class="material-symbols-outlined category-empty-icon">folder_open</span>
                 <p>No categories yet. Create one above to get started.</p>
             </div>
         </div>
