@@ -1,5 +1,5 @@
 ﻿
-document.getElementById("delete_task_btn").addEventListener("click", () => delete_task_handler())
+document.getElementById("delete_task_btn").addEventListener("click", delete_task_handler)
 
 async function delete_task_handler() {
     try {
@@ -35,7 +35,7 @@ async function delete_task(url, error_message, id) {
             throw new Error(error_message)
         }
     } catch (error) {
-        throw new error("unexcpeted issue with deletion")
+        throw new Error("unexcpeted issue with deletion")
     }
 }
 
