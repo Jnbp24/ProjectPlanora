@@ -23,8 +23,15 @@ public class UserController : ControllerBase
 	[HttpPost]
 	public async Task<ActionResult<UserDTO>> CreateUserAsync(UserDTO userDTO)
 	{
+		try 
+		{
 			var createdProjectDto = await _userService.CreateUserAsync(userDTO);
 			return CreatedAtAction(nameof(GetUserByIdAsync), new { userId = createdProjectDto.UserId }, createdProjectDto);
+		}
+		catch (InvalidOperationException exception)
+		{
+			return Conflict(new { message = exception.Message });
+		}
 	}
 
 	// GET api/user
