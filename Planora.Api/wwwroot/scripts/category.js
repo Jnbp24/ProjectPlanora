@@ -21,24 +21,155 @@ contentInput.addEventListener('keydown', async e => {
 
 render()
 
+async function render() {
+    const categories = await getAllCategories()
+    listEl.querySelectorAll('.category-card').forEach(el => el.remove())
+
+    if (categories.length === 0) {
+        emptyState.style.display = ''
+        return
+    }
+
+    emptyState.style.display = 'none'
+
+    categories.forEach((cat, i) => {
+        const card = document.createElement('div')
+        card.id = cat.categoryId
+        card.className = 'category-card'
+        card.style.animationDelay = `${i * 40}ms`
+
+        // Color picker
+        const colorEdit = document.createElement('input')
+        colorEdit.type = 'color'
+        colorEdit.className = 'category-color-edit'
+        colorEdit.value = cat.hexColor
+        colorEdit.style.background = cat.hexColor
+        colorEdit.disabled = true
+
+        // Text wrapper with name + content
+        const textWrap = document.createElement('div')
+        textWrap.className = 'category-card-text'
+
+        const nameEdit = document.createElement('input')
+        nameEdit.type = 'text'
+        nameEdit.className = 'category-name-edit'
+        nameEdit.value = cat.name
+        nameEdit.maxLength = 40
+        nameEdit.disabled = true
+
+        const contentEdit = document.createElement('input')
+        contentEdit.type = 'text'
+        contentEdit.className = 'category-content-edit'
+        contentEdit.value = cat.content
+        contentEdit.maxLength = 200
+        contentEdit.placeholder = 'No content'
+        contentEdit.disabled = true
+
+        textWrap.append(nameEdit, contentEdit)
+
+        // Action buttons
+        const actions = document.createElement('div')
+        actions.className = 'category-card-actions'
+
+        const editBtn = makeIconButton('category-edit-btn', 'edit', 'Edit category')
+        const saveBtn = makeIconButton('category-save-btn', 'check', 'Save changes', true)
+        const cancelBtn = makeIconButton('category-cancel-btn', 'close', 'Cancel edit', true)
+        const deleteBtn = makeIconButton('category-delete-btn', 'delete', 'Delete category')
+
+        actions.append(editBtn, saveBtn, cancelBtn, deleteBtn)
+        card.append(colorEdit, textWrap, actions)
+
+        const enterEditMode = () => {
+            card.classList.add('editing')
+            nameEdit.disabled = false
+            contentEdit.disabled = false
+            colorEdit.disabled = false
+            editBtn.style.display = 'none'
+            deleteBtn.style.display = 'none'
+            saveBtn.style.display = ''
+            cancelBtn.style.display = ''
+            nameEdit.focus()
+            nameEdit.select()
+        }
+
+        const exitEditMode = () => {
+            card.classList.remove('editing')
+            nameEdit.disabled = true
+            contentEdit.disabled = true
+            colorEdit.disabled = true
+            editBtn.style.display = ''
+            deleteBtn.style.display = ''
+            saveBtn.style.display = 'none'
+            cancelBtn.style.display = 'none'
+        }
+
+        const save = async () => {
+            const newName = nameEdit.value.trim()
+            const newContent = contentEdit.value.trim()
+            const newColor = colorEdit.value
+
+            if (!newName || !newContent) {
+                const target = !newName ? nameEdit : contentEdit
+                target.focus()
+                target.classList.add('shake')
+                setTimeout(() => target.classList.remove('shake'), 400)
+                return
+            }
+
+            if (newName === cat.name && newContent === cat.content && newColor === cat.hexColor) {
+                exitEditMode()
+                return
+            }
+
+            await updateCategory(cat.categoryId, {
+                categoryId: cat.categoryId,
+                name: newName,
+                content: newContent,
+                hexColor: newColor
+            })
+            await render()
+        }
+
+        editBtn.addEventListener('click', enterEditMode)
+        cancelBtn.addEventListener('click', () => {
+            nameEdit.value = cat.name
+            contentEdit.value = cat.content
+            colorEdit.value = cat.hexColor
+            exitEditMode()
+        })
+        saveBtn.addEventListener('click', save)
+
+        deleteBtn.addEventListener('click', async () => await deleteCategory(cat.categoryId))
+        listEl.appendChild(card)
+    })
+}
+
+function makeIconButton(className, iconName, label, hidden = false) {
+    const btn = document.createElement('button')
+    btn.className = className
+    btn.type = 'button'
+    btn.setAttribute('aria-label', label)
+    btn.title = label
+    if (hidden) btn.style.display = 'none'
+
+    const icon = document.createElement('span')
+    icon.className = 'material-symbols-outlined'
+    icon.textContent = iconName
+    btn.appendChild(icon)
+
+    return btn
+}
+
 async function createCategory() {
     const name = nameInput.value.trim()
     const content = contentInput.value.trim()
     const hexColor = colorInput.value
 
     if (!name || !content) {
-        if(!name) {
-            nameInput.focus()
-        }
-        else {
-            contentInput.focus()
-        }
-        nameInput.classList.add('shake')
-        contentInput.classList.add('shake')
-        setTimeout(() => {
-            nameInput.classList.remove('shake')
-            contentInput.classList.remove('shake')
-        }, 400)
+        const target = !name ? nameInput : contentInput
+        target.focus()
+        target.classList.add('shake')
+        setTimeout(() => target.classList.remove('shake'), 400)
         return
     }
 
@@ -57,51 +188,15 @@ async function createCategory() {
     nameInput.focus()
 }
 
-async function render() {
-    const categories = await getAllCategories()
-    listEl.querySelectorAll('.category-card').forEach(el => el.remove())
-
-    if (categories.length === 0) {
-        emptyState.style.display = '';
-        return
-    }
-
-    emptyState.style.display = 'none'
-
-    categories.forEach((cat, i) => {
-        const card = document.createElement('div')
-        card.id = cat.categoryId
-        card.className = 'category-card'
-        card.style.animationDelay = `${i * 40}ms`
-
-        card.innerHTML = `
-            <span class="category-color-dot" style="background:${cat.hexColor}"></span>
-            <div class="category-card-text">
-                <span class="category-card-name">${escapeHtml(cat.name)}</span>
-                ${cat.content ? `<span class="category-card-content">${escapeHtml(cat.content)}</span>` : ''}
-            </div>
-            <button class="category-delete-btn" aria-label="Delete category">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"/>
-                    <line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-            </button>
-        `;
-
-        card.querySelector('.category-delete-btn').addEventListener('click', async () => await deleteCategory(cat.categoryId))
-        listEl.appendChild(card)
-    })
-}
-
-function escapeHtml(str) {
-    const d = document.createElement('div')
-    d.textContent = str
-    return d.innerHTML
-}
-
 async function getAllCategories() {
     return await apiFetch(API)
+}
+
+async function updateCategory(id, category) {
+    await apiFetch(API + `/${id}`, {
+        method: "PUT",
+        body: JSON.stringify(category)
+    })
 }
 
 async function deleteCategory(id) {
