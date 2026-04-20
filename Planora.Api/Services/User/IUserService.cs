@@ -1,18 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Planora.DTO.UserDTO;
+﻿using Planora.DTO.UserDTO;
 
-namespace Planora.Api.Services.User
+namespace Planora.Api.Services.User;
+
+public interface IUserService
 {
-    public interface IUserService
-    {
-        Task<IEnumerable<UserDTO>> GetAllUsers();
-        Task<UserDTO> GetUser(string id);
-        Task<UserDTO> DeleteUser(string id);
-        Task<UserDTO> UpdateUser(string id, UserDTO userDTO);
-        Task<UserDTO> CreateUser(UserDTO userDTO);
+	Task<UserDTO> CreateUserAsync(UserDTO userDTO);
+	Task<IEnumerable<UserDTO>> GetAllUsersAsync();
+	Task<UserDTO> GetUserByIdAsync(string userId);
+	Task<UserDTO> UpdateUserByIdAsync(string userId, UserDTO userDTO);
+	Task<UserDTO> DeleteUserByIdAsync(string userId);
+	Task<bool> UserWithEmailExistAsync(string email);
 
-		Task<bool> UserWithEmailExist(string email);
-
-	}
 }

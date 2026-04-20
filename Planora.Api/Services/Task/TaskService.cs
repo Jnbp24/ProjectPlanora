@@ -13,37 +13,36 @@ public class TaskService : ITaskService
         _taskRepository = taskRepository;
     }
 
-    public async Task<TaskDTO> CreateAsync(TaskDTO taskDTO)
+    public async Task<TaskDTO> CreateTaskAsync(TaskDTO taskDTO)
     {
         var taskDB = TaskMapping.ToEntity(taskDTO);
         var createdTaskDB = await _taskRepository.CreateAsync(taskDB);
         return TaskMapping.ToDTO(createdTaskDB);
     }
         
-    public async Task<IEnumerable<TaskDTO>> GetAllAsync()
+    public async Task<IEnumerable<TaskDTO>> GetAllTasksAsync()
     {
         var taskDBs = await _taskRepository.GetAllAsync();
-
-
+        
         var filtered = taskDBs.Where(t => !t.Deleted);
         return filtered.Select(TaskMapping.ToDTO);
     }
 
-    public async Task<TaskDTO> GetByIdAsync(string taskId)
+    public async Task<TaskDTO> GetTaskByIdAsync(string taskId)
     {
         if (!Guid.TryParse(taskId, out var tGuid))
         {
-            throw new ArgumentException($"Invalid taskId {tGuid}");
+            throw new ArgumentException($"Invalid taskId {taskId}");
         }
         var taskDB = await _taskRepository.GetByIdAsync(tGuid);
         return TaskMapping.ToDTO(taskDB);
     }
 
-    public async Task<TaskDTO> UpdateAsync(string taskId, TaskDTO taskDTO)
+    public async Task<TaskDTO> UpdateTaskByIdAsync(string taskId, TaskDTO taskDTO)
     {
         if (!Guid.TryParse(taskId, out var tGuid))
         {
-            throw new ArgumentException($"Invalid taskId {tGuid}");
+            throw new ArgumentException($"Invalid taskId {taskId}");
         }
         var taskDB = await _taskRepository.GetByIdAsync(tGuid);
         if (taskDB.Deleted)
@@ -57,11 +56,11 @@ public class TaskService : ITaskService
         return TaskMapping.ToDTO(taskDB);
     }
 
-    public async Task<TaskDTO> DeleteAsync(string taskId)
+    public async Task<TaskDTO> DeleteTaskByIdAsync(string taskId)
     {
         if (!Guid.TryParse(taskId, out var tGuid))
         {
-            throw new ArgumentException($"Invalid taskId {tGuid}");
+            throw new ArgumentException($"Invalid taskId {taskId}");
         }
         var taskDB = await _taskRepository.GetByIdAsync(tGuid);
         if (taskDB.Deleted)
@@ -73,47 +72,55 @@ public class TaskService : ITaskService
         return TaskMapping.ToDTO(taskDB);
     }
 
-    public async Task<TaskDTO> AssignCategoryAsync(string taskId, string categoryName)
+    public async Task<TaskDTO> AssignCategoryToTaskAsync(string taskId, string categoryName)
     {
         if (!Guid.TryParse(taskId, out var tGuid))
         {
-            throw new ArgumentException($"Invalid taskId {tGuid}");
+            throw new ArgumentException($"Invalid taskId {taskId}");
         }
         
-        var task = await _taskRepository.AssignCategoryAsync(taskId, categoryName);
+        var task = await _taskRepository.AssignCategoryAsync(tGuid, categoryName);
         return TaskMapping.ToDTO(task);
     }
 
-    public async Task<TaskDTO> UnassignCategoryAsync(string taskId, string categoryName)
+    public async Task<TaskDTO> UnassignCategoryFromTaskAsync(string taskId, string categoryName)
     {
         if (!Guid.TryParse(taskId, out var tGuid))
         {
-            throw new ArgumentException($"Invalid taskId {tGuid}");
+            throw new ArgumentException($"Invalid taskId {taskId}");
         }
         
-        var task = await _taskRepository.UnassignCategoryAsync(taskId, categoryName);
+        var task = await _taskRepository.UnassignCategoryAsync(tGuid, categoryName);
          return TaskMapping.ToDTO(task);
     }
 
-    public async Task<TaskDTO> AssignUserAsync(string taskId, string userId)
+    public async Task<TaskDTO> AssignUserToTaskAsync(string taskId, string userId)
     {
         if (!Guid.TryParse(taskId, out var tGuid))
         {
-            throw new ArgumentException($"Invalid taskId {tGuid}");
+            throw new ArgumentException($"Invalid taskId {taskId}");
         }
         
-        var task = await _taskRepository.AssignUserAsync(taskId, userId);
+        if (!Guid.TryParse(userId, out var uGuid))
+            throw new ArgumentException($"Invalid userId {userId}");
+
+        
+        var task = await _taskRepository.AssignUserAsync(tGuid, uGuid);
         return TaskMapping.ToDTO(task);
     }
 
-    public async Task<TaskDTO> UnassignUserAsync(string taskId, string userId)
+    public async Task<TaskDTO> UnassignUserFromTaskAsync(string taskId, string userId)
     {
         if (!Guid.TryParse(taskId, out var tGuid))
         {
-            throw new ArgumentException($"Invalid taskId {tGuid}");
+            throw new ArgumentException($"Invalid taskId {taskId}");
         }
         
-        var task = await _taskRepository.UnassignUserAsync(taskId, userId);
+        if (!Guid.TryParse(userId, out var uGuid))
+            throw new ArgumentException($"Invalid userId {userId}");
+
+        
+        var task = await _taskRepository.UnassignUserAsync(tGuid, uGuid);
         return TaskMapping.ToDTO(task);
     }
 

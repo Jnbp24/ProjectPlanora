@@ -1,6 +1,5 @@
 ﻿using System.Data;
 using Microsoft.AspNetCore.Identity;
-using Planora.DataAccess;
 using Planora.DataAccess.Context;
 using Planora.DataAccess.Models;
 using Planora.DataAccess.Models.Auth;

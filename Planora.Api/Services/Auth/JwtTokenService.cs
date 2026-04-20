@@ -3,8 +3,6 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using Planora.DataAccess;
-using Planora.DataAccess.Models;
 using Planora.DataAccess.Models.Auth;
 
 namespace Planora.Api.Services.Auth;
