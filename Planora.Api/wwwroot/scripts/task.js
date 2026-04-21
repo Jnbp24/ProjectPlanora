@@ -49,38 +49,6 @@
         }
     }
 
-    let users_map = {}
-
-    async function load_users() {
-        try {
-            const users = await get("/api/user", "Failed to load categories");
-
-            users.forEach(user => {
-
-                const id = user.userId
-                const full_name = `${user.firstName} ${user.lastName}`
-
-                const option = document.createElement("option");
-
-                option.value = id;
-                option.textContent = full_name;
-
-                user_input.appendChild(option);
-
-                users_map[id] = {
-                    userId: id,
-                    full_name,
-                };
-            });
-
-        } catch (error) {
-            console.error("Error loading users:", error);
-
-            categoryInput.innerHTML =
-                `<option value="" disabled selected hidden>No Users</option>`;
-        }
-    }
-
     noDeadlineCheckbox.addEventListener("change", () => {
 
         if (noDeadlineCheckbox.checked) {
@@ -170,7 +138,6 @@
     newTaskBtn.addEventListener("click", createTask);
 
     loadCategories();
-    load_users()
 });
 
 async function get(url, error_message) {
