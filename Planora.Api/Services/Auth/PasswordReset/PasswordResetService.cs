@@ -2,6 +2,7 @@
 using Planora.Api.Services.Email;
 using Planora.DataAccess.Models.Auth;
 using Planora.DTO.Auth;
+using System.Threading.Tasks;
 
 namespace Planora.Api.Services.Auth.PasswordReset;
 
@@ -21,8 +22,18 @@ public class PasswordResetService : IPasswordResetService
         throw new NotImplementedException();
     }
 
-    public Task<AuthResultDto> RequestPasswordReset(string email)
+    public async Task<AuthResultDto> RequestPasswordReset(string email)
     {
-        throw new NotImplementedException();
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user == null)
+        {
+            // Nothing to do if user is unknown; do not send email
+            return new AuthResultDto { Success = true};
+        }
+
+        // In a fuller implementation we would generate a reset token and include it in the email
+        _emailServiceMock.SendPasswordResetEmail();
+
+        return new AuthResultDto { Success = true };
     }
 }
