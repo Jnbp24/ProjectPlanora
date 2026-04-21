@@ -1,33 +1,20 @@
-﻿const get_task_api = "api/task"
+﻿const get_task_api = "api/task/extended"
 const get_category_api = "api/category"
 
 let calendar;
 
 async function setup_calendar() {
     try {
-        const tasks_with_categories = await get_tasks_with_category()
-        if (!tasks_with_categories) {
+        const tasks = await get(get_task_api)
+        if (!tasks) {
             throw new Error("failed to load tasks")
         }
-        console.log(tasks_with_categories)
-        const events = map_to_event(tasks_with_categories)
+        console.log(tasks)
+        const events = map_to_event(tasks)
         create_calendar(events)
     } catch (error) {
         error_message(error.message)
     }
-}
-
-async function get_tasks_with_category() {
-    const tasks = await get(get_task_api)
-    const categories = await get(get_category_api)
-
-    console.log(tasks)
-    console.log(categories)
-
-    return tasks.map(task => ({
-        ...task,
-        category: categories.find(c => c.id === task.categoryId) ?? null
-    }))
 }
 
 async function refresh_calendar() {
@@ -51,7 +38,8 @@ function map_to_event(tasks) {
         start: task.deadline,
         extendedProps: {
             content: task.content,
-            category: task.category
+            category: task.category,
+            users: task.users
         },
         backgroundColor: task.category?.hexColor ?? '#6b7280',
         borderColor: task.category?.hexColor ?? '#6b7280',
@@ -72,10 +60,19 @@ function create_calendar(tasks) {
             return {
                 html: `
                     <div>
-                        <span class="event-element" id="event-category" style="--category-color: ${arg.event.extendedProps.category.hexColor}">${arg.event.extendedProps.category.name}</span>
+                        <span class="event-element" id="event-category" style="--category-color: ${arg.event.extendedProps.category.hexColor}">
+                            ${arg.event.extendedProps.category.name}
+                        </span>
                         <br>
                         <br>
-                        <span class="event-element">${arg.event.extendedProps.content ?? ''}</span>
+                        <span class="event-element">
+                            ${arg.event.extendedProps.content ?? ''}
+                        </span>
+                        <br>
+                        <br>
+                        <span class="event-element">
+                            ${arg.event.extendedProps.users.size > 0 ? arg.event.extendedProps.users : 'Ingen tildelt'}
+                        </span>
                     </div>
                 `
             }
@@ -154,7 +151,8 @@ function map_to_task(data) {
         title: data.title,
         deadline: data.start,
         content: data.extendedProps.content,
-        category: data.extendedProps.category
+        category: data.extendedProps.category,
+        users: data.extendedProps.users
     }
 }
 
