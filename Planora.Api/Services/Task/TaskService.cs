@@ -124,7 +124,7 @@ public class TaskService : ITaskService
         return TaskMapping.ToDTO(task);
     }
 
-	public Task<TaskWithCategoryAndUsers> GetAllTasksIncludeRelationsAsync()
+	public Task<TaskWithCategoryAndUsersDTO> GetAllTasksIncludeRelationsAsync()
 	{
 		throw new NotImplementedException();
 	}

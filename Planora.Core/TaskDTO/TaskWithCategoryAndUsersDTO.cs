@@ -3,7 +3,7 @@ using Planora.DTO.User;
 
 namespace Planora.DTO.Task;
 
-public record TaskWithCategoryAndUsers(
+public record TaskWithCategoryAndUsersDTO(
 	string? TaskId, 
 	string Content, 
 	string Title, 

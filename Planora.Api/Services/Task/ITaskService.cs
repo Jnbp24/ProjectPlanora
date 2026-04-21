@@ -13,5 +13,5 @@ public interface ITaskService
     Task<TaskDTO> UnassignCategoryFromTaskAsync(string taskId, string categoryName);
     Task<TaskDTO> AssignUserToTaskAsync(string taskId, string userId);
     Task<TaskDTO> UnassignUserFromTaskAsync(string taskId, string userId);
-    Task<TaskWithCategoryAndUsers> GetAllTasksIncludeRelationsAsync();
+    Task<TaskWithCategoryAndUsersDTO> GetAllTasksIncludeRelationsAsync();
 }
