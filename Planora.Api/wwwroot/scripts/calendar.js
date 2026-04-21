@@ -71,7 +71,12 @@ function create_calendar(tasks) {
         eventContent: function (arg) {
             return {
                 html: `
-                    <span class="fc-event-content">${arg.event.extendedProps.content ?? ''}</span>
+                    <div>
+                        <span class="event-element" id="event-category" style="--category-color: ${arg.event.extendedProps.category.hexColor}">${arg.event.extendedProps.category.name}</span>
+                        <br>
+                        <br>
+                        <span class="event-element">${arg.event.extendedProps.content ?? ''}</span>
+                    </div>
                 `
             }
         }
