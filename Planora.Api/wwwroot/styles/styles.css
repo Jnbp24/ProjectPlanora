@@ -890,3 +890,7 @@ outline-offset: 1px;
 .restricted {
     display: none !important;
 }
+
+#delete_task_btn:hover, #update_task_btn:hover {
+    cursor: pointer;
+}
