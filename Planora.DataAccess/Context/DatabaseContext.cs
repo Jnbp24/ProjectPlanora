@@ -41,5 +41,5 @@ public sealed class DatabaseContext : IdentityDbContext<AuthUser>
         
     public DbSet<CategoryDB> Categories { get; set; }
     public DbSet<TaskDB> Tasks { get; set; }
-    public DbSet<ProjectDB> Projects { get; set; }
+    public DbSet<CalenderYearDB> CalenderYears { get; set; }
 }
