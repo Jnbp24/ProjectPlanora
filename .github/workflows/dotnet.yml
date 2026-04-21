@@ -21,8 +21,8 @@ jobs:
         with:
           dotnet-version: 10.0.102
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore ./Planora.slnx
       - name: Build
-        run: dotnet build --no-restore
+        run: dotnet build ./Planora.slnx --no-restore
       - name: Test
-        run: dotnet test --no-build --verbosity normal
+        run: dotnet test ./Planora.slnx --no-build --verbosity normal
