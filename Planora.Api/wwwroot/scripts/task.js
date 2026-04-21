@@ -1,5 +1,9 @@
 ﻿document.addEventListener("DOMContentLoaded", () => {
 
+    if (!is_tovholder()) {
+        document.getElementById("delete_task_btn").classList.remove("restricted")
+    }
+
     const newTaskBtn = document.querySelector(".new-task-btn");
     const titleInput = document.querySelector(".task-name");
     const contentInput = document.querySelector(".task-content");

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Planora.DTO.ProjectDTO;
-using Planora.Api.Services.Project;
+using Planora.Api.Services.CalenderYear;
+using Planora.DTO.CalenderYearDTO;
 
 namespace Planora.Api.Controllers;
 
@@ -9,36 +9,36 @@ namespace Planora.Api.Controllers;
 [Route("api/[controller]")]
 public class ProjectController : ControllerBase
 {
-    private readonly IProjectService _projectService;
+    private readonly ICalenderYearService _calenderYearService;
 
-    public ProjectController(IProjectService service)
+    public ProjectController(ICalenderYearService service)
     {
-        _projectService = service;
+        _calenderYearService = service;
     }
 
     // POST api/project
     [Authorize]
     [HttpPost]
-    public async Task<ActionResult<ProjectDTO>> CreateProjectAsync([FromBody] ProjectDTO projectDTO)
+    public async Task<ActionResult<CalenderYearDTO>> CreateCalenderYearAsync([FromBody] CalenderYearDTO calenderYearDTO)
     {
-        var createdProjectDto = await _projectService.CreateProjectAsync(projectDTO);
-        return CreatedAtAction(nameof(GetProjectByIdAsync), new { projectId = createdProjectDto.ProjectId }, createdProjectDto);
+        var createdCalenderYearDto = await _calenderYearService.CreateCalenderYearAsync(calenderYearDTO);
+        return CreatedAtAction(nameof(GetCalenderYearByIdAsync), new { calenderYearId = createdCalenderYearDto.CalenderYearId }, createdCalenderYearDto);
     }
     
     // GET api/project
     [Authorize]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProjectDTO>>> GetAllProjectsAsync()
+    public async Task<ActionResult<IEnumerable<CalenderYearDTO>>> GetAllCalenderYearsAsync()
     {
-        return Ok(await _projectService.GetAllProjectsAsync());
+        return Ok(await _calenderYearService.GetAllCalenderYearsAsync());
     }
 
     // GET api/project/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
     [Authorize]
     [HttpGet("{projectId}")]
-    public async Task<ActionResult<ProjectDTO>> GetProjectByIdAsync(string projectId)
+    public async Task<ActionResult<CalenderYearDTO>> GetCalenderYearByIdAsync(string calenderYearId)
     {
-        return Ok(await _projectService.GetProjectByIdAsync(projectId));
+        return Ok(await _calenderYearService.GetCalenderYearByIdAsync(calenderYearId));
    
     }
 
@@ -46,17 +46,17 @@ public class ProjectController : ControllerBase
     // PUT api/project/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
     [Authorize]
     [HttpPut("{projectId}")]
-    public async Task<IActionResult> UpdateProjectByIdAsync(string projectId, [FromBody] ProjectDTO projectDTO)
+    public async Task<IActionResult> UpdateCalenderYearByIdAsync(string calenderYearId, [FromBody] CalenderYearDTO calenderYearDTO)
     {
-        await _projectService.UpdateProjectByIdAsync(projectId, projectDTO);
+        await _calenderYearService.UpdateCalenderYearByIdAsync(calenderYearId, calenderYearDTO);
         return NoContent();
     }
     // DELETE api/project/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
     [Authorize(Roles = "Tovholder")]
     [HttpDelete("{projectId}")]
-    public async Task<IActionResult> DeleteProjectByIdAsync(string projectId)
+    public async Task<IActionResult> DeleteCalenderYearByIdAsync(string calenderYearId)
     {
-        await _projectService.DeleteProjectByIdAsync(projectId);
+        await _calenderYearService.DeleteCalenderYearByIdAsync(calenderYearId);
         return NoContent();
     }
 }
