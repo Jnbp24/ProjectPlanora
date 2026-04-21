@@ -1,15 +1,11 @@
-﻿const get_task_api = "api/task/extended"
-const get_category_api = "api/category"
-
-let calendar;
+﻿let calendar;
 
 async function setup_calendar() {
     try {
-        const tasks = await get(get_task_api)
+        const tasks = await get("api/task/extended")
         if (!tasks) {
             throw new Error("failed to load tasks")
         }
-        console.log(tasks)
         const events = map_to_event(tasks)
         create_calendar(events)
     } catch (error) {
