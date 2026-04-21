@@ -1,6 +1,6 @@
 ﻿using Planora.DataAccess.Mappers;
 using Planora.DataAccess.Repositories.Task;
-using Planora.DTO.TaskDTO;
+using Planora.DTO.Task;
 
 namespace Planora.Api.Services.Task;
 

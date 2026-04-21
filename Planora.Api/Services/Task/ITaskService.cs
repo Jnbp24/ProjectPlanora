@@ -1,4 +1,4 @@
-﻿using Planora.DTO.TaskDTO;
+﻿using Planora.DTO.Task;
 
 namespace Planora.Api.Services.Task;
 

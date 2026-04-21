@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Planora.DTO.TaskDTO;
+using Planora.DTO.Task;
 using Planora.Api.Services.Task;
 
 namespace Planora.Api.Controllers;

@@ -1,5 +1,5 @@
 ﻿using Planora.DataAccess.Models;
-using Planora.DTO.TaskDTO;
+using Planora.DTO.Task;
 
 namespace Planora.DataAccess.Mappers;
 
