@@ -10,7 +10,6 @@
     const categoryInput = document.querySelector(".task-category");
     const dateInput = document.querySelector(".task-date");
     const noDeadlineCheckbox = document.querySelector("#no-deadline");
-    const user_input = document.querySelector(".task-users")
 
     let categoriesMap = {};
 
@@ -74,6 +73,7 @@
         const title = titleInput.value.trim();
         const content = contentInput.value.trim();
         const categoryId = categoryInput.value || null;
+        const assignedUserIds = assigned_users.getValue()
 
         const deadline = noDeadlineCheckbox.checked
             ? null
@@ -89,7 +89,8 @@
             title,
             content,
             categoryId,
-            deadline
+            deadline,
+            assignedUserIds
         };
 
         try {
@@ -117,6 +118,11 @@
             if (!assignResponse.ok) throw new Error("Failed to assign category");
 
             console.log("Assigned category:", categoryName);
+
+            for (const userid of assignedUserIds) {
+                const response = await post(`/api/Task/${taskId}/user`, userid);
+                if (!response.ok) throw new Error(`Failed to assign task to user`);
+            }
 
             titleInput.value = "";
             contentInput.value = "";

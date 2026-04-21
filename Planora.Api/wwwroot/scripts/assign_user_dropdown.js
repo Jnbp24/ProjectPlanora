@@ -1,8 +1,9 @@
-﻿
+﻿let assigned_users;
+
 async function create_task_user_selection() {
 	const users = await get("/api/user");
 
-	new TomSelect('#task-assignees', {
+	assigned_users = new TomSelect('#task-assignees', {
 		plugins: ['remove_button', 'checkbox_options'],
 		maxOptions: null,
 		placeholder: 'Assign to…',
