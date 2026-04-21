@@ -29,16 +29,23 @@ public class AuthController : ControllerBase
 	}
 
 	[HttpPost("reset")]
-	public async Task<ActionResult> ResetPassword()
+	public async Task<ActionResult> ResetPassword(ResetPasswordDto dto)
 	{
-		throw new NotImplementedException();
+		var result = await _authService.ResetPassword(dto);
+			
+		if (!result.Succeeded)
+		{
+			return BadRequest(new { message = "Password reset failed. The link may have expired." });
+		}
+
+		return Ok(new { message = "Password reset successful." });
 	}
 	
 	[HttpPost("request-reset")]
-	public async Task<ActionResult> RequestPasswordReset([FromBody] ResetPasswordDto dto)
+	public async Task<ActionResult> RequestPasswordReset([FromBody] EmailDto dto)
 	{
 		await _authService.RequestResetPassword(dto);
-		return Ok();
+		return Ok(new { message = "If that email is registered, a reset link has been sent."});
 	}
 	
 }
