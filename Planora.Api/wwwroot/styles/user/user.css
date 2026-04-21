@@ -166,7 +166,7 @@ body {
   border-color: var(--accent);
 }
 
-.send-invitation-btn {
+.user-send-invitation-btn {
   border: none;
   border-radius: 20px;
   background: #f2d731;
@@ -178,7 +178,7 @@ body {
   white-space: nowrap;
 }
 
-.send-invitation-btn:hover {
+.user-send-invitation-btn:hover {
   filter: brightness(0.97);
 }
 
@@ -202,7 +202,6 @@ body {
   animation: fadeSlideIn 0.25s ease both;
 }
 
-
 .user-card-text {
   flex: 1;
   min-width: 0;
@@ -211,7 +210,7 @@ body {
   gap: 2px;
 }
 
-.user-card-full-name {
+.user-full-name-display {
   font-weight: 600;
   font-size: 0.95rem;
   overflow: hidden;
@@ -219,9 +218,9 @@ body {
   white-space: nowrap;
 }
 
-.user-card-role {
-  font-size: 0.82rem;
-  color: var(--muted);
+.user-email-display {
+  font-weight: 600;
+  font-size: 0.95rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -300,7 +299,6 @@ body {
   color: var(--muted);
 }
 
-/*.user-name-edit:disabled, */
 .user-role-edit:disabled {
   color: inherit;
   -webkit-text-fill-color: inherit; /* Safari */
@@ -308,13 +306,11 @@ body {
   cursor: default;
 }
 
-/* .category-card.editing .category-name-edit, */
 .user-card.editing .user-role-edit {
   border-color: #e0e0e0;
   background: #fafafa;
 }
 
-/*.category-card.editing .category-name-edit:focus, */
 .user-card.editing .user-role-edit:focus {
   border-color: var(--accent);
   background: #fff;
