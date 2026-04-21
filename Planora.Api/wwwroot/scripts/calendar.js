@@ -123,7 +123,7 @@ function task_click_handler(info) {
         dateInput.value = `${year}-${month}-${day}`
     }
     assigned_users.clear()
-    assigned_users.setValue(task.assignedUsers.map(user => String(user.userId)))
+    assigned_users.setValue(task.assigned_users.map(user => String(user.userId)))
 }
 
 function reset_top_bar() {
