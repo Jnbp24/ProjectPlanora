@@ -1,5 +1,5 @@
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -8,14 +8,20 @@ using Planora.Api.Services.Auth;
 using Planora.Api.Services.Category;
 using Planora.Api.Services.Task;
 using Planora.Api.Services.User;
+using Planora.Api.Services.Auth.JwtToken;
 using Planora.DataAccess.Context;
 using Planora.DataAccess.Models.Auth;
+using Planora.Api.Services.User;
+using Planora.Api.Services.Task;
+using Planora.Api.Services.Category;
+using Planora.Api.Services.Project;
 using Planora.DataAccess.Repositories.Category;
 using Planora.DataAccess.Repositories.CalenderYear;
 using Planora.DataAccess.Repositories.Task;
 using Planora.DataAccess.Repositories.User;
 using System.Text;
 using Planora.Api.Services.CalenderYear;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace Planora.Api;
 

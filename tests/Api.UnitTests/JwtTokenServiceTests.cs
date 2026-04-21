@@ -4,10 +4,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Moq;
 using Planora.Api.Services.Auth;
+using Planora.Api.Services.Auth.JwtToken;
+using Planora.DataAccess;
 using Planora.DataAccess.Models;
 using Planora.DataAccess.Models.Auth;
 
 namespace Api.UnitTests;
+
 
 public class JwtTokenServiceTests
 {

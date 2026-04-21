@@ -1,4 +1,6 @@
-﻿document.addEventListener("keydown", (event) => {
+﻿let failedLoginAttempts = 0
+
+document.addEventListener("keydown", (event) => {
 	if (event.key === "Enter") {
 		event.preventDefault();
 		login();
@@ -48,14 +50,23 @@ async function post(data) {
 	});
 
 	const result = await response.json();
+	console.log(failedLoginAttempts);
+	
 
 	if (!response.ok) {
+		failedLoginAttempts++
+		console.log(failedLoginAttempts);
+		
+		if(failedLoginAttempts == 3){
+			showResetPasswordItem()
+		}
 		throw new Error(result.error)
 	}
 	if (response.error) {
 		throw new Error("issue of login")
 	}
 	sessionStorage.setItem("token", result.token)
+	failedLoginAttempts = 0;
 }
 
 function clear_input() {
@@ -64,4 +75,11 @@ function clear_input() {
 }
 function error_message(message) {
 	alert(message)
+}
+
+function showResetPasswordItem(){
+	var item = document.getElementById("resetPassword")
+	item.classList.remove("item-hidden")
+	console.log("Showing reset button");
+	
 }
