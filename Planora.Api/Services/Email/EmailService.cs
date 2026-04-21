@@ -14,7 +14,7 @@ public class EmailService : IEmailService
         _config = config;
     }
 
-    public async System.Threading.Tasks.Task SendPasswordResetEmail(string toEmail, string resetToken)
+    public async System.Threading.Tasks.Task SendPasswordResetEmailAsync(string toEmail, string resetToken)
     {
         var email = SetUpEmail(toEmail);
         email.Subject = "Reset your Planora password";
@@ -32,7 +32,7 @@ public class EmailService : IEmailService
         await SendEmailAsync(email);
     }
 
-    public async System.Threading.Tasks.Task SendSignUpEmail(string toEmail, string resetToken)
+    public async System.Threading.Tasks.Task SendSignUpEmailAsync(string toEmail, string resetToken)
     {
         var email = SetUpEmail(toEmail);
         email.Subject = "Sign up to Planora";

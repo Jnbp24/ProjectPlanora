@@ -26,7 +26,7 @@ public class PasswordResetService : IPasswordResetService
         var link = $"https://planora/reset-password?email={email}&token={token}";
 
         //Should pass the link into the method
-        await _emailService.SendPasswordResetEmail(email, token);
+        await _emailService.SendPasswordResetEmailAsync(email, token);
     }
     
     public async Task<IdentityResult> ResetPassword(ResetPasswordDto dto)
