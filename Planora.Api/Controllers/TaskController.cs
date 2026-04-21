@@ -92,4 +92,12 @@ public class TaskController : ControllerBase
         await _taskService.UnassignCategoryFromTaskAsync(taskId, categoryName);
         return NoContent();
     }
+
+    [Authorize]
+    [HttpGet("extended")]
+    public async Task<IActionResult> GetAllTasksIncludeRelations()
+    {
+		return Ok(await _taskService.GetAllTasksIncludeRelationsAsync());
+	}
+
 }
