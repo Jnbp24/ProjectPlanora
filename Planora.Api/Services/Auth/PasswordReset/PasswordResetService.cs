@@ -32,6 +32,6 @@ public class PasswordResetService : IPasswordResetService
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
         var link = $"https://planora/reset-password?email={email}&token={token}";
 
-        await _emailService.SendPasswordResetEmail();
+        await _emailService.SendPasswordResetEmail(email, token);
     }
 }
