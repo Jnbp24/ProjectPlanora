@@ -21,8 +21,7 @@ public class TaskController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<TaskDTO>> CreateTaskAsync([FromBody] TaskDTO taskDTO)
     {
-        var createdTaskDto = await _taskService.CreateAsync(taskDTO);
-        // return 201 with location header pointing to the created resource
+        var createdTaskDto = await _taskService.CreateTaskAsync(taskDTO);
         return CreatedAtAction(nameof(GetTaskByIdAsync), new { taskId = createdTaskDto.TaskId }, createdTaskDto);
     }
         
@@ -31,7 +30,7 @@ public class TaskController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<TaskDTO>>> GetAllTasksAsync()
     {
-        return Ok(await _taskService.GetAllAsync());
+        return Ok(await _taskService.GetAllTasksAsync());
     }
 
     // GET api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
@@ -39,84 +38,33 @@ public class TaskController : ControllerBase
     [HttpGet("{taskId}")]
     public async Task<ActionResult<TaskDTO>> GetTaskByIdAsync(string taskId)
     {
-        try
-        {
-            return Ok(await _taskService.GetByIdAsync(taskId));
-        }
-        catch (KeyNotFoundException e)
-        {
-            return NotFound(e.Message);
-        }
-        catch (ArgumentException e)
-        {
-            return BadRequest(e.Message);
-        }
+            return Ok(await _taskService.GetTaskByIdAsync(taskId));
     }
 
 
     // PUT api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
     [Authorize]
     [HttpPut("{taskId}")]
-    public async Task<IActionResult> UpdateTaskAsync(string taskId, [FromBody] TaskDTO taskDTO)
+    public async Task<IActionResult> UpdateTaskByIdAsync(string taskId, [FromBody] TaskDTO taskDTO)
     {
-        try
-        {
-            return Ok(await _taskService.UpdateAsync(taskId, taskDTO));
-        }
-        catch (KeyNotFoundException e)
-        {
-            return NotFound(e.Message);
-        }
-        catch (ArgumentException e)
-        {
-            return BadRequest(e.Message);
-        }
-    }
-    
-    // DELETE api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
-    [Authorize]
-    [HttpDelete("{taskId}")]
-    public async Task<IActionResult> DeleteTaskAsync(string taskId)
-    {
-        try
-        {
-            await _taskService.DeleteAsync(taskId);
-            return NoContent();
-        }
-        catch (KeyNotFoundException e)
-        {
-            return NotFound(e.Message);
-        }
-        catch (ArgumentException e)
-        {
-            return BadRequest(e.Message);
-        }
-    }
-    
-    // PUT api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc/category
-    [Authorize]
-    [HttpPut("{taskId}/category")]
-    public async Task<IActionResult> AssignCategoryToTaskAsync(string taskId, [FromBody] string categoryName)
-    {
-        var updatedTask = await _taskService.AssignCategoryAsync(taskId, categoryName);
-        return Ok(updatedTask);
+        return Ok(await _taskService.UpdateTaskByIdAsync(taskId, taskDTO));
     }
 
-    // DELETE api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc/category
-    [Authorize]
-    [HttpDelete("{taskId}/category")]
-    public async Task<IActionResult> UnassignCategoryFromTaskAsync(string taskId, [FromBody] string categoryName)
+    // DELETE api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
+    [Authorize(Roles = "Tovholder")]
+    [HttpDelete("{taskId}")]
+    public async Task<IActionResult> DeleteTaskByIdAsync(string taskId)
     {
-        return Ok(await _taskService.UnassignCategoryAsync(taskId, categoryName));
-    }
+        await _taskService.DeleteTaskByIdAsync(taskId);
+        return NoContent();
+    } 
     
     // POST api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc/user
     [Authorize]
     [HttpPost("{taskId}/user")]
     public async Task<IActionResult> AssignUserAsync(string taskId, [FromBody] string userId)
     {
-        var updatedTask = await _taskService.AssignUserAsync(taskId, userId);
-        return Ok(updatedTask);
+            return Ok(await _taskService.AssignUserToTaskAsync(taskId, userId));
     }
 
     // DELETE api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc/user
@@ -124,7 +72,24 @@ public class TaskController : ControllerBase
     [HttpDelete("{taskId}/user")]
     public async Task<IActionResult> UnassignUserAsync(string taskId, [FromBody] string userId)
     {
-        var updatedTask = await _taskService.UnassignUserAsync(taskId, userId);
-        return Ok(updatedTask);
+        await _taskService.UnassignUserFromTaskAsync(taskId, userId);
+        return NoContent();
+    }
+    
+    // PUT api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc/category
+    [Authorize]
+    [HttpPut("{taskId}/category")]
+    public async Task<IActionResult> AssignCategoryToTaskAsync(string taskId, [FromBody] string categoryName)
+    {
+            return Ok(await _taskService.AssignCategoryToTaskAsync(taskId, categoryName));
+    }
+
+    // DELETE api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc/category
+    [Authorize]
+    [HttpDelete("{taskId}/category")]
+    public async Task<IActionResult> UnassignCategoryFromTaskAsync(string taskId, [FromBody] string categoryName)
+    {
+        await _taskService.UnassignCategoryFromTaskAsync(taskId, categoryName);
+        return NoContent();
     }
 }
