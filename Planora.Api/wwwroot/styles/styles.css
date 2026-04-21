@@ -902,6 +902,12 @@ outline: 2px solid rgba(47, 128, 237, 0.25);
 outline-offset: 1px;
 }
 
+.restricted {
+    display: none !important;
+}
+
+#delete_task_btn:hover, #update_task_btn:hover {
+    cursor: pointer;
 .resetPassword{
   font-size: 12px;
   text-decoration: none;
