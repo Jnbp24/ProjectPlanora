@@ -32,7 +32,7 @@ public class PasswordResetService : IPasswordResetService
         }
 
         // In a fuller implementation we would generate a reset token and include it in the email
-        _emailServiceMock.SendPasswordResetEmail();
+        //_emailServiceMock.SendPasswordResetEmail();
 
         return new AuthResultDto { Success = true };
     }
