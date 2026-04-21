@@ -41,17 +41,6 @@ function map_to_event(data) {
     }));
 }
 
-/*
-FullCalendar event format:
-{
-  id: '1',
-  title: 'Task',
-  start: '2026-04-20',
-  end: '2026-04-21',
-  allDay: true
-}
-*/
-
 function create_calendar(tasks) {
     const calendarElement = document.getElementById("calendar");
 
@@ -60,7 +49,14 @@ function create_calendar(tasks) {
     calendar = new FullCalendar.Calendar(calendarElement, {
         initialView: 'listMonth',
         events: tasks,
-        eventClick: task_click_handler
+        eventClick: task_click_handler,
+        eventContent: function (arg) {
+            return {
+                html: `
+                    <span class="fc-event-content">${arg.event.extendedProps.content ?? ''}</span>
+                `
+            }
+        }
     })
 
     calendar.render();
