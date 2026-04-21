@@ -18,6 +18,8 @@ using Planora.DataAccess.Repositories.Task;
 using Planora.DataAccess.Repositories.User;
 using System.Text;
 using Microsoft.AspNetCore.Diagnostics;
+using Planora.Api.Services.Auth.PasswordReset;
+using Planora.Api.Services.Email;
 
 namespace Planora.Api;
 
@@ -42,6 +44,8 @@ public class Program
         builder.Services.AddScoped<ITaskService, TaskService>();
         builder.Services.AddScoped<ICategoryService, CategoryService>();
         builder.Services.AddScoped<IProjectService, ProjectService>();
+        builder.Services.AddScoped<IEmailService, EmailService>();
+        builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
 
         //Repository
         builder.Services.AddScoped<ITaskRepository, TaskRepository>();
