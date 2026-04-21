@@ -1,35 +1,51 @@
-﻿const url = "api/task";
-const read_fail = "Failed to read tasks";
+﻿const get_task_api = "api/task"
+const get_category_api = "api/category"
 
 let calendar;
 
 async function setup_calendar() {
     try {
-        const data = await get(url, read_fail);
-        const events = map_to_event(data)
-
+        const tasks_with_categories = await get_tasks_with_category()
+        if (!tasks_with_categories) {
+            throw new Error("failed to load tasks")
+        }
+        console.log(tasks_with_categories)
+        const events = map_to_event(tasks_with_categories)
         create_calendar(events)
     } catch (error) {
-        error_message(error.message);
+        error_message(error.message)
     }
+}
+
+async function get_tasks_with_category() {
+    const tasks = await get(get_task_api)
+    const categories = await get(get_category_api)
+
+    console.log(tasks)
+    console.log(categories)
+
+    return tasks.map(task => ({
+        ...task,
+        category: categories.find(c => c.id === task.categoryId) ?? null
+    }))
 }
 
 async function refresh_calendar() {
     try {
-        const data = await get(url, read_fail);
+        const tasks = await get_tasks_with_category()
 
         if (!calendar) return;
 
         calendar.removeAllEvents();
-        calendar.addEventSource(map_to_event(data));
+        calendar.addEventSource(map_to_event(tasks));
 
     } catch (error) {
         error_message(error.message);
     }
 }
 
-function map_to_event(data) {
-    return data.map(task => ({
+function map_to_event(tasks) {
+    return tasks.map(task => ({
         id: task.taskId,
         title: task.title,
         start: task.deadline,
@@ -37,8 +53,10 @@ function map_to_event(data) {
             content: task.content,
             category: task.category
         },
+        backgroundColor: task.category?.hexColor ?? '#6b7280',
+        borderColor: task.category?.hexColor ?? '#6b7280',
         allDay: true
-    }));
+    }))
 }
 
 function create_calendar(tasks) {
