@@ -1,139 +1,236 @@
 const API = "https://localhost:7127/api/Category"
-document.addEventListener('DOMContentLoaded', () => {
-    // --- Tab switching ---
-    const navItems = document.querySelectorAll('.nav-item[data-tab]');
-    const tabs = document.querySelectorAll('.tab-content');
+// --- Category management ---
+const nameInput = document.getElementById('category-name')
+const contentInput = document.getElementById('category-content')
+const colorInput = document.getElementById('category-color')
+const addBtn = document.getElementById('add-category-btn')
+const listEl = document.getElementById('category-list')
+const emptyState = document.getElementById('category-empty')
 
-    navItems.forEach(item => {
-        item.querySelector('a').addEventListener('click', e => {
-            e.preventDefault();
-            const target = item.dataset.tab;
+addBtn.addEventListener('click', async () => await createCategory())
+nameInput.addEventListener('keydown', async e => {
+    if (e.key === 'Enter') {
+        await createCategory()
+    }
+})
+contentInput.addEventListener('keydown', async e => {
+    if (e.key === 'Enter') {
+        await createCategory()
+    }
+})
 
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            item.classList.add('active');
+render()
 
-            tabs.forEach(t => t.style.display = 'none');
-            const targetTab = document.getElementById('tab-' + target);
-            if (targetTab) targetTab.style.display = '';
-        });
-    });
+async function render() {
+    const categories = await getAllCategories()
+    listEl.querySelectorAll('.category-card').forEach(el => el.remove())
 
-    // --- Category management ---
-    const nameInput = document.getElementById('category-name');
-    const colorInput = document.getElementById('category-color');
-    const addBtn = document.getElementById('add-category-btn');
-    const listEl = document.getElementById('category-list');
-    const emptyState = document.getElementById('category-empty');
+    if (categories.length === 0) {
+        emptyState.style.display = ''
+        return
+    }
 
-    colorInput.addEventListener('input', () => {
-        hexPreview.textContent = colorInput.value;
-    });
+    emptyState.style.display = 'none'
 
-    addBtn.addEventListener('click', createCategory);
-    nameInput.addEventListener('keydown', e => {
-        if (e.key === 'Enter') createCategory();
-    });
+    categories.forEach((cat, i) => {
+        const card = document.createElement('div')
+        card.id = cat.categoryId
+        card.className = 'category-card'
+        card.style.animationDelay = `${i * 40}ms`
 
-    function createCategory() {
-        const name = nameInput.value.trim();
-        const hexColor = colorInput.value;
+        // Color picker
+        const colorEdit = document.createElement('input')
+        colorEdit.type = 'color'
+        colorEdit.className = 'category-color-edit'
+        colorEdit.value = cat.hexColor
+        colorEdit.style.background = cat.hexColor
+        colorEdit.disabled = true
 
-        if (!name) {
-            nameInput.focus();
-            nameInput.classList.add('shake');
-            setTimeout(() => nameInput.classList.remove('shake'), 400);
-            return;
+        // Text wrapper with name + content
+        const textWrap = document.createElement('div')
+        textWrap.className = 'category-card-text'
+
+        const nameEdit = document.createElement('input')
+        nameEdit.type = 'text'
+        nameEdit.className = 'category-name-edit'
+        nameEdit.value = cat.name
+        nameEdit.maxLength = 40
+        nameEdit.disabled = true
+
+        const contentEdit = document.createElement('input')
+        contentEdit.type = 'text'
+        contentEdit.className = 'category-content-edit'
+        contentEdit.value = cat.content
+        contentEdit.maxLength = 200
+        contentEdit.placeholder = 'No content'
+        contentEdit.disabled = true
+
+        textWrap.append(nameEdit, contentEdit)
+
+        // Action buttons
+        const actions = document.createElement('div')
+        actions.className = 'category-card-actions'
+
+        const editBtn = makeIconButton('category-edit-btn', 'edit', 'Edit category')
+        const saveBtn = makeIconButton('category-save-btn', 'check', 'Save changes', true)
+        const cancelBtn = makeIconButton('category-cancel-btn', 'close', 'Cancel edit', true)
+        const deleteBtn = makeIconButton('category-delete-btn', 'delete', 'Delete category')
+
+        actions.append(editBtn, saveBtn, cancelBtn, deleteBtn)
+        card.append(colorEdit, textWrap, actions)
+
+        const enterEditMode = () => {
+            card.classList.add('editing')
+            nameEdit.disabled = false
+            contentEdit.disabled = false
+            colorEdit.disabled = false
+            editBtn.style.display = 'none'
+            deleteBtn.style.display = 'none'
+            saveBtn.style.display = ''
+            cancelBtn.style.display = ''
+            nameEdit.focus()
+            nameEdit.select()
         }
 
-        // Matches CategoryDTO(string? CategoryId, string Name, string HexColor)
-        // CategoryId is not included — generated server-side
-        const category = { name, hexColor };
-
-        categories.push(category);
-        save();
-        render();
-
-        nameInput.value = '';
-        nameInput.focus();
-    }
-
-    function deleteCategory(index) {
-        categories.splice(index, 1);
-        save();
-        render();
-    }
-
-    function save() {
-        localStorage.setItem('planora_categories', JSON.stringify(categories));
-    }
-
-    async function render() {
-        let categories = await apiFetch(API)
-        listEl.querySelectorAll('.category-card').forEach(el => el.remove());
-
-        if (categories.length === 0) {
-            emptyState.style.display = '';
-            return;
+        const exitEditMode = () => {
+            card.classList.remove('editing')
+            nameEdit.disabled = true
+            contentEdit.disabled = true
+            colorEdit.disabled = true
+            editBtn.style.display = ''
+            deleteBtn.style.display = ''
+            saveBtn.style.display = 'none'
+            cancelBtn.style.display = 'none'
         }
-        emptyState.style.display = 'none';
 
-        categories.forEach((cat, i) => {
-            const card = document.createElement('div');
-            card.className = 'category-card';
-            card.style.animationDelay = `${i * 40}ms`;
+        const save = async () => {
+            const newName = nameEdit.value.trim()
+            const newContent = contentEdit.value.trim()
+            const newColor = colorEdit.value
 
-            card.innerHTML = `
-                <span class="category-color-dot" style="background:${cat.hexColor}"></span>
-                <span class="category-card-name">${escapeHtml(cat.name)}</span>
-                <button class="category-delete-btn" aria-label="Delete category">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"/>
-                        <line x1="6" y1="6" x2="18" y2="18"/>
-                    </svg>
-                </button>
-            `;
-
-            card.querySelector('.category-delete-btn').addEventListener('click', () => deleteCategory(i));
-            listEl.appendChild(card);
-        });
-    }
-
-    function escapeHtml(str) {
-        const d = document.createElement('div');
-        d.textContent = str;
-        return d.innerHTML;
-    }
-
-    render();
-});
-
-
-    async function apiFetch(url, options = {}) {
-        const token = sessionStorage.getItem("token");
-
-        const response = await fetch(url, {
-            ...options,
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
-                ...options.headers
+            if (!newName || !newContent) {
+                const target = !newName ? nameEdit : contentEdit
+                target.focus()
+                target.classList.add('shake')
+                setTimeout(() => target.classList.remove('shake'), 400)
+                return
             }
-        });
 
-        if (response.status === 401) {
-            // Token missing or expired — send to login
-            sessionStorage.removeItem("token");
-            window.location.href = "/login";
-            return;
+            if (newName === cat.name && newContent === cat.content && newColor === cat.hexColor) {
+                exitEditMode()
+                return
+            }
+
+            await updateCategory(cat.categoryId, {
+                name: newName,
+                content: newContent,
+                hexColor: newColor
+            })
+            await render()
         }
 
-        if (response.status === 403) {
-            // Authenticated but wrong role — show error, stay on page
-            alert("You do not have permission to do this");
-            return;
-        }
+        editBtn.addEventListener('click', enterEditMode)
+        cancelBtn.addEventListener('click', () => {
+            nameEdit.value = cat.name
+            contentEdit.value = cat.content
+            colorEdit.value = cat.hexColor
+            exitEditMode()
+        })
+        saveBtn.addEventListener('click', save)
 
-        return await response.json();
+        deleteBtn.addEventListener('click', async () => await deleteCategory(cat.categoryId))
+        listEl.appendChild(card)
+    })
+}
+
+function makeIconButton(className, iconName, label, hidden = false) {
+    const btn = document.createElement('button')
+    btn.className = className
+    btn.type = 'button'
+    btn.setAttribute('aria-label', label)
+    btn.title = label
+    if (hidden) btn.style.display = 'none'
+
+    const icon = document.createElement('span')
+    icon.className = 'material-symbols-outlined'
+    icon.textContent = iconName
+    btn.appendChild(icon)
+
+    return btn
+}
+
+async function createCategory() {
+    const name = nameInput.value.trim()
+    const content = contentInput.value.trim()
+    const hexColor = colorInput.value
+
+    if (!name || !content) {
+        const target = !name ? nameInput : contentInput
+        target.focus()
+        target.classList.add('shake')
+        setTimeout(() => target.classList.remove('shake'), 400)
+        return
     }
 
+    // Matches CategoryDTO(string? CategoryId, string Name, string Content, string HexColor)
+    // CategoryId is not included — generated server-side
+    const category = { name, content, hexColor }
+
+    await apiFetch(API, {
+        method: "POST",
+        body: JSON.stringify(category)
+    })
+    await render()
+
+    nameInput.value = ''
+    contentInput.value = ''
+    nameInput.focus()
+}
+
+async function getAllCategories() {
+    return await apiFetch(API)
+}
+
+async function updateCategory(id, category) {
+    await apiFetch(API + `/${id}`, {
+        method: "PUT",
+        body: JSON.stringify(category)
+    })
+}
+
+async function deleteCategory(id) {
+    await apiFetch(API + `/${id}`, {
+        method: "DELETE"
+    })
+    await render()
+}
+
+async function apiFetch(url, options = {}) {
+    const token = sessionStorage.getItem("token")
+
+    const response = await fetch(url, {
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+            ...options.headers
+        }
+    })
+
+    if (response.status === 401) {
+        sessionStorage.removeItem("token")
+        window.location.href = "/"
+        return
+    }
+
+    if (response.status === 403) {
+        alert("You do not have permission to do this");
+        return
+    }
+
+    if (response.status === 204) {
+        return null
+    }
+
+    return response.json()
+}

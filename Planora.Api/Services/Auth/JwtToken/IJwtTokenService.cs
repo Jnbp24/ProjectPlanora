@@ -1,5 +1,4 @@
-﻿using Planora.DataAccess;
-using Planora.DataAccess.Models.Auth;
+﻿using Planora.DataAccess.Models.Auth;
 
 namespace Planora.Api.Services.Auth;
 

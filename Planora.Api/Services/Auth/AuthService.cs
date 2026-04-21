@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices.JavaScript;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Planora.DataAccess.Models.Auth;
 using Planora.DTO.Auth;
 
@@ -9,11 +8,13 @@ public class AuthService : IAuthService
 {
     private readonly UserManager<AuthUser> _userManager;
     private readonly IJwtTokenService _jwtTokenService;
+    private readonly IPasswordResetService _passwordResetService;
 
-    public AuthService(UserManager<AuthUser> userManager, IJwtTokenService jwtTokenService)
+    public AuthService(UserManager<AuthUser> userManager, IJwtTokenService jwtTokenService, IPasswordResetService passwordResetService)
     {
         _userManager = userManager;
         _jwtTokenService = jwtTokenService;
+        _passwordResetService = passwordResetService;
     }
 
     public async Task<AuthResultDto> LoginAsync(LoginRequestDto dto)
@@ -28,5 +29,13 @@ public class AuthService : IAuthService
 
         var token = await _jwtTokenService.GenerateToken(authUser);
         return new AuthResultDto{Success =  true, Token = token};
+    }
+
+    public Task<AuthResultDto> RequestResetPassword(ResetPasswordDto dto)
+    {
+        _passwordResetService.RequestPasswordReset(dto.Email);
+        //Generate Secure Token
+        //Send reset email with link
+        throw new NotImplementedException();
     }
 }

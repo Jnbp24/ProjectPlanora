@@ -1,22 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Planora.DataAccess.Models;
-using Planora.DTO.TaskDTO;
+﻿using Planora.DTO.TaskDTO;
 
-namespace Planora.Api.Services.Task
+namespace Planora.Api.Services.Task;
+
+public interface ITaskService
 {
-    public interface ITaskService
-    {
-        Task<TaskDTO> CreateAsync(TaskDTO dto);
-        Task<TaskDTO> UpdateAsync(string taskId, TaskDTO dto);
-        Task<IEnumerable<TaskDTO>> GetAllAsync();
-        Task<TaskDTO?> GetByIdAsync(string taskId);
-        Task<TaskDTO> DeleteAsync(string taskId);
-        Task<TaskDTO> AssignCategoryAsync(string taskId, string categoryName);
-        Task<TaskDTO> UnassignCategoryAsync(string taskId, string categoryName);
-        Task<TaskDTO> AssignUserAsync(string taskId, string userId);
-        Task<TaskDTO> UnassignUserAsync(string taskId, string userId);
-
-    }
+    Task<TaskDTO> CreateTaskAsync(TaskDTO taskDTO);
+    Task<IEnumerable<TaskDTO>> GetAllTasksAsync();
+    Task<TaskDTO?> GetTaskByIdAsync(string taskId);
+    Task<TaskDTO> UpdateTaskByIdAsync(string taskId, TaskDTO taskDTO);
+    Task<TaskDTO> DeleteTaskByIdAsync(string taskId);
+    Task<TaskDTO> AssignCategoryToTaskAsync(string taskId, string categoryName);
+    Task<TaskDTO> UnassignCategoryFromTaskAsync(string taskId, string categoryName);
+    Task<TaskDTO> AssignUserToTaskAsync(string taskId, string userId);
+    Task<TaskDTO> UnassignUserFromTaskAsync(string taskId, string userId);
 }

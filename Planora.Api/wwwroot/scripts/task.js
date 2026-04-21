@@ -5,14 +5,13 @@
     const contentInput = document.querySelector(".task-content");
     const categoryInput = document.querySelector(".task-category");
     const dateInput = document.querySelector(".task-date");
+    const noDeadlineCheckbox = document.querySelector("#no-deadline");
 
     let categoriesMap = {};
 
     async function loadCategories() {
         try {
             const categories = await get("/api/Category", "Failed to load categories");
-
-            console.log("Loaded categories:", categories);
 
             categoryInput.innerHTML =
                 `<option value="" disabled selected hidden>Category</option>`;
@@ -22,7 +21,7 @@
                 const id = c.categoryId ?? c.CategoryId;
                 const name = c.name ?? c.Name;
                 const color = c.hexColor ?? c.HexColor;
-
+                
                 const option = document.createElement("option");
 
                 option.value = id;
@@ -45,6 +44,16 @@
         }
     }
 
+    noDeadlineCheckbox.addEventListener("change", () => {
+
+        if (noDeadlineCheckbox.checked) {
+            dateInput.value = "";
+            dateInput.style.setProperty("display", "none");
+        } else {
+            dateInput.style.setProperty("display", "inline-block");
+        }
+    });
+
     categoryInput.addEventListener("change", () => {
         const selected = categoriesMap[categoryInput.value];
 
@@ -60,7 +69,10 @@
         const title = titleInput.value.trim();
         const content = contentInput.value.trim();
         const categoryId = categoryInput.value || null;
-        const deadline = dateInput.value || null;
+
+        const deadline = noDeadlineCheckbox.checked
+            ? null
+            : (dateInput.value || null);
 
         if (!title) {
             titleInput.focus();
@@ -71,7 +83,7 @@
             taskId: null,
             title,
             content,
-            categoryId: null,
+            categoryId,
             deadline
         };
 
@@ -105,9 +117,13 @@
             contentInput.value = "";
             categoryInput.selectedIndex = 0;
             dateInput.value = "";
+            dateInput.style.display = "";
+
+            noDeadlineCheckbox.checked = false;
 
             categoryInput.style.color = "";
             categoryInput.style.background = "";
+            categoryInput.style.fontWeight = "";
 
         } catch (err) {
             console.error("Error:", err);

@@ -11,6 +11,7 @@ public static class CategoryMapping
 		{
 			CategoryId = Guid.NewGuid(),
 			Name = categoryDto.Name, 
+			Content = categoryDto.Content,
 			HexColor =  categoryDto.HexColor
 		};
 	}
@@ -19,6 +20,7 @@ public static class CategoryMapping
 		return new CategoryDTO(
 			CategoryId: categoryDb.CategoryId.ToString(), 
 			Name: categoryDb.Name, 
+			Content: categoryDb.Content,
 			HexColor: categoryDb.HexColor);
 	}
 }
