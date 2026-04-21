@@ -43,7 +43,7 @@ public class PasswordResetServiceTests
         
         // Assert — email service should not be called
         _emailServiceMock.Verify(
-            m => m.SendPasswordResetEmail(),
+            m => m.SendPasswordResetEmail(It.IsAny<string>(), It.IsAny<string>()),
             Times.Never);
     }
     
@@ -61,11 +61,10 @@ public class PasswordResetServiceTests
 
         // Act
         await _passwordResetService.RequestPasswordReset("user@test.com");
-
-        return;
-        // // Assert — email must be sent exactly once to the right address
-        // _emailServiceMock.Verify(
-        //     m => m.SendPasswordResetEmail("user@test.com", It.IsAny<string>(), It.IsAny<string>()),
-        //     Times.Once);
+        
+        // Assert — email must be sent exactly once to the right address
+        _emailServiceMock.Verify(
+            m => m.SendPasswordResetEmail("user@test.com", "fake-token"),
+            Times.Once);
     }
 }
