@@ -1,8 +1,8 @@
 ﻿namespace Planora.Api.Services.Email;
 
-public class EmaiService : IEmailService
+public class EmailService : IEmailService
 {
-    public void SendPasswordResetEmail()
+    public async System.Threading.Tasks.Task SendPasswordResetEmail()
     {
         throw new NotImplementedException();
     }

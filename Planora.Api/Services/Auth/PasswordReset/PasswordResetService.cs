@@ -9,12 +9,12 @@ namespace Planora.Api.Services.Auth.PasswordReset;
 public class PasswordResetService : IPasswordResetService
 {
     private readonly UserManager<AuthUser> _userManager;
-    private readonly IEmailService _emailServiceMock;
+    private readonly IEmailService _emailService;
 
     public PasswordResetService(UserManager<AuthUser> userManager, IEmailService emailService)
     {
         _userManager = userManager;
-        _emailServiceMock = emailService;
+        _emailService = emailService;
     }
 
     public Task<AuthResultDto> ResetPassword()
@@ -22,18 +22,14 @@ public class PasswordResetService : IPasswordResetService
         throw new NotImplementedException();
     }
 
-    public async Task<AuthResultDto> RequestPasswordReset(string email)
+    public async System.Threading.Tasks.Task RequestPasswordReset(string email)
     {
         var user = await _userManager.FindByEmailAsync(email);
-        if (user == null)
-        {
-            // Nothing to do if user is unknown; do not send email
-            return new AuthResultDto { Success = true};
-        }
+        if (user == null) return;
 
-        // In a fuller implementation we would generate a reset token and include it in the email
-        _emailServiceMock.SendPasswordResetEmail();
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        var link = $"https://planora/reset-password?email={email}&token={token}";
 
-        return new AuthResultDto { Success = true };
+        await _emailService.SendPasswordResetEmail();
     }
 }
