@@ -62,6 +62,11 @@ function create_calendar(tasks) {
                         <br>
                         <br>
                         <span class="event-element">
+                            ${arg.event.title ?? ''}
+                        </span>
+                        <br>
+                        <br>
+                        <span class="event-element">
                             ${arg.event.extendedProps.content ?? ''}
                         </span>
                         <br>
