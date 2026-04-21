@@ -44,7 +44,7 @@ public class Program
         //Service Layer
         builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
-        builder.Services.AddScoped<IEmailService, EmaiService>();
+        builder.Services.AddScoped<IEmailService, EmailService>();
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<ITaskService, TaskService>();
         builder.Services.AddScoped<ICategoryService, CategoryService>();
