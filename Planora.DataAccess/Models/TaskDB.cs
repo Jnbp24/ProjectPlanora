@@ -15,9 +15,9 @@ public class TaskDB
     public Guid? CategoryId { get; set; }
     [ForeignKey("CategoryId")]
     public CategoryDB? Category { get; set; }
-    public Guid? ProjectId { get; set; }
-    [ForeignKey("ProjectId")]
-    public CalenderYearDB? Project { get; set; }
+    public Guid? CalenderYearId { get; set; }
+    [ForeignKey("CalenderYearId")]
+    public CalenderYearDB? CalenderYear { get; set; }
     public List<UserDB> Users { get; set; } = [];
     
     public TaskDB()
