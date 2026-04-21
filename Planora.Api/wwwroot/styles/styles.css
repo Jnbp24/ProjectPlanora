@@ -279,21 +279,6 @@ body {
   filter: brightness(0.97);
 }
 
-.profile-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1px solid #b8aa3b;
-  background: #f2d731;
-  color: #222;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.profile-btn:hover {
-  filter: brightness(0.96);
-}
-
 /* ===== Calendar ===== */
 
 #calendar {

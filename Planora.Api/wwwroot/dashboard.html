@@ -18,6 +18,7 @@
 </head>
 <body class="page-dashboard">
   <main class="dashboard">
+      <!-- Dashboard sidebar-->>
     <aside class="sidebar">
       <div>
         <div class="brand">
@@ -39,18 +40,18 @@
       </div>
     </aside>
 
-    <!-- Dashboard tab -->
+    <!-- Dashboard topbar -->
     <section class="content">
         <div class="topbar">
             <div class="taskquickmenu">
                 <input type="text" placeholder="Enter task name.." class="task-name" />
                 <input type="text" placeholder="Enter task content.." class="task-content" />
                 <input type="date" title="Select deadline" class="task-date" />
-                    <label class="no-deadline-toggle">
-                         <input type="checkbox" id="no-deadline">  No deadline
-                    </label>
+                <label class="no-deadline-toggle">
+                    <input type="checkbox" id="no-deadline">  No deadline
+                </label>
                 <select class="task-category">
-                    <option value="" disabled selected hidden >Choose a category</option>
+                    <option value="" disabled selected hidden>Choose a category</option>
                 </select>
             </div>
             <span class="material-symbols-outlined invisible restricted" id="delete_task_btn">
@@ -60,7 +61,6 @@
                 save
             </span>
             <button class="new-task-btn" type="button">+ New task</button>
-            <button class="profile-btn" type="button" aria-label="Profile">A</button>
         </div>
         <div id="calendar"></div>
     </section>
