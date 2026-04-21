@@ -124,8 +124,10 @@ public class TaskService : ITaskService
         return TaskMapping.ToDTO(task);
     }
 
-	public Task<TaskWithCategoryAndUsersDTO> GetAllTasksIncludeRelationsAsync()
+	public async Task<IEnumerable<TaskWithCategoryAndUsersDTO>> GetAllTasksIncludeRelationsAsync()
 	{
-		throw new NotImplementedException();
+        var tasksDB = await _taskRepository.GetAllAsync();
+        var tasksDTO = tasksDB.Select(taskDB => TaskMapping.ToExtendedDTO(taskDB)).ToList();
+        return tasksDTO;
 	}
 }
