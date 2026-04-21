@@ -10,6 +10,7 @@
     const categoryInput = document.querySelector(".task-category");
     const dateInput = document.querySelector(".task-date");
     const noDeadlineCheckbox = document.querySelector("#no-deadline");
+    const user_input = document.querySelector(".task-users")
 
     let categoriesMap = {};
 
@@ -45,6 +46,38 @@
 
             categoryInput.innerHTML =
                 `<option value="" disabled selected hidden>No categories</option>`;
+        }
+    }
+
+    let users_map = {}
+
+    async function load_users() {
+        try {
+            const users = await get("/api/user", "Failed to load categories");
+
+            users.forEach(user => {
+
+                const id = user.userId
+                const full_name = `${user.firstName} ${user.lastName}`
+
+                const option = document.createElement("option");
+
+                option.value = id;
+                option.textContent = full_name;
+
+                user_input.appendChild(option);
+
+                users_map[id] = {
+                    userId: id,
+                    full_name,
+                };
+            });
+
+        } catch (error) {
+            console.error("Error loading users:", error);
+
+            categoryInput.innerHTML =
+                `<option value="" disabled selected hidden>No Users</option>`;
         }
     }
 
@@ -137,6 +170,7 @@
     newTaskBtn.addEventListener("click", createTask);
 
     loadCategories();
+    load_users()
 });
 
 async function get(url, error_message) {
