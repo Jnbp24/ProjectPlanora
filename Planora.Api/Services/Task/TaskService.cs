@@ -126,8 +126,8 @@ public class TaskService : ITaskService
 
 	public async Task<IEnumerable<TaskWithCategoryAndUsersDTO>> GetAllTasksIncludeRelationsAsync()
 	{
-        var tasksDB = await _taskRepository.GetAllAsync();
-        var tasksDTO = tasksDB.Select(taskDB => TaskMapping.ToExtendedDTO(taskDB)).ToList();
-        return tasksDTO;
+		var tasksDB = await _taskRepository.GetAllAsync();
+		var tasksDTO = tasksDB.Select(taskDB => TaskMapping.ToExtendedDTO(taskDB)).ToList();
+		return tasksDTO;
 	}
 }
