@@ -908,11 +908,22 @@ outline-offset: 1px;
 
 #delete_task_btn:hover, #update_task_btn:hover {
     cursor: pointer;
-.resetPassword{
-  font-size: 12px;
-  text-decoration: none;
 }
 
-.item-hidden{
-  display: none;
+.resetPassword {
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.item-hidden {
+    display: none;
+}
+
+#event-category {
+    color: var(--category-color);
+}
+
+.fc-event:hover {
+    cursor: pointer;
+    filter: brightness(1.15);
 }
