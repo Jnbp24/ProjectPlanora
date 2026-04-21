@@ -62,17 +62,19 @@ function create_calendar(tasks) {
                         <br>
                         <br>
                         <span class="event-element">
-                            ${arg.event.title ?? ''}
+                            ${arg.event.title ?? 'No title'}
                         </span>
                         <br>
                         <br>
                         <span class="event-element">
-                            ${arg.event.extendedProps.content ?? ''}
+                            ${arg.event.extendedProps.content ?? 'No content'}
                         </span>
                         <br>
                         <br>
                         <span class="event-element">
-                            ${arg.event.extendedProps.users.size > 0 ? arg.event.extendedProps.users : 'Ingen tildelt'}
+                            ${arg.event.extendedProps.users?.length > 0
+                                ? arg.event.extendedProps.users.map(u => `${u.firstName} ${u.lastName}`).join(', ')
+                                : 'Non assigned'}
                         </span>
                     </div>
                 `
@@ -120,6 +122,8 @@ function task_click_handler(info) {
         const day = String(deadline.getDate()).padStart(2, "0")
         dateInput.value = `${year}-${month}-${day}`
     }
+    assigned_users.clear()
+    assigned_users.setValue(task.assignedUsers.map(user => String(user.userId)))
 }
 
 function reset_top_bar() {
@@ -153,7 +157,7 @@ function map_to_task(data) {
         deadline: data.start,
         content: data.extendedProps.content,
         category: data.extendedProps.category,
-        users: data.extendedProps.users
+        assigned_users: data.extendedProps.users
     }
 }
 
