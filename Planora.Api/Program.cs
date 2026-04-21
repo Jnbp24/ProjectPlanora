@@ -48,6 +48,8 @@ public class Program
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<ITaskService, TaskService>();
         builder.Services.AddScoped<ICategoryService, CategoryService>();
+        builder.Services.AddScoped<IEmailService, EmailService>();
+        builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
         builder.Services.AddScoped<ICalenderYearService, CalenderYearService>();
 
         //Repository

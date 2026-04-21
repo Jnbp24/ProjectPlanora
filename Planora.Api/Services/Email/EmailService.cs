@@ -2,7 +2,7 @@
 
 public class EmailService : IEmailService
 {
-    public void SendPasswordResetEmail()
+    public async System.Threading.Tasks.Task SendPasswordResetEmail()
     {
         throw new NotImplementedException();
     }

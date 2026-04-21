@@ -5,5 +5,5 @@ namespace Planora.Api.Services.Auth;
 public interface IPasswordResetService
 {
     Task<AuthResultDto> ResetPassword();
-    Task<AuthResultDto> RequestPasswordReset(string dto);
+    System.Threading.Tasks.Task RequestPasswordReset(string dto);
 }

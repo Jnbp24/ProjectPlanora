@@ -31,11 +31,10 @@ public class AuthService : IAuthService
         return new AuthResultDto{Success =  true, Token = token};
     }
 
-    public Task<AuthResultDto> RequestResetPassword(ResetPasswordDto dto)
+    public async Task<AuthResultDto> RequestResetPassword(ResetPasswordDto dto)
     {
-        _passwordResetService.RequestPasswordReset(dto.Email);
-        //Generate Secure Token
-        //Send reset email with link
-        throw new NotImplementedException();
+        await _passwordResetService.RequestPasswordReset(dto.Email);
+
+        return new AuthResultDto { Success = true };
     }
 }

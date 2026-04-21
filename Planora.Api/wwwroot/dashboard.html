@@ -5,13 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Planora - Dashboard</title>
     <link rel="stylesheet" href="styles/styles.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=delete,save" />    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=delete,save" />
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
     <script defer src="scripts/calendar.js"></script>
     <script defer src="scripts/task.js"></script>
     <script defer src="scripts/delete_task.js"></script>
     <script defer src="scripts/update_task.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+    <script defer src="scripts/decode_token.js"></script>
 
 </head>
 <body class="page-dashboard">
@@ -51,7 +53,7 @@
                     <option value="" disabled selected hidden >Choose a category</option>
                 </select>
             </div>
-            <span class="material-symbols-outlined invisible" id="delete_task_btn">
+            <span class="material-symbols-outlined invisible restricted" id="delete_task_btn">
                 delete
             </span>
             <span class="material-symbols-outlined invisible" id="update_task_btn">
