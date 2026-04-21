@@ -925,5 +925,5 @@ outline-offset: 1px;
 
 .fc-event:hover {
     cursor: pointer;
-    filter: brightness(0.95);
+    filter: brightness(1.15);
 }
