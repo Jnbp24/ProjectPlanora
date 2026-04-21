@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Planora - Categories</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=check,close,delete,edit,folder_open"/>    
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles/user.css">
+    <script defer src="scripts/category.js"></script>
+
+</head>
+<body class="page-dashboard">
+  <main class="dashboard">
+    <aside class="sidebar">
+      <div>
+        <div class="brand">
+          <img class="brand-logo" src="images/planora-logo.png" alt="Planora logo">
+          <span class="brand-text">Planora</span>
+        </div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="dashboard.html">Dashboard</a></li>
+          <li class="nav-item"><a href="tasks.html">My tasks</a></li>
+          <li class="nav-item active"><a href="category.html">Categories</a></li>
+          <li class="nav-item"><a href="project.html">Projects</a></li>
+          <li class="nav-item"><a href="user.html">Users</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-bottom">
+        <a class="sidebar-link" href="#">Settings</a>
+        <a class="sidebar-link" href="index.html">Log out</a>
+      </div>
+    </aside>
+
+    <!-- Categories tab -->
+    <section class="content tab-content" id="tab-categories">
+        <div class="category-create-bar">
+            <input
+              class="category-name-input"
+              type="text"
+              id="category-name"
+              placeholder="Enter category name.."
+              maxlength="40"
+            >
+            <button class="add-category-btn" id="add-category-btn" type="button">+ Send invitation</button>
+        </div>
+
+        <div class="category-list" id="category-list">
+            <div class="category-empty-state" id="category-empty">
+                <span class="material-symbols-outlined category-empty-icon">folder_open</span>
+                <p>No users yet. Send an invitation to a user for sign-up.</p>
+            </div>
+        </div>
+    </section>
+  </main>
+</body>
+</html>
