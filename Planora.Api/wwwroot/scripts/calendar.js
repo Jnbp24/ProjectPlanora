@@ -113,7 +113,8 @@ function task_click_handler(info) {
 
     titleInput.value = task.title
     contentInput.value = task.content
-    categoryInput.value = task.category
+    categoryInput.value = task.category?.categoryId ?? ""
+    categoryInput.dispatchEvent(new Event("change"))
     if (task.deadline) {
         const deadline = task.deadline
         const year = deadline.getFullYear()
@@ -139,7 +140,11 @@ function reset_top_bar() {
 
     document.querySelector(".task-name").value = ""
     document.querySelector(".task-content").value = ""
-    document.querySelector(".task-category").value = ""
+    const categoryInput = document.querySelector(".task-category")
+    categoryInput.value = ""
+    categoryInput.style.color = ""
+    categoryInput.style.background = ""
+    categoryInput.style.fontWeight = ""
     document.querySelector(".task-date").value = ""
 }
 
