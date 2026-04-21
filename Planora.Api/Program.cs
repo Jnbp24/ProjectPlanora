@@ -14,7 +14,6 @@ using Planora.DataAccess.Models.Auth;
 using Planora.Api.Services.User;
 using Planora.Api.Services.Task;
 using Planora.Api.Services.Category;
-using Planora.Api.Services.Project;
 using Planora.DataAccess.Repositories.Category;
 using Planora.DataAccess.Repositories.CalenderYear;
 using Planora.DataAccess.Repositories.Task;
