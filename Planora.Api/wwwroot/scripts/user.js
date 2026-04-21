@@ -1,6 +1,6 @@
 const API = "https://localhost:7127/api/User"
-// --- Category management ---
-const emailInput = document.getElementById('user-email-input')
+// --- User management ---
+const emailInput = document.getElementById('user-email')
 const sendInvitationBtn = document.getElementById('user-send-invitation-btn')
 const listEl = document.getElementById('user-list')
 const emptyState = document.getElementById('user-empty')
@@ -11,7 +11,6 @@ emailInput.addEventListener('keydown', async e => {
         await sendInvitation()
     }
 })
-
 render()
 
 async function render() {
@@ -37,7 +36,7 @@ async function render() {
 
         const fullNameDisplay = document.createElement('p')
         fullNameDisplay.className = 'user-full-name-display'
-        fullNameDisplay.textContent = user.firstName + '' + user.lastName 
+        fullNameDisplay.textContent = user.firstName + ' ' + user.lastName 
 
         const emailDisplay = document.createElement('p')
         emailDisplay.className = 'user-email-display'
@@ -53,7 +52,7 @@ async function render() {
 
         roleWrap.append(roleEdit, document.createTextNode(' Coordinator'))
 
-        textWrap.append(fullNameEdit, emailEdit, roleWrap)
+        textWrap.append(fullNameDisplay, emailDisplay, roleWrap)
 
         // Action buttons
         const actions = document.createElement('div')
@@ -65,7 +64,7 @@ async function render() {
         const deleteBtn = makeIconButton('user-delete-btn', 'delete', 'Delete user')
 
         actions.append(editBtn, saveBtn, cancelBtn, deleteBtn)
-        card.append(colorEdit, textWrap, actions)
+        card.append(textWrap, actions)
 
         const enterEditMode = () => {
             card.classList.add('editing')
@@ -148,6 +147,7 @@ async function getAllUsers() {
 }
 
 async function updateUser(id, user) {
+    console.log(API + `/${id}`)
     await apiFetch(API + `/${id}`, {
         method: "PUT",
         body: JSON.stringify(user)
@@ -179,14 +179,17 @@ async function apiFetch(url, options = {}) {
         return
     }
 
-    if (response.status === 403) {
-        alert("You do not have permission to do this");
-        return
-    }
-
     if (response.status === 204) {
         return null
     }
 
-    return response.json()
+    // Parse body (kan være tom)
+    const data = await response.json().catch(() => null)
+
+    if (!response.ok) {
+        const message = data?.error || `Request failed (${response.status})`
+        throw new Error(message)
+    }
+
+    return data
 }
