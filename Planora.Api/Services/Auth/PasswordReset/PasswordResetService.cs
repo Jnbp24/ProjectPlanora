@@ -17,21 +17,24 @@ public class PasswordResetService : IPasswordResetService
         _emailService = emailService;
     }
 
-    public Task<AuthResultDto> ResetPassword()
-    {
-        throw new NotImplementedException();
-    }
-
     public async System.Threading.Tasks.Task RequestPasswordReset(string email)
     {
         var user = await _userManager.FindByEmailAsync(email);
         if (user == null) return;
 
-        // In a fuller implementation we would generate a reset token and include it in the email
-        //_emailServiceMock.SendPasswordResetEmail();
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
         var link = $"https://planora/reset-password?email={email}&token={token}";
 
+        //Should pass the link into the method
         await _emailService.SendPasswordResetEmail(email, token);
+    }
+    
+    public async Task<IdentityResult> ResetPassword(ResetPasswordDto dto)
+    {
+        var user = await _userManager.FindByEmailAsync(dto.Email);
+        if (user == null)
+            return IdentityResult.Failed(new IdentityError { Description = "User not found" });
+
+        return await _userManager.ResetPasswordAsync(user, dto.Token, dto.NewPassword);
     }
 }
