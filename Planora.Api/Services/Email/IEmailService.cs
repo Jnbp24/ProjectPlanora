@@ -2,5 +2,5 @@
 
 public interface IEmailService
 {
-    void SendPasswordResetEmail();
+    System.Threading.Tasks.Task SendPasswordResetEmail(string toEmail, string resetLink);
 }
