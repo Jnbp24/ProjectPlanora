@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Planora.Api.Services;
 using Planora.Api.Services.Auth;
+using Planora.Api.Services.Auth.JwtToken;
 using Planora.DataAccess.Context;
 using Planora.DataAccess.Models.Auth;
 using Planora.Api.Services.User;

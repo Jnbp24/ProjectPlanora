@@ -29,5 +29,18 @@ namespace Planora.Api.Controllers
 
 			return Ok(new { token = result.Token });
 		}
+
+		[HttpPost("reset")]
+		public async Task<ActionResult> ResetPassword()
+		{
+			throw new NotImplementedException();
+		}
+		
+		[HttpPost("request-reset")]
+		public async Task<ActionResult> RequestPasswordReset([FromBody] ResetPasswordDto dto)
+		{
+			await _authService.RequestResetPassword(dto);
+			return Ok();
+		}
 	}
 }
