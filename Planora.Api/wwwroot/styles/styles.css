@@ -886,3 +886,7 @@ transform: translate(-50%, -55%) rotate(45deg) scale(1);
 outline: 2px solid rgba(47, 128, 237, 0.25);
 outline-offset: 1px;
 }
+
+.restricted {
+    display: none !important;
+}
