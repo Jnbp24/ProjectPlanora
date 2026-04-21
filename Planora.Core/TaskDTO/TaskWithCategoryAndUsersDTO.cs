@@ -8,6 +8,6 @@ public record TaskWithCategoryAndUsersDTO(
 	string Content, 
 	string Title, 
 	DateTime? Deadline, 
-	CategoryDTO Category,
-	List<UserDTO> Users
+	CategoryDTO? Category,
+	List<UserDTO>? Users
 );
