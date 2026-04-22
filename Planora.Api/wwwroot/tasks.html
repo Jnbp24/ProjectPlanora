@@ -1,0 +1,50 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Planora - My Tasks</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/usertasks.css">
+    <script defer src="scripts/user_tasks.js"></script>
+</head>
+<body class="page-dashboard">
+    <main class="dashboard">
+        <aside class="sidebar">
+            <div>
+                <div class="brand">
+                    <img class="brand-logo" src="images/planora-logo.png" alt="Planora logo">
+                    <span class="brand-text">Planora</span>
+                </div>
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="dashboard.html">Dashboard</a></li>
+                    <li class="nav-item active"><a href="tasks.html">My tasks</a></li>
+                    <li class="nav-item"><a href="category.html">Categories</a></li>
+                    <li class="nav-item"><a href="project.html">Projects</a></li>
+                    <li class="nav-item"><a href="user.html">Users</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-bottom">
+                <a class="sidebar-link" href="#">Settings</a>
+                <a class="sidebar-link" href="index.html">Log out</a>
+            </div>
+        </aside>
+
+        <section class="content" id="tab-tasks">
+            <h2 class="tasks-heading">Your tasks</h2>
+            <p>See all the tasks you have been assigned to</p>
+            <div class="task-list" id="task-list">
+                <div class="category-empty-state" id="task-empty">
+                    <p>No tasks have been assigned to you yet.</p>
+                </div>
+                <template id="task-card-template">
+                    <div class="task-card">
+                        <div class="task-card-title"></div>
+                        <div class="task-card-deadline"></div>
+                    </div>
+                </template>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
