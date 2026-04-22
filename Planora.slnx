@@ -3,6 +3,7 @@
     <Project Path="tests/Api.IntegrationTests/Api.IntegrationTests.csproj" />
     <Project Path="tests/Api.UnitTests/Api.UnitTests.csproj" />
   </Folder>
+  <Project Path="Api.ReqnrollBDD/Api.ReqnrollBDD.csproj" Id="76c24232-64f8-42df-a041-f336c7ab5ab0" />
   <Project Path="Planora.Api/Planora.Api.csproj" />
   <Project Path="Planora.Core/Planora.DTO.csproj" />
   <Project Path="Planora.DataAccess/Planora.DataAccess.csproj" />
