@@ -13,16 +13,20 @@ public static class TaskMapping
             TaskId = Guid.NewGuid(),
             Title =  dto.Title,
             Content =  dto.Content,
-            Deadline = dto.Deadline
+            Deadline = dto.Deadline,
+            CalenderYearId = dto.CalenderYearId != null
+            ? Guid.Parse(dto.CalenderYearId)
+            : null
         };
     }
 
     public static TaskDTO ToDTO(TaskDB entity) {
         return new TaskDTO(
-            TaskId: entity.TaskId.ToString(), 
-            Title: entity.Title, 
+            TaskId: entity.TaskId.ToString(),
+            Title: entity.Title,
             Content: entity.Content,
-            Deadline: entity.Deadline
+            Deadline: entity.Deadline,
+            CalenderYearId: entity.CalenderYearId?.ToString()
             );
     }
 
@@ -34,7 +38,8 @@ public static class TaskMapping
 			Content: entity.Content,
 			Deadline: entity.Deadline,
 			Category: CategoryMapping.ToDTO(entity.Category),
-	        Users: entity.Users.Select(user => UserMapping.ToDTO(user)).ToList()
-		);
+	        Users: entity.Users.Select(user => UserMapping.ToDTO(user)).ToList(),
+            CalenderYearId: entity.CalenderYearId?.ToString()
+        );
     }
 }

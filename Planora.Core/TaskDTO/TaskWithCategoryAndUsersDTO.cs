@@ -9,5 +9,6 @@ public record TaskWithCategoryAndUsersDTO(
 	string Title, 
 	DateTime? Deadline, 
 	CategoryDTO? Category,
-	List<UserDTO>? Users
+	List<UserDTO>? Users,
+	string? CalenderYearId
 );
