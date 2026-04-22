@@ -21,7 +21,7 @@ using Planora.DataAccess.Repositories.User;
 using System.Text;
 using Planora.Api.Services.CalenderYear;
 using Microsoft.AspNetCore.Diagnostics;
-using Planora.Api.Services.Auth.PasswordReset;
+using Planora.Api.Services.Auth.Password;
 using Planora.Api.Services.Email;
 
 namespace Planora.Api;
@@ -43,7 +43,7 @@ public class Program
             
         //Service Layer
         builder.Services.AddScoped<IAuthService, AuthService>();
-        builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
+        builder.Services.AddScoped<IPasswordService, PasswordService>();
         builder.Services.AddScoped<IEmailService, EmailService>();
         
         builder.Services.AddScoped<IUserService, UserService>();

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Moq;
 using Planora.Api.Services.Auth;
-using Planora.Api.Services.Auth.PasswordReset;
+using Planora.Api.Services.Auth.Password;
 using Planora.Api.Services.Email;
 using Planora.DataAccess.Models;
 using Planora.DataAccess.Models.Auth;
@@ -13,7 +13,7 @@ public class PasswordResetServiceTests
 {
     private readonly Mock<UserManager<AuthUser>> _userManagerMock;
     private readonly Mock<IEmailService> _emailServiceMock;
-    private readonly PasswordResetService _passwordResetService;
+    private readonly PasswordService _passwordService;
 
     public PasswordResetServiceTests()
     {
@@ -24,7 +24,7 @@ public class PasswordResetServiceTests
 
         _emailServiceMock = new Mock<IEmailService>();
 
-        _passwordResetService = new PasswordResetService(
+        _passwordService = new PasswordService(
             _userManagerMock.Object,
             _emailServiceMock.Object
         );
@@ -41,7 +41,7 @@ public class PasswordResetServiceTests
             .ReturnsAsync((AuthUser)null);  // user not found
 
         // Act
-        await _passwordResetService.RequestPasswordReset("unknown@test.com");
+        await _passwordService.RequestPasswordReset("unknown@test.com");
         
         // Assert — email service should not be called
         _emailServiceMock.Verify(
@@ -62,7 +62,7 @@ public class PasswordResetServiceTests
             .ReturnsAsync("fake-token");
 
         // Act
-        await _passwordResetService.RequestPasswordReset("user@test.com");
+        await _passwordService.RequestPasswordReset("user@test.com");
         
         // Assert — email must be sent exactly once to the right address
         _emailServiceMock.Verify(
@@ -87,7 +87,7 @@ public class PasswordResetServiceTests
 
         // Act
         var dto = new ResetPasswordDto{Email = "user@test.com", Token = "bad-token", NewPassword =  "NewPass123!"};
-        var result = await _passwordResetService.ResetPassword(dto);
+        var result = await _passwordService.ResetPassword(dto);
 
         // Assert
         Assert.False(result.Succeeded);
@@ -107,7 +107,7 @@ public class PasswordResetServiceTests
 
         // Act
         var dto = new ResetPasswordDto{Email = "user@test.com", Token = "valid-token", NewPassword =  "NewPass123!"};
-        var result = await _passwordResetService.ResetPassword(dto);
+        var result = await _passwordService.ResetPassword(dto);
 
         // Assert
         Assert.True(result.Succeeded);
@@ -123,7 +123,7 @@ public class PasswordResetServiceTests
 
         // Act
         var dto = new ResetPasswordDto{Email = "user@test.com", Token = "valid-token", NewPassword =  "NewPass123!"};
-        var result = await _passwordResetService.ResetPassword(dto);
+        var result = await _passwordService.ResetPassword(dto);
 
         // Assert
         Assert.False(result.Succeeded);

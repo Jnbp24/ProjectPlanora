@@ -8,13 +8,11 @@ public class AuthService : IAuthService
 {
     private readonly UserManager<AuthUser> _userManager;
     private readonly IJwtTokenService _jwtTokenService;
-    private readonly IPasswordResetService _passwordResetService;
 
-    public AuthService(UserManager<AuthUser> userManager, IJwtTokenService jwtTokenService, IPasswordResetService passwordResetService)
+    public AuthService(UserManager<AuthUser> userManager, IJwtTokenService jwtTokenService)
     {
         _userManager = userManager;
         _jwtTokenService = jwtTokenService;
-        _passwordResetService = passwordResetService;
     }
 
     public async Task<AuthResultDto> LoginAsync(LoginRequestDto dto)
@@ -29,15 +27,5 @@ public class AuthService : IAuthService
 
         var token = await _jwtTokenService.GenerateToken(authUser);
         return new AuthResultDto{Success =  true, Token = token};
-    }
-
-    public async System.Threading.Tasks.Task RequestResetPassword(EmailDto dto)
-    {
-        await _passwordResetService.RequestPasswordReset(dto.Email);
-    }
-
-    public async Task<IdentityResult> ResetPassword(ResetPasswordDto dto)
-    {
-        return await _passwordResetService.ResetPassword(dto);
     }
 }

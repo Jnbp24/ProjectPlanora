@@ -9,10 +9,12 @@ namespace Planora.Api.Controllers;
 public class AuthController : ControllerBase
 {
 	private readonly IAuthService _authService;
+	private readonly IPasswordService _passwordService;
 
-	public AuthController(IAuthService authService)
+	public AuthController(IAuthService authService, IPasswordService passwordService)
 	{
 		_authService = authService;
+		_passwordService = passwordService;
 	}
 
 	[HttpPost("login")]
@@ -31,7 +33,7 @@ public class AuthController : ControllerBase
 	[HttpPost("reset")]
 	public async Task<ActionResult> ResetPassword(ResetPasswordDto dto)
 	{
-		var result = await _authService.ResetPassword(dto);
+		var result = await _passwordService.ResetPassword(dto);
 			
 		if (!result.Succeeded)
 		{
@@ -47,11 +49,23 @@ public class AuthController : ControllerBase
 		_ = Task.Run(async () =>
 		{
 			await using var scope = scopeFactory.CreateAsyncScope();
-			var authService = scope.ServiceProvider.GetRequiredService<IAuthService>();
-			await authService.RequestResetPassword(dto);
+			var passwordService = scope.ServiceProvider.GetRequiredService<IPasswordService>();
+			await passwordService.RequestPasswordReset(dto.Email);
 		});
 		
 		return Ok(new { message = "If that email is registered, a reset link has been sent."});
 	}
 	
+	[HttpPost("password-change")]
+    public async Task<ActionResult> PasswordChange([FromBody] PasswordChangeDto dto)
+    {
+	    var result = await _passwordService.ChangePassword(dto);
+			
+	    if (!result.Succeeded)
+	    {
+		    return BadRequest(new { message = "Password change failed. Try again." });
+	    }
+
+	    return Ok(new { message = "Password change successful." });
+    }
 }
