@@ -1,6 +1,6 @@
 ﻿using Planora.DataAccess.Mappers;
 using Planora.DataAccess.Repositories.Category;
-using Planora.DTO.CategoryDTO;
+using Planora.DTO.Category;
 
 namespace Planora.Api.Services.Category;
 

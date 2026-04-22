@@ -1,5 +1,6 @@
 ﻿using Planora.DataAccess.Models;
-using Planora.DTO.TaskDTO;
+using Planora.DTO.Task;
+using Planora.DTO.User;
 
 namespace Planora.DataAccess.Mappers;
 
@@ -23,5 +24,17 @@ public static class TaskMapping
             Content: entity.Content,
             Deadline: entity.Deadline
             );
+    }
+
+    public static TaskWithCategoryAndUsersDTO ToExtendedDTO(TaskDB entity)
+    {
+        return new TaskWithCategoryAndUsersDTO(
+			TaskId: entity.TaskId.ToString(),
+			Title: entity.Title,
+			Content: entity.Content,
+			Deadline: entity.Deadline,
+			Category: CategoryMapping.ToDTO(entity.Category),
+	        Users: entity.Users.Select(user => UserMapping.ToDTO(user)).ToList()
+		);
     }
 }

@@ -19,6 +19,21 @@ contentInput.addEventListener('keydown', async e => {
     }
 })
 
+MicroModal.init({
+    disableScroll: true,          // lås baggrunds-scroll mens modal er åben
+    awaitCloseAnimation: true,    // vent på CSS-animationen før DOM opdateres
+})
+
+let pendingDeleteId = null
+const confirmTitle = document.getElementById('modal-action-title')
+const confirmMessage = document.getElementById('modal-action-content')
+const confirmBtn = document.getElementById('confirm-action-btn')
+
+confirmBtn.addEventListener('click', async () => {
+    MicroModal.close('modal-action')
+    await deleteCategory(pendingDeleteId)
+})
+
 render()
 
 async function render() {
@@ -138,7 +153,15 @@ async function render() {
         })
         saveBtn.addEventListener('click', save)
 
-        deleteBtn.addEventListener('click', async () => await deleteCategory(cat.categoryId))
+        // Micromodal
+        deleteBtn.addEventListener('click', async () => {
+            confirmTitle.textContent = `Delete category`
+            confirmMessage.textContent = `This will permanently delete the category "${cat.name}". This cannot be undone.`
+            confirmBtn.textContent = `Delete`
+            pendingDeleteId = cat.categoryId
+            MicroModal.show('modal-action')
+        })
+        
         listEl.appendChild(card)
     })
 }

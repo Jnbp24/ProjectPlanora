@@ -1,6 +1,6 @@
 ﻿using Planora.DataAccess.Mappers;
 using Planora.DataAccess.Repositories.Task;
-using Planora.DTO.TaskDTO;
+using Planora.DTO.Task;
 
 namespace Planora.Api.Services.Task;
 
@@ -124,4 +124,10 @@ public class TaskService : ITaskService
         return TaskMapping.ToDTO(task);
     }
 
+	public async Task<IEnumerable<TaskWithCategoryAndUsersDTO>> GetAllTasksIncludeRelationsAsync()
+	{
+		var tasksDB = await _taskRepository.GetAllAsync();
+		var tasksDTO = tasksDB.Select(taskDB => TaskMapping.ToExtendedDTO(taskDB)).ToList();
+		return tasksDTO;
+	}
 }

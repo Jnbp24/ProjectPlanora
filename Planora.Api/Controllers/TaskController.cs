@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Planora.DTO.TaskDTO;
+using Planora.DTO.Task;
 using Planora.Api.Services.Task;
 
 namespace Planora.Api.Controllers;
@@ -92,4 +92,12 @@ public class TaskController : ControllerBase
         await _taskService.UnassignCategoryFromTaskAsync(taskId, categoryName);
         return NoContent();
     }
+
+    [Authorize]
+    [HttpGet("extended")]
+    public async Task<IActionResult> GetAllTasksIncludeRelations()
+    {
+		return Ok(await _taskService.GetAllTasksIncludeRelationsAsync());
+	}
+
 }

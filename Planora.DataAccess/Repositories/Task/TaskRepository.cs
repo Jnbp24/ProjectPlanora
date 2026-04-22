@@ -2,6 +2,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using Planora.DataAccess.Models;
+using Planora.DTO.Task;
 
 namespace Planora.DataAccess.Repositories.Task;
 
@@ -14,7 +15,7 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
 
     public override async Task<IEnumerable<TaskDB>> GetAllAsync()
     {
-        return await _dbContext.Tasks.Include(t => t.Category).ToListAsync();
+        return await _dbContext.Tasks.Include(t => t.Category).Include(t => t.Users).ToListAsync();
     }
 
     public override async Task<TaskDB> GetByIdAsync(Guid taskId)
@@ -109,4 +110,5 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
         await _dbContext.SaveChangesAsync();
         return task;
     }
+
 }

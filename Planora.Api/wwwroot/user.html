@@ -6,6 +6,8 @@
     <title>Project Planora - Users</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=check,close,delete,edit,folder_open"/>    
     <link rel="stylesheet" href="styles/user.css">
+    <link rel="stylesheet" href="styles/micromodal.css">
+    <script defer src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
     <script defer src="scripts/user.js"></script>
 
 </head>
@@ -53,5 +55,22 @@
         </div>
     </section>
   </main>
+  <div class="modal micromodal-slide" id="modal-action" aria-hidden="true">
+      <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+          <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-action-title">
+              <header class="modal__header">
+                  <h2 class="modal__title" id="modal-action-title">Delete [something]?</h2>
+                  <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+              </header>
+              <main class="modal__content" id="modal-action-content">
+                  <p>Are you sure? This cannot be undone.</p>
+              </main>
+              <footer class="modal__footer">
+                  <button class="modal__btn" data-micromodal-close>Cancel</button>
+                  <button class="modal__btn modal__btn-primary" id="confirm-action-btn">[Action]</button>
+              </footer>
+          </div>
+      </div>
+  </div>
 </body>
 </html>

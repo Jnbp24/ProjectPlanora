@@ -21,6 +21,11 @@ public static class DbInitializer
         {
             await roleManager.CreateAsync(new IdentityRole("Tovholder"));
         }
+        
+        if (!await roleManager.RoleExistsAsync("Frivillig"))
+        {
+            await roleManager.CreateAsync(new IdentityRole("Frivillig"));
+        }
 
         //Check if the Admin already exists to avoid duplicates
         var adminEmail = "admin@planora.com";
@@ -62,6 +67,49 @@ public static class DbInitializer
             {
                 //Assign the Role
                 await userManager.AddToRoleAsync(adminUser, "Tovholder");
+            }
+        }
+        
+        //Check if the Admin already exists to avoid duplicates
+        var frivilligEmail = "mikkel@cardon.dk";
+        var existingFrivllig = await userManager.FindByEmailAsync(frivilligEmail);
+
+        if (existingFrivllig == null)
+        {
+            var user = new UserDB
+            {
+                UserId = Guid.NewGuid(),
+                Email = frivilligEmail,
+                FirstName = "Mikkel",
+                LastName = "Cardon",
+                Tovholder = false,
+                Deleted = false
+            };
+            
+            context.Users.Add(user);
+            await context.SaveChangesAsync();
+
+            //Create the AuthUser
+            var frivilligUser = new AuthUser
+            {
+                UserName = frivilligEmail,
+                Email = frivilligEmail,
+                EmailConfirmed = true,
+                UserDBId = user.UserId,
+                UserDb = user
+            };
+
+            var password = configuration["PasswordManager:adminPassword"];
+            
+            if (password is null)
+                throw new NoNullAllowedException("Loaded password for seedUser is null");
+            
+            var createResult = await userManager.CreateAsync(frivilligUser, password);
+
+            if (createResult.Succeeded)
+            {
+                //Assign the Role
+                await userManager.AddToRoleAsync(frivilligUser, "Tovholder");
             }
         }
     }
