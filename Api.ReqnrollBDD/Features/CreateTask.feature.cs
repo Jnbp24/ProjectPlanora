@@ -11,7 +11,7 @@
 #region Designer generated code
 #pragma warning disable
 using Reqnroll;
-namespace Api.ReqnrollBDD.Features
+namespace Service.ReqnrollBDD.Features
 {
     
     
@@ -129,15 +129,12 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             {
                 await this.ScenarioStartAsync();
 #line 4
- await testRunner.GivenAsync("User is logged in", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+ await testRunner.GivenAsync("User has filled in Task info", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 5
- await testRunner.AndAsync("User has filled in Task info", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 6
  await testRunner.WhenAsync("User clicks Create Task button", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 7
+#line 6
  await testRunner.ThenAsync("Task is created", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }

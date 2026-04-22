@@ -1,31 +1,39 @@
+using FluentAssertions;
+using NUnit.Framework;
+using Planora.Api.Services.Task;
+using Planora.DTO.Task;
+using Service.ReqnrollBDD.Support;
+
 namespace Api.ReqnrollBDD.StepDefinitions
 {
 	[Binding]
 	public sealed class CreateTaskStepDefinitions
 	{
-
-		[Given("User is logged in")]
-		public void UserIsLoggedIn()
-		{
-			throw new PendingStepException();
-		}
+		private TaskDTO _Task;
+		private TaskDTO _CreatedTask;
+		private readonly MockTaskService _Service = new MockTaskService();
 
 		[Given("User has filled in Task info")]
 		public void UserHasFilledInTaskInfo()
 		{
-			throw new PendingStepException();
+			_Task = new TaskDTO(
+				null, 
+				"Kapsejlads opslag", 
+				"Instagram opslag, som skal gøre studerende opmærksom på at der er kapsejlads", 
+				new DateTime()
+			);
 		}
 
 		[When("User clicks Create Task button")]
-		public void UserClicksCreateTaskButton()
+		public async Task UserClicksCreateTaskButton()
 		{
-			throw new PendingStepException();
+			_CreatedTask = await _Service.CreateTaskAsync(_Task);
 		}
 
 		[Then("Task is created")]
 		public void TaskIsCreated()
 		{
-			throw new PendingStepException();
+			_CreatedTask.TaskId.Should().NotBe(null);
 		}
 	}
 }
