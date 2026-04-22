@@ -11,6 +11,22 @@ emailInput.addEventListener('keydown', async e => {
         await sendInvitation()
     }
 })
+
+MicroModal.init({
+    disableScroll: true,          // lås baggrunds-scroll mens modal er åben
+    awaitCloseAnimation: true,    // vent på CSS-animationen før DOM opdateres
+})
+
+let pendingDeleteId = null
+const confirmTitle = document.getElementById('modal-action-title')
+const confirmMessage = document.getElementById('modal-action-content')
+const confirmBtn = document.getElementById('confirm-action-btn')
+
+confirmBtn.addEventListener('click', async () => {
+    MicroModal.close('modal-action')
+    await deleteUser(pendingDeleteId)
+})
+
 render()
 
 async function render() {
@@ -107,7 +123,14 @@ async function render() {
         })
         saveBtn.addEventListener('click', save)
 
-        deleteBtn.addEventListener('click', async () => await deleteUser(user.userId))
+        // Micromodal
+        deleteBtn.addEventListener('click', async () => {
+            confirmTitle.textContent = `Delete user`
+            confirmMessage.textContent = `This will permanently delete the user "${user.firstName + ' ' + user.lastName}". This cannot be undone.`
+            confirmBtn.textContent = `Delete`
+            pendingDeleteId = user.userId
+            MicroModal.show('modal-action')
+        })
         listEl.appendChild(card)
     })
 }
