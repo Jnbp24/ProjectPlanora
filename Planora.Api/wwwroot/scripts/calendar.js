@@ -6,8 +6,22 @@ async function setup_calendar() {
         if (!tasks) {
             throw new Error("failed to load tasks")
         }
-        const events = map_to_event(tasks)
+
+        const params = new URLSearchParams(window.location.search);
+        const calenderYearId = params.get("calenderYearId");
+
+        const filteredTasks = calenderYearId
+            ? tasks.filter(t => t.calenderYearId === calenderYearId)
+            : tasks;
+
+        const events = map_to_event(filteredTasks);
         create_calendar(events)
+
+        if (filteredTasks.length > 0 && filteredTasks[0].deadline) {
+            const firstDate = new Date(filteredTasks[0].deadline);
+            calendar.gotoDate(firstDate);
+        }
+
     } catch (error) {
         error_message(error.message)
     }
@@ -15,12 +29,24 @@ async function setup_calendar() {
 
 async function refresh_calendar() {
     try {
-        const tasks = await get_tasks_with_category()
+        const tasks = await get_tasks_with_category();
 
         if (!calendar) return;
 
+        const params = new URLSearchParams(window.location.search);
+        const calenderYearId = params.get("calenderYearId");
+
+        const filteredTasks = calenderYearId
+            ? tasks.filter(t => t.calenderYearId === calenderYearId)
+            : tasks;
+
         calendar.removeAllEvents();
-        calendar.addEventSource(map_to_event(tasks));
+
+        calendar.addEventSource(map_to_event(filteredTasks));
+
+        if (filteredTasks.length > 0 && filteredTasks[0].deadline) {
+            calendar.gotoDate(new Date(filteredTasks[0].deadline));
+        }
 
     } catch (error) {
         error_message(error.message);
