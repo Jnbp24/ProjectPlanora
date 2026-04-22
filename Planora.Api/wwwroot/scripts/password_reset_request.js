@@ -1,4 +1,4 @@
-// email_reset_request.js
+// password_reset_request.js
 
 const form = document.getElementById('email-reset-form');
 const emailInput = document.getElementById('reset-email');

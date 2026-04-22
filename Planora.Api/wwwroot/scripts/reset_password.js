@@ -5,7 +5,7 @@ const confirmInput = document.getElementById('confirm-password');
 const errorDiv = document.getElementById('reset-error');
 const successDiv = document.getElementById('reset-success');
 
-form.addEventListener('submit', function (e) {
+form.addEventListener('submit', async function (e) {
     e.preventDefault();
     errorDiv.textContent = '';
     successDiv.textContent = '';
@@ -25,7 +25,40 @@ form.addEventListener('submit', function (e) {
         errorDiv.textContent = 'Passwords do not match.';
         return;
     }
-    // Simulate success (replace with real API call)
-    successDiv.textContent = 'Your password has been reset!';
+
+    const params = new URLSearchParams(window.location.search);
+
+    const email = params.get('email'); 
+    const token = params.get('token');
+
+    try {
+        // Replace URL with your backend endpoint
+        const response = await fetch('/api/auth/reset', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(
+                {   
+                    "Email": email, 
+                    "Token": token,  
+                    "NewPassword": password,
+                    "ConfirmPassword": confirm
+                })
+        });
+        if (response.ok) {
+            successDiv.textContent = 'Your password have been changed';
+
+            form.reset();
+
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1500);
+        } else {
+            errorDiv.textContent = 'Failed to set new password. Please try again.';
+            form.reset()
+        }
+    } catch (err) {
+        errorDiv.textContent = 'Network error. Please try again.';
+    }
+
     form.reset();
 });

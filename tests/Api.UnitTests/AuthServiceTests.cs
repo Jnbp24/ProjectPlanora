@@ -24,8 +24,7 @@ public class AuthServiceTests
 
         _authService = new AuthService(
             _userManagerMock.Object,
-            _jwtTokenServiceMock.Object,
-            null
+            _jwtTokenServiceMock.Object
         );
     }
     
