@@ -14,16 +14,13 @@ public class EmailService : IEmailService
         _config = config;
     }
 
-    public async System.Threading.Tasks.Task SendPasswordResetEmail(string toEmail, string resetToken)
+    public async System.Threading.Tasks.Task SendPasswordResetEmailAsync(string toEmail, string resetToken)
     {
-        var encodedToken = WebUtility.UrlEncode(resetToken);
-        var resetLink = $"https://localhost:7127/reset_password.html?email={toEmail}&token={encodedToken}";
-
-        var email = new MimeMessage();
-        email.From.Add(new MailboxAddress("Planora", _config["Email:Username"]));
-        email.To.Add(MailboxAddress.Parse(toEmail));
+        var email = SetUpEmail(toEmail);
         email.Subject = "Reset your Planora password";
-
+        var encodedToken = WebUtility.UrlEncode(resetToken);
+        var resetLink = $"https://localhost:7127/reset_password.html?email={toEmail}&token={encodedToken}"; 
+        
         email.Body = new TextPart("html")
         {
             Text = $@"
@@ -32,6 +29,38 @@ public class EmailService : IEmailService
             <p>If you didn't request this, ignore this email.</p>"
         };
 
+        await SendEmailAsync(email);
+    }
+
+    public async System.Threading.Tasks.Task SendSignUpEmailAsync(string toEmail, string resetToken)
+    {
+        var email = SetUpEmail(toEmail);
+        email.Subject = "Sign up to Planora";
+        var encodedToken = WebUtility.UrlEncode(resetToken);
+        var signUpLink = $"https://localhost:7127/sign_up.html?email={toEmail}&token={encodedToken}"; 
+        
+        email.Body = new TextPart("html")
+        {
+            Text = $@"
+            <p>Click below to sign up to Planora:</p>
+            <a href='{signUpLink}'>Sign up</a>
+            <p>If you didn't request this, ignore this email.</p>"
+        };
+
+        await SendEmailAsync(email);
+    }
+    
+    
+    private MimeMessage SetUpEmail(string toEmail)
+    {
+        var email = new MimeMessage();
+        email.From.Add(new MailboxAddress("Planora", _config["Email:Username"]));
+        email.To.Add(MailboxAddress.Parse(toEmail));
+        return email;
+    }
+
+    private async System.Threading.Tasks.Task SendEmailAsync(MimeMessage email)
+    {
         using var smtp = new SmtpClient();
 
         await smtp.ConnectAsync(
