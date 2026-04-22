@@ -45,11 +45,10 @@ public class Program
         builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
         builder.Services.AddScoped<IEmailService, EmailService>();
+        
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<ITaskService, TaskService>();
         builder.Services.AddScoped<ICategoryService, CategoryService>();
-        builder.Services.AddScoped<IEmailService, EmailService>();
-        builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
         builder.Services.AddScoped<ICalenderYearService, CalenderYearService>();
 
         //Repository
@@ -60,7 +59,8 @@ public class Program
 
         //Auth Services
         builder.Services.AddIdentity<AuthUser, IdentityRole>()
-            .AddEntityFrameworkStores<DatabaseContext>();
+            .AddEntityFrameworkStores<DatabaseContext>()
+            .AddDefaultTokenProviders();
 
         builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
             

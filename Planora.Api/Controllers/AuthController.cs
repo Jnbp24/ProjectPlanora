@@ -42,9 +42,15 @@ public class AuthController : ControllerBase
 	}
 	
 	[HttpPost("request-reset")]
-	public async Task<ActionResult> RequestPasswordReset([FromBody] EmailDto dto)
+	public async Task<ActionResult> RequestPasswordReset([FromBody] EmailDto dto, [FromServices] IServiceScopeFactory scopeFactory)
 	{
-		await _authService.RequestResetPassword(dto);
+		_ = Task.Run(async () =>
+		{
+			await using var scope = scopeFactory.CreateAsyncScope();
+			var authService = scope.ServiceProvider.GetRequiredService<IAuthService>();
+			await authService.RequestResetPassword(dto);
+		});
+		
 		return Ok(new { message = "If that email is registered, a reset link has been sent."});
 	}
 	
