@@ -48,8 +48,13 @@ form.addEventListener('submit', async function (e) {
             successDiv.textContent = 'Your password have been changed';
 
             form.reset();
+
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1500);
         } else {
             errorDiv.textContent = 'Failed to set new password. Please try again.';
+            form.reset()
         }
     } catch (err) {
         errorDiv.textContent = 'Network error. Please try again.';
