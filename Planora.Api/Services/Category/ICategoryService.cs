@@ -1,4 +1,4 @@
-﻿using Planora.DTO.CategoryDTO;
+﻿using Planora.DTO.Category;
 
 namespace Planora.Api.Services.Category;
 

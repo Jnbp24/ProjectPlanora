@@ -1,4 +1,4 @@
-﻿using Planora.DTO.UserDTO;
+﻿using Planora.DTO.User;
 
 namespace Planora.Api.Services.User;
 

@@ -1,4 +1,4 @@
-﻿using Planora.DTO.TaskDTO;
+﻿using Planora.DTO.Task;
 
 namespace Planora.Api.Services.Task;
 
@@ -13,4 +13,5 @@ public interface ITaskService
     Task<TaskDTO> UnassignCategoryFromTaskAsync(string taskId, string categoryName);
     Task<TaskDTO> AssignUserToTaskAsync(string taskId, string userId);
     Task<TaskDTO> UnassignUserFromTaskAsync(string taskId, string userId);
+    Task<IEnumerable<TaskWithCategoryAndUsersDTO>> GetAllTasksIncludeRelationsAsync();
 }

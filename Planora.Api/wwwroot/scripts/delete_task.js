@@ -7,9 +7,8 @@ async function delete_task_handler() {
         if (!id) {
             return
         }
-        await delete_task(url, error_message, id)
+        await delete_task(id)
         reset_top_bar()
-        
     } catch (error) {
         error_message(error.message)
     }
@@ -19,7 +18,7 @@ function get_task_id() {
 	return document.querySelector(".topbar").id
 }
 
-async function delete_task(url, error_message, id) {
+async function delete_task(id) {
     const token = sessionStorage.getItem("token")
 
     try {
@@ -30,9 +29,8 @@ async function delete_task(url, error_message, id) {
                 "Authorization": `Bearer ${token}`
             }
         })
-
         if (!response.ok) {
-            throw new Error(error_message)
+            throw new Error("couldn't delete task")
         }
     } catch (error) {
         throw new Error("unexcpeted issue with deletion")
