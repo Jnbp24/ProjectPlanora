@@ -7,31 +7,69 @@ const addBtn = document.getElementById('add-category-btn')
 const listEl = document.getElementById('category-list')
 const emptyState = document.getElementById('category-empty')
 
-addBtn.addEventListener('click', async () => await createCategory())
-nameInput.addEventListener('keydown', async e => {
-    if (e.key === 'Enter') {
-        await createCategory()
+addBtn.addEventListener('click', async () => {
+    const name = nameInput.value.trim()
+    const content = contentInput.value.trim()
+    const hexColor = colorInput.value
+
+    if (!name || !content) {
+        const target = !name ? nameInput : contentInput
+        target.focus()
+        target.classList.add('shake')
+        setTimeout(() => target.classList.remove('shake'), 400)
+        return
     }
+
+    create = true
+    confirmTitle.textContent = `Create category`
+    confirmMessage.replaceChildren()
+    confirmMessage.append(
+        `This will create category "${name}" with content "${content}" and color `
+    )
+    const swatch = document.createElement('span')
+    swatch.className = 'color-swatch'
+    swatch.style.background = hexColor
+    confirmMessage.append(swatch)
+
+    confirmMessage.append(` ${hexColor}.`)
+    confirmBtn.textContent = `Create`
+    MicroModal.show('modal-action')
 })
-contentInput.addEventListener('keydown', async e => {
-    if (e.key === 'Enter') {
-        await createCategory()
-    }
-})
+
+// nameInput.addEventListener('keydown', async e => {
+//     if (e.key === 'Enter') {
+//         await createCategory()
+//     }
+// })
+// contentInput.addEventListener('keydown', async e => {
+//     if (e.key === 'Enter') {
+//         await createCategory()
+//     }
+// })
 
 MicroModal.init({
     disableScroll: true,          // lås baggrunds-scroll mens modal er åben
     awaitCloseAnimation: true,    // vent på CSS-animationen før DOM opdateres
 })
 
-let pendingDeleteId = null
+let pendingId = null
+let create = true
 const confirmTitle = document.getElementById('modal-action-title')
 const confirmMessage = document.getElementById('modal-action-content')
 const confirmBtn = document.getElementById('confirm-action-btn')
 
 confirmBtn.addEventListener('click', async () => {
+    if(create) {
+        const name = nameInput.value.trim()
+        const content = contentInput.value.trim()
+        const hexColor = colorInput.value
+        const category = { name, content, hexColor }
+        await createCategory(category)
+    }
+    else {
+        await deleteCategory(pendingId)
+    }
     MicroModal.close('modal-action')
-    await deleteCategory(pendingDeleteId)
 })
 
 render()
@@ -155,10 +193,11 @@ async function render() {
 
         // Micromodal
         deleteBtn.addEventListener('click', async () => {
+            create = false
             confirmTitle.textContent = `Delete category`
             confirmMessage.textContent = `This will permanently delete the category "${cat.name}". This cannot be undone.`
             confirmBtn.textContent = `Delete`
-            pendingDeleteId = cat.categoryId
+            pendingId = cat.categoryId
             MicroModal.show('modal-action')
         })
         
@@ -182,23 +221,7 @@ function makeIconButton(className, iconName, label, hidden = false) {
     return btn
 }
 
-async function createCategory() {
-    const name = nameInput.value.trim()
-    const content = contentInput.value.trim()
-    const hexColor = colorInput.value
-
-    if (!name || !content) {
-        const target = !name ? nameInput : contentInput
-        target.focus()
-        target.classList.add('shake')
-        setTimeout(() => target.classList.remove('shake'), 400)
-        return
-    }
-
-    // Matches CategoryDTO(string? CategoryId, string Name, string Content, string HexColor)
-    // CategoryId is not included — generated server-side
-    const category = { name, content, hexColor }
-
+async function createCategory(category) {
     await apiFetch(API, {
         method: "POST",
         body: JSON.stringify(category)

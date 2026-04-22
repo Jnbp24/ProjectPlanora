@@ -7,15 +7,17 @@
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=delete,save" />
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles/micromodal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css">
     <script defer src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+    <script defer src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+    <script defer src="scripts/decode_token.js"></script>
     <script defer src="scripts/calendar.js"></script>
     <script defer src="scripts/task.js"></script>
     <script defer src="scripts/delete_task.js"></script>
     <script defer src="scripts/update_task.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
-    <script defer src="scripts/decode_token.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css">
-    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
     <script defer src="scripts/assign_user_dropdown.js"></script>
 
 </head>
@@ -69,5 +71,23 @@
         <div id="calendar"></div>
     </section>
   </main>
+  <!-- MicroModal -->
+  <div class="modal micromodal-slide" id="modal-action" aria-hidden="true">
+      <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+          <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-action-title">
+              <header class="modal__header">
+                  <h2 class="modal__title" id="modal-action-title">Delete [something]?</h2>
+                  <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+              </header>
+              <main class="modal__content" id="modal-action-content">
+                  <p>Are you sure? This cannot be undone.</p>
+              </main>
+              <footer class="modal__footer">
+                  <button class="modal__btn" data-micromodal-close>Cancel</button>
+                  <button class="modal__btn modal__btn-primary" id="confirm-action-btn">[Action]</button>
+              </footer>
+          </div>
+      </div>
+  </div>
 </body>
 </html>
