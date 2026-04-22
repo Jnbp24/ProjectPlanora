@@ -19,7 +19,6 @@ public abstract class Repository<T> : IRepository<T> where T : class
         await _dbContext.SaveChangesAsync();
         return entity;
     }
-    
     public virtual async Task<IEnumerable<T>> GetAllAsync()
     {
         return await _dbSet.ToListAsync();
