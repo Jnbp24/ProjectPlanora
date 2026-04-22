@@ -25,7 +25,7 @@ public class PasswordService : IPasswordService
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
         //Should pass the link into the method
-        await _emailService.SendPasswordResetEmail(email, token);
+        await _emailService.SendPasswordResetEmailAsync(email, token);
     }
     
     public async Task<IdentityResult> ResetPassword(ResetPasswordDto dto)

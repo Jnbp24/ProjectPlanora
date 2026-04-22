@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Planora.Api.Services.User;
-using Planora.DTO.UserDTO;
+using Planora.DTO.User;
 
 namespace Planora.Api.Controllers;
 

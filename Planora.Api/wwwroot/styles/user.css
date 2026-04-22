@@ -219,8 +219,8 @@ body {
 }
 
 .user-email-display {
-  font-weight: 600;
-  font-size: 0.95rem;
+  font-weight: 500;
+  font-size: 0.90rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -284,36 +284,49 @@ body {
 
 /* Inline edit inputs — look like plain text until editing */
 .user-role-edit {
-  border: 1px solid transparent;
-  background: transparent;
-  border-radius: 6px;
-  padding: 4px 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-family: inherit;
-  width: 100%;
-  min-width: 0;
-  outline: none;
-}
-
-.user-role-edit {
   font-size: 0.82rem;
   color: var(--muted);
-}
-
-.user-role-edit:disabled {
-  color: inherit;
-  -webkit-text-fill-color: inherit; /* Safari */
-  opacity: 1;
+  padding: 4px 6px;
+  border-radius: 6px;
   cursor: default;
+  user-select: none;
 }
 
+.user-role-edit input[type="checkbox"] {
+  margin: 0;
+  width: 14px;
+  height: 14px;
+  accent-color: var(--accent);
+  cursor: inherit;
+}
+
+/* Edit mode — checkbox bliver klikbar */
 .user-card.editing .user-role-edit {
-  border-color: #e0e0e0;
+  cursor: pointer;
   background: #fafafa;
 }
 
-.user-card.editing .user-role-edit:focus {
-  border-color: var(--accent);
-  background: #fff;
+.user-card.editing .user-role-edit input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.user-card.editing .user-role-edit:hover {
+  background: #f0f0f0;
+}
+
+/* Focus styling når man tabber sig ind på checkboxen */
+.user-role-edit:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* Fjern focus-ring når disabled */
+.user-role-edit:has(input:disabled):focus-within {
+  outline: none;
 }
 
 .user-edit-btn,
