@@ -37,7 +37,7 @@ public class CalenderYearService : ICalenderYearService
         
         var calenderYearDB = await _calenderYearRepository.GetByIdAsync(cyGuid);
         calenderYearDB.Title = calenderYearDTO.Title;
-        calenderYearDB.Content = calenderYearDTO.Content;
+        calenderYearDB.Year = calenderYearDTO.Year;
         await _calenderYearRepository.SaveChangesAsync();
         return CalenderYearMapping.ToDTO(calenderYearDB);
     }

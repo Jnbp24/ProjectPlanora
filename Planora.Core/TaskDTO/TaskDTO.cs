@@ -1,3 +1,3 @@
 ﻿namespace Planora.DTO.Task;
 
-public record TaskDTO(string? TaskId, string Content, string Title, DateTime? Deadline);
+public record TaskDTO(string? TaskId, string Content, string Title, DateTime? Deadline, string? CalenderYearId);

@@ -9,10 +9,10 @@ public class CalenderYearDB
     [Column("Id")]
     public required Guid CalenderYearId { get; set; }
     public string Title { get; set; }
-    public string Content { get; set; }
+    public int Year { get; set; }
     public bool Deleted { get; set; }
-    private List<TaskDB> Tasks { get; set; }
-    
+    public List<TaskDB> Tasks { get; set; } = [];
+
     public CalenderYearDB()
     {
     }

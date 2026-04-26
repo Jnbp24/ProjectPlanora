@@ -11,7 +11,7 @@ public static class CalenderYearMapping
         {
             CalenderYearId = Guid.NewGuid(),
             Title = dto.Title,
-            Content = dto.Content
+            Year = dto.Year
             };
     }
 
@@ -19,7 +19,7 @@ public static class CalenderYearMapping
         return new CalenderYearDTO(
             CalenderYearId: entity.CalenderYearId.ToString(),
             Title: entity.Title,
-            Content: entity.Content
+            Year: entity.Year
             );
     }
 }
