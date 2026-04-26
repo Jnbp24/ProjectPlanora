@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using Microsoft.AspNetCore.Identity;
+using Planora.Api.Services.Email;
 using Planora.DataAccess.Mappers;
 using Planora.DataAccess.Models.Auth;
 using Planora.DataAccess.Models;
@@ -13,12 +14,14 @@ public class UserService : IUserService
     private readonly IUserRepository _userRepository;
     private readonly UserManager<AuthUser> _userManager;
     private readonly IConfiguration _configuration;
+    private readonly IEmailService _emailService;
         
-    public UserService(IUserRepository repository, UserManager<AuthUser> userManager, IConfiguration configuration)
+    public UserService(IUserRepository repository, UserManager<AuthUser> userManager, IConfiguration configuration, IEmailService emailService)
     {
         _userRepository = repository;
         _userManager = userManager;
         _configuration = configuration;
+        _emailService = emailService;
     }
     
     public async Task<UserDTO> CreateUserAsync(UserDTO userDTO)
@@ -28,6 +31,7 @@ public class UserService : IUserService
         {
             throw new InvalidOperationException("Email already exists");
         }
+        
         UserDB userDB = UserMapping.ToEntity(userDTO);
         await _userRepository.CreateAsync(userDB);
         await _userRepository.SaveChangesAsync();
@@ -39,16 +43,14 @@ public class UserService : IUserService
             UserDBId = userDB.UserId,
             UserDb = userDB
         };
-            
-        //TODO: Should be changed to a random password generator, and the password should be sent to the user via email, but for now we will use a hardcoded password.
+        
         var password = _configuration["PasswordManager:userPassword"];
 
         if (password is null)
             throw new NoNullAllowedException("Loaded password in user is null");
             
         await _userManager.CreateAsync(authUser, password);
-            
-        //TODO: We should also consider adding the user to a default role (Frivillig) or send it as a parameter in the DTO.
+        await _emailService.SendSignUpEmailAsync(authUser.Email, password);
             
         return UserMapping.ToDTO(userDB);
     }
