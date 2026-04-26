@@ -74,7 +74,7 @@ public static class DbInitializer
         var frivilligEmail = "mikkel@cardon.dk";
         var existingFrivllig = await userManager.FindByEmailAsync(frivilligEmail);
 
-        if (existingFrivllig == null)
+        if (true)
         {
             var user = new UserDB
             {

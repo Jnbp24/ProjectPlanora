@@ -1,4 +1,4 @@
-const API = "https://localhost:7127/api/User"
+const API = "/api/User"
 // --- User management ---
 const emailInput = document.getElementById('user-email')
 const sendInvitationBtn = document.getElementById('user-send-invitation-btn')
@@ -137,6 +137,11 @@ async function sendInvitation() {
         setTimeout(() => emailInput.classList.remove('shake'), 400)
         return
     }
+
+    apiFetch(API, {
+        method: "POST",
+        body: JSON.stringify(email)
+    })
 
     emailInput.value = ''
     emailInput.focus()
