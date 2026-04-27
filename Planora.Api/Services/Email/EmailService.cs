@@ -36,7 +36,7 @@ public class EmailService : IEmailService
     {
         var email = SetUpEmail(toEmail);
         email.Subject = "Sign up to Planora";
-        var encodedToken = WebUtility.UrlEncode(password);
+        
         var signUpLink = $"https://localhost:7127/password_change.html?email={toEmail}"; 
         
         email.Body = new TextPart("html")
