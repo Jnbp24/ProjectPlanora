@@ -17,10 +17,12 @@
   <main class="dashboard">
     <aside class="sidebar">
       <div>
-        <div class="brand">
-          <img class="brand-logo" src="images/planora-logo.png" alt="Planora logo">
-          <span class="brand-text">Planora</span>
-        </div>
+          <div class="brand">
+              <a href="dashboard.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;">
+                  <img class="brand-logo" src="images/planora-logo.png" alt="Planora logo">
+                  <span class="brand-text">Planora</span>
+              </a>
+          </div>
         <ul class="nav-list">
           <li class="nav-item"><a href="dashboard.html">Dashboard</a></li>
           <li class="nav-item"><a href="tasks.html">My tasks</a></li>
@@ -70,6 +72,31 @@
               <footer class="modal__footer">
                   <button class="modal__btn" data-micromodal-close>Cancel</button>
                   <button class="modal__btn modal__btn-primary" id="confirm-action-btn">[Action]</button>
+              </footer>
+          </div>
+      </div>
+  </div>
+
+  <div class="modal micromodal-slide" id="modal-invitation" aria-hidden="true">
+      <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+          <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-invitation-title">
+              <header class="modal__header">
+                  <h2 class="modal__title" id="modal-invitation-title">Send Invitation</h2>
+                  <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+              </header>
+              <main class="modal__content" id="modal-invitation-content">
+                  <div class="form-group">
+                      <label for="invitation-first-name">First Name</label>
+                      <input type="text" id="invitation-first-name" placeholder="Enter first name" maxlength="50">
+                  </div>
+                  <div class="form-group">
+                      <label for="invitation-last-name">Last Name</label>
+                      <input type="text" id="invitation-last-name" placeholder="Enter last name" maxlength="50">
+                  </div>
+              </main>
+              <footer class="modal__footer">
+                  <button class="modal__btn" data-micromodal-close>Cancel</button>
+                  <button class="modal__btn modal__btn-primary" id="invitation-ok-btn">OK</button>
               </footer>
           </div>
       </div>

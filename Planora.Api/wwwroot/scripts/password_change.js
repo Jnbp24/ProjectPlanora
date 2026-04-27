@@ -57,7 +57,7 @@ form.addEventListener('submit', async function (e) {
             }, 1500);
         } else {
             const errorData = await response.json().catch(() => ({}));
-            errorDiv.textContent = errorData.message || 'Failed to change password. Please try again.';
+            errorDiv.textContent = errorData.errors || 'Failed to change password. Please try again.';
         }
     } catch (err) {
         errorDiv.textContent = 'Network error. Please try again.';

@@ -95,17 +95,12 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
             .FirstOrDefaultAsync(c => c.Name.ToLower() == nameNormalized)
             ?? throw new KeyNotFoundException($"Category '{categoryName}' not found");
 
-        var defaultCategory = await _dbContext.Categories
-            .FirstOrDefaultAsync(c => c.Name.ToLower() == "default")
-            ?? throw new KeyNotFoundException("Default category not found");
-
         var task = await _dbContext.Tasks
             .FirstOrDefaultAsync(t => t.TaskId == taskId)
             ?? throw new KeyNotFoundException($"Task {taskId} not found");
 
         // When removing a task from it's category, it should auto-assign back to the default category
         category.Tasks.Remove(task);
-        task.Category = defaultCategory;
 
         await _dbContext.SaveChangesAsync();
         return task;
