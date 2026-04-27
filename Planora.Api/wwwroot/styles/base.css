@@ -1,0 +1,45 @@
+﻿:root {
+    --bg: #e7de55;
+    --card: #f5f5f5;
+    --surface: #f4f4f4;
+    --sidebar: #eeeeee;
+    --muted: #666;
+    --text: #222;
+    --line: #d6d6d6;
+    --active: #d7cf49;
+    --accent: #2f80ed;
+    --border: #dddddd;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    height: 100vh;
+    display: grid;
+    place-items: center;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+}
+
+/* ===== Animations ===== */
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-4px); }
+    40%, 80% { transform: translateX(4px); }
+}
+
+.shake {
+    animation: shake 0.3s ease;
+}
+
+@keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}

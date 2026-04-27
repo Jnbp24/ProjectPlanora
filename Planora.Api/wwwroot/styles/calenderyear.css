@@ -18,9 +18,9 @@
     transition: filter 0.15s;
 }
 
-    .calenderyear-card:hover {
-        filter: brightness(0.96);
-    }
+.calenderyear-card:hover {
+    filter: brightness(0.96);
+}
 
 .calenderyear-card-title {
     font-weight: 700;
