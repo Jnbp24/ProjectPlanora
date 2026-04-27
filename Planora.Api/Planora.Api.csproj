@@ -35,7 +35,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\styles\dashboard.css" />
     <Content Remove="wwwroot\styles\sidebar.css" />
     <Content Remove="wwwroot\styles\task.css" />
   </ItemGroup>
