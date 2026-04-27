@@ -63,7 +63,7 @@ public class AuthController : ControllerBase
 			
 	    if (!result.Succeeded)
 	    {
-		    return BadRequest(new { message = "Password change failed. Try again." });
+		    return BadRequest(new { errors = result.Errors.Select(e => e.Description) });
 	    }
 
 	    return Ok(new { message = "Password change successful." });
