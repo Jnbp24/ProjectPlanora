@@ -117,14 +117,13 @@ async function createTask() {
         const createdTask = await response.json();
         const taskId = createdTask.taskId;
 
-        const DEFAULT_CATEGORY_NAME = "Default";
 
         const selectedCategory = categoryId
             ? categoriesMap[String(categoryId)]
             : null;
 
         const categoryName =
-            selectedCategory?.name ?? DEFAULT_CATEGORY_NAME;
+            selectedCategory?.name 
 
         const assignResponse = await put(
             `/api/task/${taskId}/category`,
