@@ -117,14 +117,9 @@ async function createTask() {
         const createdTask = await response.json();
         const taskId = createdTask.taskId;
 
-        const DEFAULT_CATEGORY_NAME = "Default";
-
         const selectedCategory = categoryId
             ? categoriesMap[String(categoryId)]
             : null;
-
-        const categoryName =
-            selectedCategory?.name ?? DEFAULT_CATEGORY_NAME;
 
         const assignResponse = await put(
             `/api/task/${taskId}/category`,
@@ -132,8 +127,6 @@ async function createTask() {
         );
 
         if (!assignResponse.ok) throw new Error("Failed to assign category");
-
-        console.log("Assigned category:", categoryName);
 
         for (const userid of assignedUserIds) {
             const response = await post(`/api/Task/${taskId}/user`, userid);
