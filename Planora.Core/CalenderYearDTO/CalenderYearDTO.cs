@@ -1,3 +1,3 @@
 ﻿namespace Planora.DTO.CalenderYearDTO;
 
-public record CalenderYearDTO(string? CalenderYearId, string Content, string Title);
+public record CalenderYearDTO(string? CalenderYearId, string Title, int Year);

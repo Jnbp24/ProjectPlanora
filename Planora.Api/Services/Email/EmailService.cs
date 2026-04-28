@@ -32,19 +32,19 @@ public class EmailService : IEmailService
         await SendEmailAsync(email);
     }
 
-    public async System.Threading.Tasks.Task SendSignUpEmailAsync(string toEmail, string resetToken)
+    public async System.Threading.Tasks.Task SendSignUpEmailAsync(string toEmail, string password)
     {
         var email = SetUpEmail(toEmail);
         email.Subject = "Sign up to Planora";
-        var encodedToken = WebUtility.UrlEncode(resetToken);
-        var signUpLink = $"https://localhost:7127/sign_up.html?email={toEmail}&token={encodedToken}"; 
+        
+        var signUpLink = $"https://localhost:7127/password_change.html?email={toEmail}"; 
         
         email.Body = new TextPart("html")
         {
             Text = $@"
             <p>Click below to sign up to Planora:</p>
-            <a href='{signUpLink}'>Sign up</a>
-            <p>If you didn't request this, ignore this email.</p>"
+            <a href='{signUpLink}'>Sign up & change password</a>
+            <p>Temporary password: {password} </p>"
         };
 
         await SendEmailAsync(email);

@@ -1,5 +1,11 @@
-﻿
-document.getElementById("delete_task_btn").addEventListener("click", delete_task_handler)
+﻿document.getElementById("delete_task_btn").addEventListener("click", async () =>{
+    create = false
+    const title = document.querySelector(".task-name").value;
+    confirmTitle.textContent = `Delete task`
+    confirmMessage.textContent = `This will permanently delete the task "${title}". This cannot be undone.`
+    confirmBtn.textContent = `Delete`
+    MicroModal.show('modal-action')
+})
 
 async function delete_task_handler() {
     try {

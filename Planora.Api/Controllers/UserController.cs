@@ -25,8 +25,8 @@ public class UserController : ControllerBase
 	{
 		try 
 		{
-			var createdProjectDto = await _userService.CreateUserAsync(userDTO);
-			return CreatedAtAction(nameof(GetUserByIdAsync), new { userId = createdProjectDto.UserId }, createdProjectDto);
+			var createdUserDto = await _userService.CreateUserAsync(userDTO);
+			return CreatedAtAction(nameof(GetUserByIdAsync), new { userId = createdUserDto.UserId }, createdUserDto);
 		}
 		catch (InvalidOperationException exception)
 		{

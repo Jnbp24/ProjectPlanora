@@ -1,4 +1,4 @@
-const API = "https://localhost:7127/api/User"
+const API = "/api/User"
 // --- User management ---
 const emailInput = document.getElementById('user-email')
 const sendInvitationBtn = document.getElementById('user-send-invitation-btn')
@@ -17,6 +17,32 @@ MicroModal.init({
     awaitCloseAnimation: true,    // vent på CSS-animationen før DOM opdateres
 })
 
+// --- Invitation modal ---
+let pendingInvitationEmail = null
+const invitationFirstNameInput = document.getElementById('invitation-first-name')
+const invitationLastNameInput = document.getElementById('invitation-last-name')
+const invitationOkBtn = document.getElementById('invitation-ok-btn')
+
+invitationOkBtn.addEventListener('click', async () => {
+    const firstName = invitationFirstNameInput.value.trim()
+    const lastName = invitationLastNameInput.value.trim()
+
+    if (!firstName || !lastName) {
+        alert('Please enter both first and last name')
+        return
+    }
+
+    MicroModal.close('modal-invitation')
+    await submitInvitation(pendingInvitationEmail, firstName, lastName)
+    
+    // Reset form
+    invitationFirstNameInput.value = ''
+    invitationLastNameInput.value = ''
+    pendingInvitationEmail = null
+    emailInput.focus()
+})
+
+// --- Delete action modal ---
 let pendingDeleteId = null
 const confirmTitle = document.getElementById('modal-action-title')
 const confirmMessage = document.getElementById('modal-action-content')
@@ -161,8 +187,31 @@ async function sendInvitation() {
         return
     }
 
-    emailInput.value = ''
-    emailInput.focus()
+    // Store email and show modal for name entry
+    pendingInvitationEmail = email
+    invitationFirstNameInput.value = ''
+    invitationLastNameInput.value = ''
+    MicroModal.show('modal-invitation')
+    invitationFirstNameInput.focus()
+}
+
+async function submitInvitation(email, firstName, lastName) {
+    try {
+        await apiFetch(API, {
+            method: "POST",
+            body: JSON.stringify({
+                email: email,
+                firstName: firstName,
+                lastName: lastName,
+                tovholder: false
+            })
+        })
+
+        emailInput.value = ''
+        await render()
+    } catch (error) {
+        alert("Failed to invite user")
+    }
 }
 
 async function getAllUsers() {

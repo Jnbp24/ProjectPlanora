@@ -7,16 +7,16 @@ namespace Planora.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ProjectController : ControllerBase
+public class CalenderYearController : ControllerBase
 {
     private readonly ICalenderYearService _calenderYearService;
 
-    public ProjectController(ICalenderYearService service)
+    public CalenderYearController(ICalenderYearService service)
     {
         _calenderYearService = service;
     }
 
-    // POST api/project
+    // POST api/calenderyear
     [Authorize]
     [HttpPost]
     public async Task<ActionResult<CalenderYearDTO>> CreateCalenderYearAsync([FromBody] CalenderYearDTO calenderYearDTO)
@@ -24,8 +24,8 @@ public class ProjectController : ControllerBase
         var createdCalenderYearDto = await _calenderYearService.CreateCalenderYearAsync(calenderYearDTO);
         return CreatedAtAction(nameof(GetCalenderYearByIdAsync), new { calenderYearId = createdCalenderYearDto.CalenderYearId }, createdCalenderYearDto);
     }
-    
-    // GET api/project
+
+    // GET api/calenderyear
     [Authorize]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CalenderYearDTO>>> GetAllCalenderYearsAsync()
@@ -33,27 +33,26 @@ public class ProjectController : ControllerBase
         return Ok(await _calenderYearService.GetAllCalenderYearsAsync());
     }
 
-    // GET api/project/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
+    // GET api/calenderyear/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
     [Authorize]
-    [HttpGet("{projectId}")]
+    [HttpGet("{calenderYearId}")]
     public async Task<ActionResult<CalenderYearDTO>> GetCalenderYearByIdAsync(string calenderYearId)
     {
         return Ok(await _calenderYearService.GetCalenderYearByIdAsync(calenderYearId));
-   
     }
 
-
-    // PUT api/project/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
+    // PUT api/calenderyear/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
     [Authorize]
-    [HttpPut("{projectId}")]
+    [HttpPut("{calenderYearId}")]
     public async Task<IActionResult> UpdateCalenderYearByIdAsync(string calenderYearId, [FromBody] CalenderYearDTO calenderYearDTO)
     {
         await _calenderYearService.UpdateCalenderYearByIdAsync(calenderYearId, calenderYearDTO);
         return NoContent();
     }
-    // DELETE api/project/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
+
+    // DELETE api/calenderyear/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
     [Authorize(Roles = "Tovholder")]
-    [HttpDelete("{projectId}")]
+    [HttpDelete("{calenderYearId}")]
     public async Task<IActionResult> DeleteCalenderYearByIdAsync(string calenderYearId)
     {
         await _calenderYearService.DeleteCalenderYearByIdAsync(calenderYearId);

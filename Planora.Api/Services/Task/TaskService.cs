@@ -1,4 +1,6 @@
 ﻿using Planora.DataAccess.Mappers;
+using Planora.DataAccess.Models;
+using Planora.DataAccess.Repositories.CalenderYear;
 using Planora.DataAccess.Repositories.Task;
 using Planora.DTO.Task;
 
@@ -7,19 +9,46 @@ namespace Planora.Api.Services.Task;
 public class TaskService : ITaskService
 {
     private readonly ITaskRepository _taskRepository;
+    private readonly ICalenderYearRepository _calenderYearRepository;
 
-    public TaskService(ITaskRepository taskRepository)
+    public TaskService(
+    ITaskRepository taskRepository,
+    ICalenderYearRepository calenderYearRepository)
     {
         _taskRepository = taskRepository;
+        _calenderYearRepository = calenderYearRepository;
     }
 
-    public async Task<TaskDTO> CreateTaskAsync(TaskDTO taskDTO)
+    public async Task<TaskDTO> CreateTaskAsync(TaskDTO dto)
     {
-        var taskDB = TaskMapping.ToEntity(taskDTO);
-        var createdTaskDB = await _taskRepository.CreateAsync(taskDB);
-        return TaskMapping.ToDTO(createdTaskDB);
-    }
+        var task = TaskMapping.ToEntity(dto);
+
+        var year = dto.Deadline?.Year ?? DateTime.UtcNow.Year;
         
+        var calenderYears = await _calenderYearRepository.GetAllAsync();
+
+        var matchingYear = calenderYears
+            .FirstOrDefault(cy => cy.Year == year && !cy.Deleted);
+
+        if (matchingYear == null)
+        {
+            var newYear = new CalenderYearDB
+            {
+                CalenderYearId = Guid.NewGuid(),
+                Title = year.ToString(),
+                Year = year
+            };
+
+            matchingYear = await _calenderYearRepository.CreateAsync(newYear);
+        }
+
+        task.CalenderYearId = matchingYear.CalenderYearId;
+
+        var created = await _taskRepository.CreateAsync(task);
+
+        return TaskMapping.ToDTO(created);
+    }
+
     public async Task<IEnumerable<TaskDTO>> GetAllTasksAsync()
     {
         var taskDBs = await _taskRepository.GetAllAsync();
@@ -28,7 +57,7 @@ public class TaskService : ITaskService
         return filtered.Select(TaskMapping.ToDTO);
     }
 
-    public async Task<TaskDTO> GetTaskByIdAsync(string taskId)
+    public async Task<TaskDTO?> GetTaskByIdAsync(string taskId)
     {
         if (!Guid.TryParse(taskId, out var tGuid))
         {
@@ -52,6 +81,19 @@ public class TaskService : ITaskService
         taskDB.Title = taskDTO.Title;
         taskDB.Content = taskDTO.Content;
         taskDB.Deadline = taskDTO.Deadline;
+
+        if (taskDTO.Deadline.HasValue)
+        {
+            var year = taskDTO.Deadline.Value.Year;
+
+            var calenderYears = await _calenderYearRepository.GetAllAsync();
+            var matchingYear = calenderYears.FirstOrDefault(cy => cy.Year == year && !cy.Deleted);
+
+            if (matchingYear != null)
+            {
+                taskDB.CalenderYearId = matchingYear.CalenderYearId;
+            }
+        }
         await _taskRepository.SaveChangesAsync();
         return TaskMapping.ToDTO(taskDB);
     }
