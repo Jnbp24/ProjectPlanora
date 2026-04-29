@@ -8,4 +8,5 @@ public interface ITaskRepository : IRepository<TaskDB>
     Task<TaskDB> UnassignUserAsync(Guid taskId, Guid userId);
     Task<TaskDB> AssignCategoryAsync(Guid taskId, string categoryName);
     Task<TaskDB> UnassignCategoryAsync(Guid taskId, string categoryName);
+    System.Threading.Tasks.Task MarkTaskAsDoneAsync(Guid taskId, bool done);
 }

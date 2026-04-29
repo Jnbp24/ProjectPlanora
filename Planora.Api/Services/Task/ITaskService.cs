@@ -14,4 +14,5 @@ public interface ITaskService
     Task<TaskDTO> AssignUserToTaskAsync(string taskId, string userId);
     Task<TaskDTO> UnassignUserFromTaskAsync(string taskId, string userId);
     Task<IEnumerable<TaskWithCategoryAndUsersDTO>> GetAllTasksIncludeRelationsAsync();
+    System.Threading.Tasks.Task MarkTaskAsDoneAsync(string taskId, bool done);
 }
