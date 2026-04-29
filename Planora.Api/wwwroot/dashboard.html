@@ -35,7 +35,7 @@
           </div>
         <ul class="nav-list">
           <li class="nav-item active"><a href="dashboard.html">Dashboard</a></li>
-          <li class="nav-item"><a href="tasks.html">My tasks</a></li>
+          <li class="nav-item"><a href="my_tasks.html">My tasks</a></li>
           <li class="nav-item"><a href="category.html">Categories</a></li>
           <li class="nav-item"><a href="calendar_year.html">Calender Years</a></li>
           <li class="nav-item"><a href="user.html">Users</a></li>
@@ -52,16 +52,21 @@
     <section class="content">
         <div class="topbar">
             <div class="task-quick-menu">
-                <input type="text" placeholder="Enter task name.." class="task-name" />
-                <input type="text" placeholder="Enter task content.." class="task-content" />
-                <input type="date" title="Select deadline" class="task-date" />
-                <label class="no-deadline-toggle">
-                    <input type="checkbox" id="no-deadline">  No deadline
-                </label>
-                <select class="task-category">
-                    <option value="" disabled selected hidden>Choose a category</option>
-                </select>
-                <select id="task-assignees" multiple placeholder="Assign to…"></select>
+                <div class="task-row task-row-primary">
+                    <input type="text" placeholder="Enter task name.." class="task-name" />
+                    <input type="text" placeholder="Enter task content.." class="task-content" />
+                    <input type="date" title="Select deadline" class="task-date" />
+                    <label class="no-deadline-toggle">
+                        <input type="checkbox" id="no-deadline">  No deadline
+                    </label>
+                </div>
+
+                <div class="task-row task-row-secondary">
+                    <select class="task-category">
+                        <option value="" disabled selected hidden>Choose a category</option>
+                    </select>
+                    <select id="task-assignees" multiple placeholder="Assign to…"></select>
+                </div>
             </div>
 
             <div class="topbar-actions">
