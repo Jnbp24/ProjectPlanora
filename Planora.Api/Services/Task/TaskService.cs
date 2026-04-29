@@ -172,4 +172,11 @@ public class TaskService : ITaskService
 		var tasksDTO = tasksDB.Select(taskDB => TaskMapping.ToExtendedDTO(taskDB)).ToList();
 		return tasksDTO;
 	}
+    public async System.Threading.Tasks.Task MarkTaskAsDoneAsync(string taskId, bool done)
+    {
+        if (!Guid.TryParse(taskId, out var tGuid))
+            throw new ArgumentException($"Invalid taskId {taskId}");
+
+        await _taskRepository.MarkTaskAsDoneAsync(tGuid, done);
+    }
 }

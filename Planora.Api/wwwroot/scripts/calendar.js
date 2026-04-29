@@ -61,7 +61,8 @@ function map_to_event(tasks) {
         extendedProps: {
             content: task.content,
             category: task.category,
-            users: task.users
+            users: task.users,
+            done: task.done
         },
         backgroundColor: task.category?.hexColor ?? '#6b7280',
         borderColor: task.category?.hexColor ?? '#6b7280',
@@ -102,6 +103,11 @@ function create_calendar(tasks) {
                                 ? arg.event.extendedProps.users.map(u => `${u.firstName} ${u.lastName}`).join(', ')
                                 : 'Non assigned'}
                         </span>
+                        <br><br>
+                        <label class="event-done-label">
+                            <input type="checkbox" class="event-done-checkbox" data-task-id="${arg.event.id}" ${arg.event.extendedProps.done ? 'checked' : ''}>
+                            Done
+                        </label>
                     </div>
                 `
             }
@@ -109,6 +115,24 @@ function create_calendar(tasks) {
     })
 
     calendar.render();
+    calendar.el.addEventListener("change", async (e) => {
+        if (!e.target.classList.contains("event-done-checkbox")) return;
+
+        const taskId = e.target.dataset.taskId;
+        const done = e.target.checked;
+        const token = sessionStorage.getItem("token");
+
+        const res = await fetch(`api/task/${taskId}/completed`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(done)
+        });
+
+        if (!res.ok) e.target.checked = !e.target.checked;
+    });
 }
 
 function task_click_handler(info) {

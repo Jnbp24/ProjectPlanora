@@ -111,4 +111,12 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
         return task;
     }
 
+    public async System.Threading.Tasks.Task MarkTaskAsDoneAsync(Guid taskId, bool done)
+    {
+        var task = await _dbContext.Tasks.FindAsync(taskId)
+            ?? throw new KeyNotFoundException($"Task {taskId} not found");
+
+        task.Done = done;
+        await _dbContext.SaveChangesAsync();
+    }
 }
