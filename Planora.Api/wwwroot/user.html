@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="styles/micromodal.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=check,close,delete,edit,folder_open"/>
     <script defer src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+    <script defer src="scripts/decode_token.js"></script>
+    <script defer src="scripts/settings_dropdown.js"></script>
     <script defer src="scripts/user.js"></script>
 
 </head>
@@ -33,7 +36,12 @@
       </div>
 
       <div class="sidebar-bottom">
-        <a class="sidebar-link" href="#">Settings</a>
+        <div class="settings-dropdown-container">
+            <button class="sidebar-link settings-btn">Settings</button>
+            <div class="settings-dropdown">
+                <a href="#" id="change-password-link" class="dropdown-item">Change Password</a>
+            </div>
+        </div>
         <a class="sidebar-link" href="index.html">Log out</a>
       </div>
     </aside>

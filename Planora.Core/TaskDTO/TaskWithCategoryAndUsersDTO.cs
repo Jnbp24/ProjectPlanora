@@ -10,5 +10,6 @@ public record TaskWithCategoryAndUsersDTO(
 	DateTime? Deadline, 
 	CategoryDTO? Category,
 	List<UserDTO>? Users,
-	string? CalenderYearId
+	string? CalenderYearId,
+	bool Done
 );

@@ -21,6 +21,7 @@ namespace Api.ReqnrollBDD.StepDefinitions
 				"Kapsejlads opslag", 
 				"Instagram opslag, som skal gøre studerende opmærksom på at der er kapsejlads", 
 				new DateTime(),
+				false,
 				null
 			);
 		}

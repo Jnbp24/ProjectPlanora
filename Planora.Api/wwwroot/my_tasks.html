@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="styles/base_dashboard.css">
     <link rel="stylesheet" href="styles/my_tasks.css">
     <script defer src="scripts/my_tasks.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+    <script defer src="scripts/decode_token.js"></script>
+    <script defer src="scripts/settings_dropdown.js"></script>
 </head>
 <body class="page-dashboard">
     <main class="dashboard">
@@ -28,7 +31,12 @@
                 </ul>
             </div>
             <div class="sidebar-bottom">
-                <a class="sidebar-link" href="#">Settings</a>
+                <div class="settings-dropdown-container">
+                    <button class="sidebar-link settings-btn">Settings</button>
+                    <div class="settings-dropdown">
+                        <a href="#" id="change-password-link" class="dropdown-item">Change Password</a>
+                    </div>
+                </div>
                 <a class="sidebar-link" href="index.html">Log out</a>
             </div>
         </aside>

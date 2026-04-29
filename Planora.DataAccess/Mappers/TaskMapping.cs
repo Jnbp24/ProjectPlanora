@@ -14,6 +14,7 @@ public static class TaskMapping
             Title =  dto.Title,
             Content =  dto.Content,
             Deadline = dto.Deadline,
+            Done = false,
             CalenderYearId = dto.CalenderYearId != null
             ? Guid.Parse(dto.CalenderYearId)
             : null
@@ -26,6 +27,7 @@ public static class TaskMapping
             Title: entity.Title,
             Content: entity.Content,
             Deadline: entity.Deadline,
+            Done: entity.Done,
             CalenderYearId: entity.CalenderYearId?.ToString()
             );
     }
@@ -39,7 +41,8 @@ public static class TaskMapping
 			Deadline: entity.Deadline,
 			Category: CategoryMapping.ToDTO(entity.Category),
 	        Users: entity.Users.Select(user => UserMapping.ToDTO(user)).ToList(),
-            CalenderYearId: entity.CalenderYearId?.ToString()
+            CalenderYearId: entity.CalenderYearId?.ToString(),
+            Done: entity.Done
         );
     }
 }

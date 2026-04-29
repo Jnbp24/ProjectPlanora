@@ -12,6 +12,7 @@ public class TaskDB
     public string Content { get; set; }
     public DateTime? Deadline { get; set; }
     public bool Deleted { get; set; }
+    public bool Done { get; set; }
     public Guid? CategoryId { get; set; }
     [ForeignKey("CategoryId")]
     public CategoryDB? Category { get; set; }
