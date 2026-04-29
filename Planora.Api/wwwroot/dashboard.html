@@ -21,6 +21,7 @@
     <script defer src="scripts/update_task.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
     <script defer src="scripts/assign_user_dropdown.js"></script>
+    <script defer src="scripts/settings_dropdown.js"></script>
 
 </head>
 <body class="page-dashboard">
@@ -44,7 +45,12 @@
       </div>
 
       <div class="sidebar-bottom">
-        <a class="sidebar-link" href="#">Settings</a>
+        <div class="settings-dropdown-container">
+          <button class="sidebar-link settings-btn">Settings</button>
+          <div class="settings-dropdown">
+            <a href="#" id="change-password-link" class="dropdown-item">Change Password</a>
+          </div>
+        </div>
         <a class="sidebar-link" href="index.html">Log out</a>
       </div>
     </aside>
