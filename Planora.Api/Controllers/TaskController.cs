@@ -100,4 +100,11 @@ public class TaskController : ControllerBase
 		return Ok(await _taskService.GetAllTasksIncludeRelationsAsync());
 	}
 
+    [Authorize]
+    [HttpPut("{taskId}/completed")]
+    public async Task<IActionResult> MarkTaskAsDone(string taskId, [FromBody] bool done)
+    {
+        await _taskService.MarkTaskAsDoneAsync(taskId, done);
+        return NoContent();
+    }
 }

@@ -1,0 +1,137 @@
+﻿/* ==== Page layout for dashboard pages ==== */
+.page-dashboard {
+    display: block;
+    place-items: initial;
+}
+
+.dashboard {
+    width: 100vw;
+    height: 100vh;
+    background: var(--surface);
+    border-radius: 0;
+    box-shadow: none;
+    display: grid;
+    grid-template-columns: 270px 1fr;
+    overflow: hidden;
+}
+
+.sidebar {
+    background: #efefef;
+    border-right: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px 18px;
+}
+
+.page-dashboard .brand {
+    justify-content: flex-start;
+    margin-bottom: 22px;
+    padding: 8px 10px;
+    text-align: left;
+}
+
+.page-dashboard .brand-logo {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+}
+
+.page-dashboard .brand-text {
+    font-size: 1.45rem;
+}
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nav-item a {
+    display: block;
+    text-decoration: none;
+    color: var(--text);
+    padding: 12px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.nav-item a:hover {
+    background: #e4e4e4;
+}
+
+.nav-item.active a {
+    background: #f1efdf;
+    border-left: 4px solid var(--active);
+    border-radius: 0 8px 8px 0;
+    font-weight: 700;
+}
+
+.sidebar-bottom {
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar-link {
+    text-decoration: none;
+    color: inherit;
+    padding: 10px 12px;
+    border-radius: 8px;
+}
+
+.sidebar-link:hover {
+    background: #e4e4e4;
+}
+
+.content {
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.color-swatch {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin: 0 2px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+}
+
+/* ==== Responsive ==== */
+
+@media (max-width: 860px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+    }
+}
+
+/* ===== Animations ===== */
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-4px); }
+    40%, 80% { transform: translateX(4px); }
+}
+
+.shake {
+    animation: shake 0.3s ease;
+}
+
+@keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}

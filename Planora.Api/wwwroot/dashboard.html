@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Planora - Dashboard</title>
     <link rel="stylesheet" href="styles/base.css">
-    <link rel="stylesheet" href="styles/styles.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=delete,save" />
+    <link rel="stylesheet" href="styles/base_dashboard.css">
+    <link rel="stylesheet" href="styles/dashboard.css">
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles/micromodal.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=delete,save" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css">
     <script defer src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
     <script defer src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
@@ -51,25 +52,29 @@
     <!-- Dashboard topbar -->
     <section class="content">
         <div class="topbar">
-            <div class="taskquickmenu">
-                <input type="text" placeholder="Enter task name.." class="task-name" />
-                <input type="text" placeholder="Enter task content.." class="task-content" />
-                <input type="date" title="Select deadline" class="task-date" />
-                <label class="no-deadline-toggle">
-                    <input type="checkbox" id="no-deadline">  No deadline
-                </label>
-                <select class="task-category">
-                    <option value="" disabled selected hidden>Choose a category</option>
-                </select>
-                <select id="task-assignees" multiple placeholder="Assign to…"></select>
+            <div class="task-quick-menu">
+                <div class="task-row task-row-primary">
+                    <input type="text" placeholder="Enter task name.." class="task-name" />
+                    <input type="text" placeholder="Enter task content.." class="task-content" />
+                    <input type="date" title="Select deadline" class="task-date" />
+                    <label class="no-deadline-toggle">
+                        <input type="checkbox" id="no-deadline">  No deadline
+                    </label>
+                </div>
+
+                <div class="task-row task-row-secondary">
+                    <select class="task-category">
+                        <option value="" disabled selected hidden>Choose a category</option>
+                    </select>
+                    <select id="task-assignees" multiple placeholder="Assign to…"></select>
+                </div>
             </div>
-            <span class="material-symbols-outlined invisible restricted" id="delete_task_btn">
-                delete
-            </span>
-            <span class="material-symbols-outlined invisible" id="update_task_btn">
-                save
-            </span>
-            <button class="new-task-btn" type="button">+ New task</button>
+
+            <div class="topbar-actions">
+                <span class="material-symbols-outlined invisible restricted" id="delete_task_btn">delete</span>
+                <span class="material-symbols-outlined invisible" id="update_task_btn">save</span>
+                <button class="new-task-btn" type="button">+ New task</button>
+            </div>
         </div>
         <div id="calendar"></div>
     </section>
