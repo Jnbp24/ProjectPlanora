@@ -78,8 +78,7 @@ function error_message(message) {
 }
 
 function showResetPasswordItem(){
-	var item = document.getElementById("resetPassword")
+	var item = document.getElementById("reset-password")
 	item.classList.remove("item-hidden")
 	console.log("Showing reset button");
-	
 }
