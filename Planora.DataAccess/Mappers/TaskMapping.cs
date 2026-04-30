@@ -39,6 +39,7 @@ public static class TaskMapping
 			Title: entity.Title,
 			Content: entity.Content,
 			Deadline: entity.Deadline,
+            CategoryId: entity.CategoryId?.ToString(),
 			Category: CategoryMapping.ToDTO(entity.Category),
 	        Users: entity.Users.Select(user => UserMapping.ToDTO(user)).ToList(),
             CalenderYearId: entity.CalenderYearId?.ToString(),

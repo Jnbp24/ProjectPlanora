@@ -10,13 +10,16 @@ public class TaskService : ITaskService
 {
     private readonly ITaskRepository _taskRepository;
     private readonly ICalenderYearRepository _calenderYearRepository;
+    private readonly ILogger<TaskService> _logger;
 
     public TaskService(
     ITaskRepository taskRepository,
-    ICalenderYearRepository calenderYearRepository)
+    ICalenderYearRepository calenderYearRepository,
+    ILogger<TaskService> logger)
     {
         _taskRepository = taskRepository;
         _calenderYearRepository = calenderYearRepository;
+        _logger = logger;
     }
 
     public async Task<TaskDTO> CreateTaskAsync(TaskDTO dto)
@@ -52,9 +55,7 @@ public class TaskService : ITaskService
     public async Task<IEnumerable<TaskDTO>> GetAllTasksAsync()
     {
         var taskDBs = await _taskRepository.GetAllAsync();
-        
-        var filtered = taskDBs.Where(t => !t.Deleted);
-        return filtered.Select(TaskMapping.ToDTO);
+        return taskDBs.Select(TaskMapping.ToDTO);
     }
 
     public async Task<TaskDTO?> GetTaskByIdAsync(string taskId)
@@ -67,19 +68,19 @@ public class TaskService : ITaskService
         return TaskMapping.ToDTO(taskDB);
     }
 
-    public async Task<TaskDTO> UpdateTaskByIdAsync(string taskId, TaskDTO taskDTO)
+    public async Task<TaskDTO> UpdateTaskByIdAsync(string taskId, TaskWithCategoryAndUsersDTO taskDTO)
     {
         if (!Guid.TryParse(taskId, out var tGuid))
         {
             throw new ArgumentException($"Invalid taskId {taskId}");
         }
         var taskDB = await _taskRepository.GetByIdAsync(tGuid);
-        if (taskDB.Deleted)
-        {
+        if (taskDB.Deleted) {
             throw new NotSupportedException($"{taskId} is already deleted");
         }
         taskDB.Title = taskDTO.Title;
         taskDB.Content = taskDTO.Content;
+        taskDB.CategoryId = Guid.Parse(taskDTO.CategoryId);
         taskDB.Deadline = taskDTO.Deadline;
 
         if (taskDTO.Deadline.HasValue)
