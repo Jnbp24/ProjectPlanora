@@ -7,7 +7,7 @@ public interface ITaskService
     Task<TaskDTO> CreateTaskAsync(TaskDTO taskDTO);
     Task<IEnumerable<TaskDTO>> GetAllTasksAsync();
     Task<TaskDTO?> GetTaskByIdAsync(string taskId);
-    Task<TaskDTO> UpdateTaskByIdAsync(string taskId, TaskDTO taskDTO);
+    Task<TaskDTO> UpdateTaskByIdAsync(string taskId, TaskWithCategoryAndUsersDTO taskDTO);
     Task<TaskDTO> DeleteTaskByIdAsync(string taskId);
     Task<TaskDTO> AssignCategoryToTaskAsync(string taskId, string categoryName);
     Task<TaskDTO> UnassignCategoryFromTaskAsync(string taskId, string categoryName);
