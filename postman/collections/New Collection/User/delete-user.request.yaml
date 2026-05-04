@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{baseUrl}}/api/User/:id"
+method: DELETE
+pathVariables:
+  id: user-1
+order: 5000

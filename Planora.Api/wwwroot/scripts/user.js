@@ -1,0 +1,267 @@
+const API = "/api/User"
+// --- User management ---
+const emailInput = document.getElementById('user-email')
+const sendInvitationBtn = document.getElementById('user-send-invitation-btn')
+const listEl = document.getElementById('user-list')
+const emptyState = document.getElementById('user-empty')
+
+sendInvitationBtn.addEventListener('click', async () => await sendInvitation())
+emailInput.addEventListener('keydown', async e => {
+    if (e.key === 'Enter') {
+        await sendInvitation()
+    }
+})
+
+MicroModal.init({
+    disableScroll: true,          // lås baggrunds-scroll mens modal er åben
+    awaitCloseAnimation: true,    // vent på CSS-animationen før DOM opdateres
+})
+
+// --- Invitation modal ---
+let pendingInvitationEmail = null
+const invitationFirstNameInput = document.getElementById('invitation-first-name')
+const invitationLastNameInput = document.getElementById('invitation-last-name')
+const invitationOkBtn = document.getElementById('invitation-ok-btn')
+
+invitationOkBtn.addEventListener('click', async () => {
+    const firstName = invitationFirstNameInput.value.trim()
+    const lastName = invitationLastNameInput.value.trim()
+
+    if (!firstName || !lastName) {
+        alert('Please enter both first and last name')
+        return
+    }
+
+    MicroModal.close('modal-invitation')
+    await submitInvitation(pendingInvitationEmail, firstName, lastName)
+    
+    // Reset form
+    invitationFirstNameInput.value = ''
+    invitationLastNameInput.value = ''
+    pendingInvitationEmail = null
+    emailInput.focus()
+})
+
+// --- Delete action modal ---
+let pendingDeleteId = null
+const confirmTitle = document.getElementById('modal-action-title')
+const confirmMessage = document.getElementById('modal-action-content')
+const confirmBtn = document.getElementById('confirm-action-btn')
+
+confirmBtn.addEventListener('click', async () => {
+    MicroModal.close('modal-action')
+    await deleteUser(pendingDeleteId)
+})
+
+render()
+
+async function render() {
+    const users = await getAllUsers()
+    listEl.querySelectorAll('.user-card').forEach(el => el.remove())
+
+    if (users.length === 0) {
+        emptyState.style.display = ''
+        return
+    }
+
+    emptyState.style.display = 'none'
+
+    users.forEach((user, i) => {
+        const card = document.createElement('div')
+        card.id = user.userId
+        card.className = 'user-card'
+        card.style.animationDelay = `${i * 40}ms`
+
+        // Text wrapper with full name and role
+        const textWrap = document.createElement('div')
+        textWrap.className = 'user-card-text'
+
+        const fullNameDisplay = document.createElement('p')
+        fullNameDisplay.className = 'user-full-name-display'
+        fullNameDisplay.textContent = user.firstName + ' ' + user.lastName 
+
+        const emailDisplay = document.createElement('p')
+        emailDisplay.className = 'user-email-display'
+        emailDisplay.textContent = user.email
+
+        const roleWrap = document.createElement('label')
+        roleWrap.className = 'user-role-edit'
+
+        const roleEdit = document.createElement('input')
+        roleEdit.type = 'checkbox'
+        roleEdit.checked = user.tovholder
+        roleEdit.disabled = true
+
+        roleWrap.append(roleEdit, document.createTextNode(' Coordinator'))
+
+        textWrap.append(fullNameDisplay, emailDisplay, roleWrap)
+
+        // Action buttons
+        const actions = document.createElement('div')
+        actions.className = 'user-card-actions'
+
+        const editBtn = makeIconButton('user-edit-btn', 'edit', 'Edit user')
+        const saveBtn = makeIconButton('user-save-btn', 'check', 'Save changes', true)
+        const cancelBtn = makeIconButton('user-cancel-btn', 'close', 'Cancel edit', true)
+        const deleteBtn = makeIconButton('user-delete-btn', 'delete', 'Delete user')
+
+        actions.append(editBtn, saveBtn, cancelBtn, deleteBtn)
+        card.append(textWrap, actions)
+
+        const enterEditMode = () => {
+            card.classList.add('editing')
+            roleEdit.disabled = false
+            editBtn.style.display = 'none'
+            deleteBtn.style.display = 'none'
+            saveBtn.style.display = ''
+            cancelBtn.style.display = ''
+            roleEdit.focus()
+        }
+
+        const exitEditMode = () => {
+            card.classList.remove('editing')
+            roleEdit.disabled = true
+            editBtn.style.display = ''
+            deleteBtn.style.display = ''
+            saveBtn.style.display = 'none'
+            cancelBtn.style.display = 'none'
+        }
+
+        const save = async () => {
+            const newRole = roleEdit.checked
+            if (newRole === user.tovholder) {
+                exitEditMode()
+                return
+            }
+
+            await updateUser(user.userId, {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                tovholder: newRole
+            })
+            await render()
+        }
+
+        editBtn.addEventListener('click', enterEditMode)
+        cancelBtn.addEventListener('click', () => {
+            roleEdit.checked = user.tovholder
+            exitEditMode()
+        })
+        saveBtn.addEventListener('click', save)
+
+        // Micromodal
+        deleteBtn.addEventListener('click', async () => {
+            confirmTitle.textContent = `Delete user`
+            confirmMessage.textContent = `This will permanently delete the user "${user.firstName + ' ' + user.lastName}". This cannot be undone.`
+            confirmBtn.textContent = `Delete`
+            pendingDeleteId = user.userId
+            MicroModal.show('modal-action')
+        })
+        listEl.appendChild(card)
+    })
+}
+
+function makeIconButton(className, iconName, label, hidden = false) {
+    const btn = document.createElement('button')
+    btn.className = className
+    btn.type = 'button'
+    btn.setAttribute('aria-label', label)
+    btn.title = label
+    if (hidden) btn.style.display = 'none'
+
+    const icon = document.createElement('span')
+    icon.className = 'material-symbols-outlined'
+    icon.textContent = iconName
+    btn.appendChild(icon)
+
+    return btn
+}
+
+async function sendInvitation() {
+    const email = emailInput.value.trim()
+
+    if (!email) {
+        emailInput.focus()
+        emailInput.classList.add('shake')
+        setTimeout(() => emailInput.classList.remove('shake'), 400)
+        return
+    }
+
+    // Store email and show modal for name entry
+    pendingInvitationEmail = email
+    invitationFirstNameInput.value = ''
+    invitationLastNameInput.value = ''
+    MicroModal.show('modal-invitation')
+    invitationFirstNameInput.focus()
+}
+
+async function submitInvitation(email, firstName, lastName) {
+    try {
+        await apiFetch(API, {
+            method: "POST",
+            body: JSON.stringify({
+                email: email,
+                firstName: firstName,
+                lastName: lastName,
+                tovholder: false
+            })
+        })
+
+        emailInput.value = ''
+        await render()
+    } catch (error) {
+        alert("Failed to invite user")
+    }
+}
+
+async function getAllUsers() {
+    return await apiFetch(API)
+}
+
+async function updateUser(id, user) {
+    console.log(API + `/${id}`)
+    await apiFetch(API + `/${id}`, {
+        method: "PUT",
+        body: JSON.stringify(user)
+    })
+}
+
+async function deleteUser(id) {
+    await apiFetch(API + `/${id}`, {
+        method: "DELETE"
+    })
+    await render()
+}
+
+async function apiFetch(url, options = {}) {
+    const token = sessionStorage.getItem("token")
+
+    const response = await fetch(url, {
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+            ...options.headers
+        }
+    })
+
+    if (response.status === 401) {
+        sessionStorage.removeItem("token")
+        window.location.href = "/"
+        return
+    }
+
+    if (response.status === 204) {
+        return null
+    }
+
+    // Parse body (kan være tom)
+    const data = await response.json().catch(() => null)
+
+    if (!response.ok) {
+        const message = data?.error || `Request failed (${response.status})`
+        throw new Error(message)
+    }
+
+    return data
+}

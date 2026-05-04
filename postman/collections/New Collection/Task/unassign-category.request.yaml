@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{baseUrl}}/api/Task/{{taskId}}/unassign/{{categoryName}}"
+method: PUT
+order: 7000

@@ -1,0 +1,301 @@
+/* ===== Users ===== */
+
+.user-send-invitation-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f0f0f0;
+  border: 1px solid #e3e3e3;
+  border-radius: 14px;
+  padding: 12px 16px;
+}
+
+.user-email-input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid #e0e0e0;
+  background: #f6f6f6;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.user-email-input:focus {
+  outline: 2px solid rgba(47, 128, 237, 0.22);
+  border-color: var(--accent);
+}
+
+.user-send-invitation-btn {
+  border: none;
+  border-radius: 20px;
+  background: #f2d731;
+  color: #111;
+  padding: 10px 18px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.user-send-invitation-btn:hover {
+  filter: brightness(0.97);
+}
+
+.user-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 14px 16px;
+  animation: fadeSlideIn 0.25s ease both;
+}
+
+.user-card-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-full-name-display {
+  font-weight: 600;
+  font-size: 0.95rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-email-display {
+  font-weight: 500;
+  font-size: 0.90rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-delete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  color: #bbb;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.user-delete-btn:hover {
+  background: #fee;
+  color: #d44;
+}
+
+.user-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.user-edit-btn,
+.user-save-btn,
+.user-cancel-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  color: #bbb;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.user-edit-btn:hover {
+  background: #eef4ff;
+  color: var(--accent);
+}
+
+.user-save-btn:hover {
+  background: #e8f7ec;
+  color: #2e9e4f;
+}
+
+.user-cancel-btn:hover {
+  background: #f0f0f0;
+  color: #444;
+}
+
+/* Inline edit inputs — look like plain text until editing */
+.user-role-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: inherit;
+  font-size: 0.82rem;
+  color: var(--muted);
+  padding: 4px 6px;
+  border-radius: 6px;
+  cursor: default;
+  user-select: none;
+}
+
+.user-role-edit input[type="checkbox"] {
+  margin: 0;
+  width: 14px;
+  height: 14px;
+  accent-color: var(--accent);
+  cursor: inherit;
+}
+
+/* Edit mode — checkbox bliver klikbar */
+.user-card.editing .user-role-edit {
+  cursor: pointer;
+  background: #fafafa;
+}
+
+.user-card.editing .user-role-edit input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.user-card.editing .user-role-edit:hover {
+  background: #f0f0f0;
+}
+
+/* Focus styling når man tabber sig ind på checkboxen */
+.user-role-edit:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* Fjern focus-ring når disabled */
+.user-role-edit:has(input:disabled):focus-within {
+  outline: none;
+}
+
+.user-edit-btn,
+.user-save-btn,
+.user-cancel-btn,
+.user-delete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  color: #bbb;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.user-edit-btn .material-symbols-outlined,
+.user-save-btn .material-symbols-outlined,
+.user-cancel-btn .material-symbols-outlined,
+.user-delete-btn .material-symbols-outlined {
+  font-size: 18px;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.user-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 60px 20px;
+  color: #aaa;
+  font-size: 0.92rem;
+  text-align: center;
+}
+
+.user-empty-icon {
+  font-size: 48px;
+  color: #bbb;
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 48;
+}
+
+/* ===== Form Groups (Modal) ===== */
+.form-group {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.form-group input[type="text"] {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font-size: 0.95rem;
+  background: white;
+  color: var(--text);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input[type="text"]:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(47, 128, 237, 0.1);
+}
+
+/* ===== Responsive ===== */
+
+@media (max-width: 860px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .topbar {
+    flex-wrap: wrap;
+  }
+
+  .profile-btn {
+    margin-left: 0;
+  }
+}
+@media (max-width: 640px) {
+  .user-send-invitation-bar {
+    flex-wrap: wrap;
+  }
+
+  .user-email-input {
+    width: 100%;
+  }
+
+  .user-send-invitation-btn {
+    width: 100%;
+  }
+}

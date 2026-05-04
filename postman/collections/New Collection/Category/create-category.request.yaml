@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/api/Category"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "categoryId": "1",
+      "name": "JonasTestCategory",
+      "hexColor": "#FF0000"
+    }
+order: 2000

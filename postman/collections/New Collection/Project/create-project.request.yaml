@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/api/Project"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "projectId": "1",
+      "name": "Example Project"
+    }
+order: 1000

@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/api/Project/{{projectId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "projectId": "{{projectId}}",
+      "name": "Updated Project"
+    }
+order: 4000

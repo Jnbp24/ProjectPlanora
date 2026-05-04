@@ -1,10 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.EntityFrameworkCore;
+using Planora.DataAccess.Context;
+using Planora.DataAccess.Models;
 
-namespace Planora.DataAccess.Repositories
+namespace Planora.DataAccess.Repositories.User;
+
+public class UserRepository : Repository<UserDB>, IUserRepository
 {
-    internal class UserRepository
-    {
-    }
+	public UserRepository(DatabaseContext context) : base(context)
+	{
+	}
+
+	public override async Task<IEnumerable<UserDB>> GetAllAsync()
+	{
+		return await _dbContext.Users.Where(c => !c.Deleted).Include(c => c.Tasks).ToListAsync();
+	}
 }

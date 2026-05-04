@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Planora - Login</title>
+    <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/base_index.css">
+    <link rel="stylesheet" href="styles/login.css">
+    <script defer src="scripts/login.js"></script>
+</head>
+<body class="page-login">
+  <main class="panel">
+    <section class="left-side">
+      <div class="brand">
+        <img class="brand-logo" src="images/planora-logo.png" alt="Project Planora logo">
+        <span class="brand-text">Planora</span>
+      </div>
+    </section>
+
+    <section class="right-side">
+      <h1>Login</h1>
+      <p>Sign in to continue to your workspace.</p>
+
+      <label for="email">Email</label>
+      <input id="email" type="email" placeholder="you@example.com">
+
+      <label for="password">Password</label>
+      <input id="password" type="password" placeholder="Enter your password">
+
+      <a href="password_reset_request.html" class="reset-password item-hidden" id="reset-password">Forgotten your password?</a>
+      <button type="button" onclick="login()">Login</button>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{baseUrl}}/api/Task/:taskId"
+method: GET
+pathVariables:
+  taskId: "1"
+order: 4000

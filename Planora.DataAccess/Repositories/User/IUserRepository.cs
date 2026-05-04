@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Planora.DataAccess.Models;
 
-namespace Planora.DataAccess.Repositories.User
+namespace Planora.DataAccess.Repositories.User;
+
+public interface IUserRepository : IRepository<UserDB>
 {
-    internal interface IUser
-    {
-    }
+
 }

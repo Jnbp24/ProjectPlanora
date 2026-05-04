@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{baseUrl}}/api/Task/:taskId"
+method: DELETE
+pathVariables:
+  taskId: "1"
+order: 5000

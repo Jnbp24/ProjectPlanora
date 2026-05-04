@@ -1,0 +1,48 @@
+$kind: http-request
+url: "{{baseUrl}}/api/Auth/login"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "Email": "admin@planora.com",
+      "Password": "SecureAdminPassword123!"
+    }
+scripts:
+  - type: afterResponse
+    code: >-
+      const contentType = (pm.response.headers.get('Content-Type') ||
+      '').toLowerCase();
+
+      const responseText = pm.response.text();
+
+      let authValue;
+
+
+      if (contentType.includes('application/json')) {
+          try {
+              const responseData = pm.response.json();
+              authValue = responseData.token || responseData.jwt_token || responseData.access_token || responseData.auth;
+          } catch (error) {
+              console.error('Response declared as JSON but could not be parsed:', error);
+          }
+      } else {
+          authValue = responseText;
+      }
+
+
+      if (typeof authValue === 'string') {
+          authValue = authValue.trim();
+      }
+
+
+      if (authValue) {
+          pm.environment.set('jwt_token', authValue);
+          console.log("Auth value has been saved to environment variable 'jwt_token'");
+      } else {
+          console.warn('Auth value not found in response body.');
+      }
+    language: text/javascript
+order: 1000
