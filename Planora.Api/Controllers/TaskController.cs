@@ -45,7 +45,7 @@ public class TaskController : ControllerBase
     // PUT api/task/d3eb20c6-2b60-4c82-95e3-b5be7f72cfdc
     [Authorize]
     [HttpPut("{taskId}")]
-    public async Task<IActionResult> UpdateTaskByIdAsync(string taskId, [FromBody] TaskDTO taskDTO)
+    public async Task<IActionResult> UpdateTaskByIdAsync(string taskId, [FromBody] TaskWithCategoryAndUsersDTO taskDTO)
     {
         return Ok(await _taskService.UpdateTaskByIdAsync(taskId, taskDTO));
     }

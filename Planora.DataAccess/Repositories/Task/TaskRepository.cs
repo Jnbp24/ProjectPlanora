@@ -15,7 +15,7 @@ public class TaskRepository : Repository<TaskDB>, ITaskRepository
 
     public override async Task<IEnumerable<TaskDB>> GetAllAsync()
     {
-        return await _dbContext.Tasks.Include(t => t.Category).Include(t => t.Users).ToListAsync();
+        return await _dbContext.Tasks.Where(t => !t.Deleted).Include(t => t.Category).Include(t => t.Users).ToListAsync();
     }
 
     public override async Task<TaskDB> GetByIdAsync(Guid taskId)
